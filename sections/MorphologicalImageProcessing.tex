@@ -1,0 +1,91 @@
+\section{Morphological Image Processing\buch{Ch. 9}}
+\subsection{Set Theory}
+\subsubsection{Reflection}
+\[
+	\hat{B} = \{w | w = -b,\quad \text{for} \quad b \in B \}
+\]
+
+
+\subsubsection{Translation}
+\[
+	(B)_z = \{ c | c = b + z,\quad \text{for} \quad b \in B\}
+\]
+
+
+\subsubsection{Erosion}
+With A and B as sets in $Z^2$, the erosion of A by B is defined as
+\[
+	A \ominus B = \{z|(B)_z \subseteq A  \}
+\]
+
+This is the set of all translations by z such that the set B is still a subset of A.
+
+Equivalently, if B must be contained in A, it is not allowed to intersect with the background:
+\[
+	A \ominus B = \{z|(B)_z \cap A^c = \varnothing  \}
+\]
+
+
+\subsubsection{Dilation}
+With A and B as sets in $Z^2$, the dilation of A by B is defined as
+\[
+	A \oplus B = \{z |(\hat{B})_z \cap A \neq \varnothing \}
+\]
+This is the set of all translations by z such that the set B reflected about its origin has at leas one overlap with the set A.
+
+Equivalently, since the intersection is not allowed to be empty and all elements in it must be from A:
+\[
+	A \oplus B = \{z | [(\hat{B})_z \cap A] \subseteq A \}
+\]
+
+
+\subsubsection{Duality erosion/dilation}
+Erosion and dilation are dual:
+\[
+	(A  \ominus B)^c = A^c \oplus \hat{B}
+\]
+\[
+	(A \oplus B)^c = A^c \ominus \hat{B}
+\]
+
+
+\subsubsection{Opening and closing}
+The opening of A by B is defined: (first erosion then dilation)
+\[
+	A \circ B = (A \ominus B) \oplus B
+\]
+
+The closing of A by B is defined: (first dilation then erosion)
+\[
+	A  \bullet B = (A \oplus B) \ominus B
+\]
+
+Opening and closing are dual operations: 
+\[
+	(A  \bullet B)^c = (A^c \circ \hat{B})
+\]
+\[
+	(A \circ B)^c = (A^c \bullet \hat{B})
+\]
+
+
+\subsubsection{The hit-or-miss transform}
+The hit-or-miss transform is a basic tool for shape detection. Basic idea:
+\begin{itemize}
+	\item Through erosion of the image by the object, possible locations for the object in the image are left, since elements smaller than the objects disappear
+	
+	\item Through erosion of the background of the image with the local background of the object, possible locations for the object in the image are left
+	
+	\item The intersection of these possible locations result in a reliable  detection of the object location
+	\[
+		A \circledast B = (A \ominus D) \cap [ A^c \ominus (W-D)]
+	\]
+	
+	\item In general, if B1 is the object and B2 is the corresponding background this can be written
+	\[
+		A \circledast B = (A \ominus B_1)\cap (A^c \ominus B_2)	
+	\]	
+\end{itemize}
+
+
+
