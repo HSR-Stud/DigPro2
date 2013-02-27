@@ -149,4 +149,52 @@ with
 	\]
 	
 \subsubsection{Pruning}
-Pruning is a procedure that can remove parasitic componants of a length below some threshold.
+Pruning is a procedure that can remove parasitic components of a length below some threshold.\\
+\begin{enumerate}
+\item Find endpoints with a hit or miss transform with the following structuring elements. Remove the endpoints.
+%TODO 2 structuring elements page 36
+\item Repeat this. If you want to remove all spurs of length 3 or less, repeat for 3 times
+\item Find the endpoints using the same structuring elements
+\item Dilate the endpoints with a 3x3 structuring element and make a logical and with the original set
+\end{enumerate}
+
+\subsubsection{Geodesic dilation and erosion}
+This is a transformation which uses two images and a structuring element
+\begin{itemize}
+\item F is the marker image
+\item G is the mask image
+\item Both are binary and F is a subset of G
+\end{itemize}
+\textbf{Geodesic dilation}
+\[
+	D_G^{(1)}(F) = (F\oplus B)\cup G
+\]
+Can be repeated:
+\begin{align*}
+	D_G^{(0)}(F) = F \\
+	D_G^{(1)}(F) = (F\oplus B)\cup G\\
+	D_G^{(n)}(F) = D_G^{(1)}[D_G^{(n-1)}(F)]
+\end{align*}
+
+\textbf{Geodesic erosion}
+\[
+	E_G^{(1)}(F) = (F\ominus B)\cap G
+\]
+
+\subsubsection{Morphological reconstruction}
+This is geodesic dilation/erosion until nothing changes.
+
+\subsubsection{Sample applications}
+\textbf{Opening and closing by reconstruction}\\
+Opening by reconstruction removes all small object, all others stay unchanged.
+Closing by reconstruction closes gaps, the rest is unchanged. This is in contrast to morphological opening and closing, where the erosion removes the small objects and the dilation "sort of" reconstructs the other objects.\\
+
+\textbf{Filling holes in a binary image I}\\
+Without needing a seed!\\
+\[
+	H = [R_F^D(F)]^C
+\]
+%TODO image series page 48
+
+\textbf{Boder clearing}\\
+Remove object that touch the border.
