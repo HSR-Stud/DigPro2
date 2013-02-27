@@ -102,5 +102,51 @@ The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 	\]	
 \end{itemize}
 
+\subsection{Some basic morphological algorithms}
+\subsubsection{Convex hull}
+\begin{itemize}
+\item The convex hull H of a set S is the smalles convex set containing S.
+\item H-S is called the convex deficiency of S
+\end{itemize}
+The convex hull is constructed with a convex hull with four structuring elements.
+%TODO Image page 26
+The resulting set is not the smallest convex set that contains A. The following additional constraints can be used:
+\begin{itemize}
+\item The convex hull is not allowed to grow beyond the original vertical and horizontal dimension
+\item 
+\end{itemize}
 
+\subsubsection{Thinning}
+Thinning is the operation of making the foreground thinner.
+%TODO Image page 29
+	\[
+		A \otimes  B = A - (A \circledast B)	
+	\]	
+Hit or miss transformation with rotating structuring elements.\\
 
+%TODO Image 8 structuring elements page 31
+	\[
+		A \otimes  {B} = ((\ldots((A \otimes B^{1}) \otimes B^{2})\ldots) \otimes B^{n})	
+	\]	
+
+\subsubsection{Thickening}
+This is the morphological dual of thinning. It is implemented as thinning the background and then taking the complement.
+
+\subsubsection{Skeleton S(A)}
+%TODO Image page 33
+Finding a disk D that:
+\begin{itemize}
+\item centers at z
+\item there is no larger disk containing D and included in A
+\item touches the boundary of A at two or more places
+\end{itemize}
+	\[
+		S(A) = \bigcup_{k=0}^{K} S_k(A)
+	\]
+with
+	\[
+		S_k(A) = (A \ominus kB) - (A \ominus kB) \circ B
+	\]
+	
+\subsubsection{Pruning}
+Pruning is a procedure that can remove parasitic componants of a length below some threshold.
