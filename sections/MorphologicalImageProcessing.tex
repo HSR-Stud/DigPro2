@@ -232,3 +232,19 @@ The resulting image contains mostly bright details that are smaller than the str
 The resulting image contains mostly dark details, that are smaller than the structuring element.
 \subsubsection{Granulometry}
 The goal of granulometry is to find the particle size distribution in an image. Opening with a structuring element similar in shape as the particles but the size scaled from small to large. The biggest effect in the resulting opened image is, when the size of the structuring element changes from just too small to just too large. This effect can be measured by summing up the entire opened image, the surface area. Jumps in the change of surface area show the dominant particle sizes.
+\subsubsection{Textural segmentation}
+Figure 9.43\\
+The goal of textural segmentation is, to segment the image into two textural regions. The basic idea is to remove the small circles with a structuring element larger than the small circle but smaller than the large circle. With a following opening fills the white patches between the large elements.
+\subsubsection{Gray-scale morphological reconstructions}
+Follows the definition for binary images.\\
+\textbf{Geodesic dilation of size 1}
+\begin{align*}
+	D_g^{(1)}(f) = (f\oplus b)\wedge g\\
+	D_g^{(n)}(f) = D_g^{(1)}[D_g^{n-1}(f)] g
+\end{align*}
+$\wedge$ denotes the point-wise minimum operator\\
+\textbf{Geodesic erosion of size 1}
+\begin{align*}
+	E_g^{(1)}(f) = (f\ominus b)\vee g\\
+	E_g^{(n)}(f) = E_g^{(1)}[E_g^{(n-1)}(f)]
+\end{align*}
