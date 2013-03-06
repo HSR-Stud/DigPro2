@@ -196,5 +196,39 @@ Without needing a seed!\\
 \]
 %TODO image series page 48
 
-\textbf{Boder clearing}\\
+\textbf{Border clearing}\\
 Remove object that touch the border.
+
+\subsection{Gray-scale morphology}
+The fundamental operations dilation, erosion, opening and closing can be extended to gray scale. Hence the more advanced operations which are based on the above operations can be extended too. The structuring elements are also gray-scale. In practice, flat structuring elements are preferred.
+
+%TODO ? image 9.34 page 51
+
+Erosion
+\[
+	[f\ominus b](x,y) = \min_{(s,t)\epsilon b} \{f(x+s,y+t)\}
+\]
+Dilation
+\[
+	[f\oplus b](x,y) = \max_{(s,t)\epsilon b} \{f(x-s,y-t)\}
+\]
+Opening and closing are defined exactly the same as in the binary case.
+\subsubsection{Morphological smoothing}
+Opening suppresses bright details and closing suppresses dark details. They can be used in combination for image smoothing and/or noise suppression.
+\subsubsection{Morphological gradient}
+This operation resullts in an image where the edges are enhanced, not unlike a classical magnitude gradient image.
+\[
+	g=(f\oplus b)-(f\ominus b)
+\]
+\subsubsection{Top-hat transformation}
+\[
+	T_{hat}(f) = f -(f \circ b)
+\]
+The resulting image contains mostly bright details that are smaller than the structuring element.
+\subsubsection{Bottom-hat transformation}
+\[
+	B_{hat}(f) = (f \circ b)-f
+\]
+The resulting image contains mostly dark details, that are smaller than the structuring element.
+\subsubsection{Granulometry}
+The goal of granulometry is to find the particle size distribution in an image. Opening with a structuring element similar in shape as the particles but the size scaled from small to large. The biggest effect in the resulting opened image is, when the size of the structuring element changes from just too small to just too large. This effect can be measured by summing up the entire opened image, the surface area. Jumps in the change of surface area show the dominant particle sizes.
