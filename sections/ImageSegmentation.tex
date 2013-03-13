@@ -67,3 +67,20 @@ It can be extended to also include the diagonal terms wich results in the follow
 The Laplacian is isotropic with respect to $0^\circ, 45^\circ, 90^\circ and 135^\circ$. 
 Often, a line of a known direction should be detected. We use special masks for that particular direction
 %TODO 4 Matritzen Folie 16
+%TODO Seite 20 Figure 10.10
+
+\subsubsection{Edge localization}
+The previously shown method generates edge points. The goal is to keep the ones which truly belong to an edge.\\
+Since first order derivatives are helpful, a nice way of combining the two partial derivatives into one value is the magnitude of the gradient
+\[
+	\nabla f = grad(f) = \left[\frac{g_x}{g_y}\right]
+\]
+The gradient (which is a vector) points into the direction of the greatest rate of change of f at the location (x,y)\\
+The magnitude of the gradient vector is the value of the rate of change in that direction\\
+Gradient operators:
+%TODO Prewitt und Sobel Seite 26 zeichnen
+After the gradient images have been calculated, often the magnitude of the gradient is required.
+\[
+	M(x,y) \approx |g_x|+|g_y|
+\]
+If the goal is to find the dominant edges, then smoothing the image before calculating the magnitude gradient image works well. Alternatively, the magnitude gradient image can also be thresholded such that only values above this value are considered edges (set to one). Everything else is set to 0.
