@@ -1,0 +1,69 @@
+\section{Image Segmentation}
+\subsection{Preliminaries}
+\begin{itemize}
+\item Separate the image into different parts, ie. regions or objects
+\item It is a difficult but important task
+\item Often a scene can be designed that the segmentation task is simplified
+\item Segmentation is based on some property of the scene
+\begin{itemize}
+\item Intensity discontinuity
+\item Intensity similarity
+\item More Complex properties:
+\begin{itemize}
+\item Motion
+\item Texture
+\item Shape
+\item Color
+\item etc.
+\end{itemize}
+\end{itemize}
+\end{itemize}
+
+\subsection{Fundamentals}
+%TODO a bis e Folie 4
+Focus on the intenxity values
+\begin{itemize}
+\item there are discontinuities, then a new region starts.
+\item If the intensity does not vary much, then this is one region.
+\end{itemize}
+
+\subsection{Point, line and edge detection}
+When the intensity changes abruptly in a local neighborhood, this indicates an edge. It can be a simple point or a line.\\
+Abrupt local changes can be detected using derivatives.\\
+First order derivative
+\[
+	\frac{\delta f}{\delta x} = f'(x)=f(x+1)-f(x)
+\]
+The second order derivative
+\[
+	\frac{\delta^2f}{\delta x^2}=\frac{\delta f'(x)}{\delta x}=f''(x)=f(x+1)+f(x-1)-2f(x)
+\]
+This can be calculated using a spatial filter.
+\[
+	\begin{matrix}
+	w_1, w_2, w_3\\
+	w_4, w_5, w_6\\
+	w_7, w_8, w_9
+	\end{matrix}
+\]
+\begin{itemize}
+\item First order in y direction $w_6=1, w_5=-1$
+\item First order in x direction $w_8=1, w_5=-1$
+\item Second order in y direction $w_6=1, w_4=1, w_5=-2$
+\item Second order in x direction $w_8=1, w_2=1, w_5=-2$
+\end{itemize}
+The Laplacian combines the second derivatives in both spatial directions. This results in
+\[
+	\nabla^2f(x,y)=f(x+1,y)+f(x-1,y)+f(x,y+1)+f(x,y-1)-4f(x,y)
+\]
+It can be extended to also include the diagonal terms wich results in the following mask
+\[
+	\begin{matrix}
+	 1 & 1 & 1\\
+	 1 & -8 & 1\\
+	 1 & 1 & 1
+	\end{matrix}
+\]
+The Laplacian is isotropic with respect to $0^\circ, 45^\circ, 90^\circ and 135^\circ$. 
+Often, a line of a known direction should be detected. We use special masks for that particular direction
+%TODO 4 Matritzen Folie 16
