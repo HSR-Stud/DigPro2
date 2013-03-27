@@ -87,7 +87,20 @@ If the goal is to find the dominant edges, then smoothing the image before calcu
 
 \subsubsection{Marr-Hildreth edge detector}
 New Idea: Edges exist on different scales. The edge detector needs to be tuned to the scale of the desired edge. Use a Gaussian filter (with space constant $\sigma$) and then take the Laplacian. The Gaussian filter is a low pass, wich blurs the image for large $\sigma$. This results in a Laplacian of Gaussian (LoG) filter.
-%TODO Seite 38 zwei Bilder unten rechts
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/segmentation/MarrHildreth}}
+		\caption{Cross Section of the negative of the LoG, showing zero crossings}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\adjustbox{scale=0.75}{\input{tikz/segmentation/MarrHildrethMatrix}}
+		\caption{5x5 mask approximation. The negative of this mask would be used in practicej}
+	\end{subfigure}
+	\caption{Marr-Hildreth}
+\end{figure}
 
 \textbf{Summary of the Marr-Hildreth edge detection:}
 \begin{enumerate}
