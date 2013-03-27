@@ -20,7 +20,13 @@
 \end{itemize}
 
 \subsection{Fundamentals}
-%TODO a bis e Folie 4
+\begin{enumerate}
+\item $\bigcup\limits_{i=1}^{n}R_i=R$
+\item $R_i$ is a connected set, $i=1,2,...,n$
+\item $R_i\bigcap R_j = $ for all $i$ and $j, i\neq j$
+\item $Q(R_i)=$TRUE for $i=1,2,...n$
+\item $Q(R_i\bigcup R_j)=$FALSE for any adjacent Regions $R_i$ and $R_j$
+\end{enumerate}
 Focus on the intenxity values
 \begin{itemize}
 \item there are discontinuities, then a new region starts.
@@ -66,7 +72,70 @@ It can be extended to also include the diagonal terms wich results in the follow
 \]
 The Laplacian is isotropic with respect to $0^\circ, 45^\circ, 90^\circ and 135^\circ$. 
 Often, a line of a known direction should be detected. We use special masks for that particular direction
-%TODO 4 Matritzen Folie 16
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\[
+		\begin{array}{|c|c|c|}
+			\hline
+			-1 & -1 & -1\\
+			\hline
+			2 & 2 & 2\\
+			\hline
+			-1 & -1 & -1\\
+			\hline
+		\end{array}
+		\]
+		\caption{Horizontal}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\[
+		\begin{array}{|c|c|c|}
+			\hline
+			2 & -1 & -1\\
+			\hline
+			-1 & 2 & -1\\
+			\hline
+			-1 & -1 & 2\\
+			\hline
+		\end{array}
+		\]
+		\caption{$+45^\circ$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\[
+		\begin{array}{|c|c|c|}
+			\hline
+			-1 & 2 & -1\\
+			\hline
+			-1 & 2 & -1\\
+			\hline
+			-1 & 2 & -1\\
+			\hline
+		\end{array}
+		\]
+		\caption{Vertical}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\[
+		\begin{array}{|c|c|c|}
+			\hline
+			-1 & -1 & 2\\
+			\hline
+			-1 & 2 & -1\\
+			\hline
+			2 & -1 & -1\\
+			\hline
+		\end{array}
+		\]
+		\caption{$+45^\circ$}
+	\end{subfigure}
+	\caption{Line detection masks}
+\end{figure}
 %TODO Seite 20 Figure 10.10
 
 \subsubsection{Edge localization}
@@ -87,7 +156,7 @@ If the goal is to find the dominant edges, then smoothing the image before calcu
 
 \subsubsection{Marr-Hildreth edge detector}
 New Idea: Edges exist on different scales. The edge detector needs to be tuned to the scale of the desired edge. Use a Gaussian filter (with space constant $\sigma$) and then take the Laplacian. The Gaussian filter is a low pass, wich blurs the image for large $\sigma$. This results in a Laplacian of Gaussian (LoG) filter.
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
