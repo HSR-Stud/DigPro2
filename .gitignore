@@ -30,4 +30,6 @@
 *.vrb
 *.xdy
 *.tdo
+# TikzEdt Preview Files:
+*.tex.preview*
 DigPro2.pdf
