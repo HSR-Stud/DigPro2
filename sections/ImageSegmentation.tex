@@ -84,3 +84,25 @@ After the gradient images have been calculated, often the magnitude of the gradi
 	M(x,y) \approx |g_x|+|g_y|
 \]
 If the goal is to find the dominant edges, then smoothing the image before calculating the magnitude gradient image works well. Alternatively, the magnitude gradient image can also be thresholded such that only values above this value are considered edges (set to one). Everything else is set to 0.
+
+\subsubsection{Marr-Hildreth edge detector}
+New Idea: Edges exist on different scales. The edge detector needs to be tuned to the scale of the desired edge. Use a Gaussian filter (with space constant $\sigma$) and then take the Laplacian. The Gaussian filter is a low pass, wich blurs the image for large $\sigma$. This results in a Laplacian of Gaussian (LoG) filter.
+%TODO Seite 38 zwei Bilder unten rechts
+
+\textbf{Summary of the Marr-Hildreth edge detection:}
+\begin{enumerate}
+\item Filter the input image with an $n x n$ Gaussian lowpass filter $G(x,y)=e^{-\frac{x^2+y^2}{2\sigma^2}}$
+\item Compute the Laplacian of the image resulting from Step 1. $\nabla ^2[G(x,y) \star f(x,y)]$
+\item Find the zero crossing of the image from Step 2.
+\end{enumerate}
+\textbf{Size of the discrete LoG filter}
+Rule of thumb: nxn LoG filter should have the smallest odd integer n greater than or equal to $6\sigma$.\\
+\textbf{How to find the zero crossings?}
+A zero-crossing exists, if at least one opposing pixelpair has a sign difference.
+%TODO Matrix edge detection
+%*rx 
+%o o
+%xr*
+
+\subsubsection{Canny edge detector}
+More complex, more powerful. The derivation is powerful, the implementation easy. Canny uses the gradient angle image and the linking of weak with strong edges.
