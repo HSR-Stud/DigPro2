@@ -146,8 +146,71 @@ Since first order derivatives are helpful, a nice way of combining the two parti
 \]
 The gradient (which is a vector) points into the direction of the greatest rate of change of f at the location (x,y)\\
 The magnitude of the gradient vector is the value of the rate of change in that direction\\
-Gradient operators:
-%TODO Prewitt und Sobel Seite 26 zeichnen
+Gradient operators:\\
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\[
+		\begin{array}{|c|c|c|}
+			\hline
+			-1 & -1 & -1\\
+			\hline
+			0 & 0 & 0\\
+			\hline
+			1 & 1 & 1\\
+			\hline
+		\end{array}
+		\]
+		\caption{Prewitt}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\[
+		\begin{array}{|c|c|c|}
+			\hline
+			-1 & 0 & 1\\
+			\hline
+			-1 & 0 & 1\\
+			\hline
+			-1 & 0 & 1\\
+			\hline
+		\end{array}
+		\]
+		\caption{Prewitt}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\[
+		\begin{array}{|c|c|c|}
+			\hline
+			-1 & -2 & -1\\
+			\hline
+			0 & 0 & 0\\
+			\hline
+			1 & 2 & 1\\
+			\hline
+		\end{array}
+		\]
+		\caption{Sobel}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\[
+		\begin{array}{|c|c|c|}
+			\hline
+			-1 & 0 & 1\\
+			\hline
+			-2 & 0 & 2\\
+			\hline
+			-1 & 0 & 1\\
+			\hline
+		\end{array}
+		\]
+		\caption{Sobel}
+	\end{subfigure}
+	\caption{Prewitt and Sobel masks}
+\end{figure}\\
 After the gradient images have been calculated, often the magnitude of the gradient is required.
 \[
 	M(x,y) \approx |g_x|+|g_y|
@@ -226,7 +289,6 @@ If the location of a boundary is roughly known, it is possible to use the detect
 \item If OPEN is not empty, go to Step 4.
 \item Else, exit. The vertices in CLOSED are the vertices of the polygonal fit to the points in P.
 \end{enumerate}
-%TODO Bild Folie 58
 \begin{figure}[h]
 	\centering
 	\adjustbox{scale=0.5}{\input{tikz/segmentation/RegionalProcessing}}
