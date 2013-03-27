@@ -1,0 +1,79 @@
+\usetikzlibrary{calc}
+\begin{tikzpicture}[dot/.style={circle,inner sep=1pt, fill, name=#1}]
+
+\begin{scope}[shift={(-5.5,1)}]
+\node [dot=A] at (-2,-1.4) {};
+\node [dot=B] at (-2.4,0.4) {};
+\node [dot=C] at (1.2,-2.2) {};
+\node [dot=D] at (2.2,-1.4) {};
+\node [dot=E] at (2.6,-0.2) {};
+\node [dot=F] at (2.4,0.8) {};
+\node [dot=G] at (-1.6,1.8) {};
+\node [dot=H] at (-2.2,1.2) {};
+\node [dot=I] at (-2.4,-0.6) {};
+\node [dot=J] at (2,1.6) {};
+\node [dot=K] at (1.2,2) {};
+\node [dot=L] at (0.4,2.4) {};
+\node [dot=M] at (-0.8,2.2) {};
+\draw[thick] (A) -- (C);
+\draw[thick, dashed] ($(A)!(L)!(C)$) -- (L);
+\end{scope}
+
+\begin{scope}[shift={(0.9,1)}]
+\node [dot=A] at (-2,-1.4) {};
+\node [dot=B] at (-2.4,0.4) {};
+\node [dot=C] at (1.2,-2.2) {};
+\node [dot=D] at (2.2,-1.4) {};
+\node [dot=E] at (2.6,-0.2) {};
+\node [dot=F] at (2.4,0.8) {};
+\node [dot=G] at (-1.6,1.8) {};
+\node [dot=H] at (-2.2,1.2) {};
+\node [dot=I] at (-2.4,-0.6) {};
+\node [dot=J] at (2,1.6) {};
+\node [dot=K] at (1.2,2) {};
+\node [dot=L] at (0.4,2.4) {};
+\node [dot=M] at (-0.8,2.2) {};
+\draw[thick] (A) -- (L) -- (C);
+\draw[thick, dashed] ($(A)!(H)!(L)$) -- (H);
+\draw[thick, dashed] ($(L)!(F)!(C)$) -- (F);
+\end{scope}
+
+\begin{scope}[shift={(-5.5,-5)}]
+\node [dot=A] at (-2,-1.4) {};
+\node [dot=B] at (-2.4,0.4) {};
+\node [dot=C] at (1.2,-2.2) {};
+\node [dot=D] at (2.2,-1.4) {};
+\node [dot=E] at (2.6,-0.2) {};
+\node [dot=F] at (2.4,0.8) {};
+\node [dot=G] at (-1.6,1.8) {};
+\node [dot=H] at (-2.2,1.2) {};
+\node [dot=I] at (-2.4,-0.6) {};
+\node [dot=J] at (2,1.6) {};
+\node [dot=K] at (1.2,2) {};
+\node [dot=L] at (0.4,2.4) {};
+\node [dot=M] at (-0.8,2.2) {};
+\draw[thick] (A) -- (H) -- (L) -- (F) -- (C);
+\draw[thick, dashed] ($(A)!(I)!(H)$) -- (I);
+\draw[thick, dashed] ($(L)!(M)!(H)$) -- (M);
+\draw[thick, dashed] ($(L)!(J)!(F)$) -- (J);
+\draw[thick, dashed] ($(F)!(D)!(C)$) -- (D);
+\end{scope}
+
+\begin{scope}[shift={(0.9,-5)}]
+\node [dot=A] at (-2,-1.4) {};
+\node [dot=B] at (-2.4,0.4) {};
+\node [dot=C] at (1.2,-2.2) {};
+\node [dot=D] at (2.2,-1.4) {};
+\node [dot=E] at (2.6,-0.2) {};
+\node [dot=F] at (2.4,0.8) {};
+\node [dot=G] at (-1.6,1.8) {};
+\node [dot=H] at (-2.2,1.2) {};
+\node [dot=I] at (-2.4,-0.6) {};
+\node [dot=J] at (2,1.6) {};
+\node [dot=K] at (1.2,2) {};
+\node [dot=L] at (0.4,2.4) {};
+\node [dot=M] at (-0.8,2.2) {};
+\draw[thick] (A) -- (I) -- (H) -- (M) -- (L) -- (J) -- (F)-- (D) -- (C);
+\end{scope}
+
+\end{tikzpicture}
