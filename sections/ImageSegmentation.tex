@@ -103,6 +103,46 @@ A zero-crossing exists, if at least one opposing pixelpair has a sign difference
 %*rx 
 %o o
 %xr*
+%zwei paare davon müssen ein vorzeichen ändern
 
 \subsubsection{Canny edge detector}
-More complex, more powerful. The derivation is powerful, the implementation easy. Canny uses the gradient angle image and the linking of weak with strong edges.
+More complex, more powerful. The derivation is powerful, the implementation easy. Canny uses the gradient angle image and the linking of weak with strong edges.\\
+Smooth the image and then find the gradient vector magnitude and direction:
+\begin{align*}
+G(x,y) = e^{-\frac{x^2+y^2}{2\sigma^2}}\\
+f_s(x,y)=G(x,y)\star f(x,y)\\
+M(x,y) = \sqrt{g_x^2+g_y^2}\\
+\alpha(x,y) = tan^{-1}\left[\frac{g_y}{g_x}\right]\\
+\end{align*}
+The first new idea is, to thin the edges, using the gradient directional information. This is called nonmaxima suppression.\\
+%TODO ?
+We are looking for the maxima of the gradient magnitude along the gradient direction. $g_N(x,y)$ is the nonmaxima-suppressed image, the gradient magnitude image where the wide ridges have been thinned since the middle value is only kept when it is the maxima within a 3x3 neighborhood along the gradient direction.\\
+This image is thresholded to find the significant edges and remove the noise.
+
+\begin{itemize}
+\item $T_H$ high threshold. The values above this are almost certainly true edges
+\item $T_L$ low threshold. The values above this are likely to be edges. If they are 8-connected to a edge in $g_{NH}(x,y)$, they are also an edge.
+\end{itemize}
+%TODO Seite 50 summary canny
+
+\subsubsection{Edge linking and boundary detection}
+Three schemes to link edges:\\
+\textbf{Local processing}\\
+For every point at a location the gradient vector magnitude and angle are compared with the magnitude and angle of points in a neighborhood. If these are similar, they belong to the same boundary. This can be indicated by giving them the same color and/or gray value.\\
+A much simpler scheme can be used if the linking follows certain directions and the maximum gap size is roughly known.\\
+%TODO enumerate seite 55
+\textbf{Regional processing}\\
+If the location of a boundary is roughly known, it is possible to use the detected edge points as indicators for the suspected boundary.
+\begin{enumerate}
+\item Let P be a sequence of ordered, destinct, 1-valued points of a binary image. Specify two starting points, A and B. these are two starting vertices of the polygon.
+\item Specify a threshold T, and two empty stacks, OPEN and CLOSED.
+\item If the points in P correspond to a closed curve, put A into OPEN and put B into OPEN and CLOSED.
+\item Compute the parameters of the line passing from the last vertex in CLOSED to the last vertex in OPEN.
+\item Compute the distances from the line in Step 4 to all the points in P whose sequence places them between the vertices from Step 4. Select the point, $V_{max}$, with the maximum distance $D_{max}$ (ties are resolved arbitrarily)
+\item If $D_{max}$, place $V_{max}$ at the end of the OPEN stack as a new vertex. Go to Step 4.
+\item Else, remove the last vertex from Open and insert it as the last vertex of CLOSED.
+\item If OPEN is not empty, go to Step 4.
+\item Else, exit. The vertices in CLOSED are the vertices of the polygonal fit to the points in P.
+\end{enumerate}
+%TODO Bild Folie 58
+\textbf{Global processing}\\
