@@ -295,3 +295,27 @@ If the location of a boundary is roughly known, it is possible to use the detect
 	\caption{Regional Processing}
 \end{figure}
 \textbf{Global processing}\\
+\subsubsection{Hough transform}
+\begin{itemize}
+%TODO Figure 10.31 Seite 63 und Bild Normale Seite 64
+\item Each point in the xy plane belongs to infinetly many lines $y_i=ax_i+b$
+\item If we interpret this line equation differently, then $b=-x_ia+y_i$ represent for each point in the xy plane a line in the ab plane
+\item For each point in the xy plane, a line can be drawn in the ab plane and the principal lines in the xy plane can be found by the points with the most intersections in the ab plane
+\item Vertical lines require an infinite a, this does not work. Use the line normal as representation. A point in the xy plane does not result in a simple straight line in the parameter space ($\theta\rho$). The curve $\rho = f(\theta)$ is now a sinusoidal
+\item Practical scheme
+\begin{itemize}
+\item For every $\theta_q$ in the $\rho\theta$ plane
+\item Calculate $\rho = f(\theta)$ and quantize it into $\rho_q$
+\item Increase the cell in the $\rho\theta$ plane at location ($\rho_q, \theta_q$) by one
+\item end
+\end{itemize}
+\end{itemize}
+
+\subsection{Thresholding}
+
+
+
+
+
+
+
