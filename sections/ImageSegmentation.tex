@@ -312,10 +312,55 @@ If the location of a boundary is roughly known, it is possible to use the detect
 \end{itemize}
 
 \subsection{Thresholding}
+%TODO Nummern 1 bis 5 Seite 75
+%TODO Summary Otsu Seite 85
+\subsubsection{Variable Thresholding}
+\textbf{Image Partitioning}\\
+The simplest approach is to partition a given image into non overlapping regions and then use Otsu's method on smaller regions.\\
+\textbf{Based on local image properties}\\
+A threshold is computed for each point. The threshold depends on some property of a local neighborhood. Common properties are the mean and standard deviation for each pixel.
+An even more powerful scheme can be built, if the 1 or 0 decision is based on some logical condition.\\
 
-
-
-
-
-
-
+\subsection{Region based segmentation}
+The goal is to segment the image into regions directly, not using abrupt changes or thresholding.
+\subsubsection{Region growing}
+\begin{enumerate}
+\item Find all connected components in $S(x,y)$ and erode each connected component to one pixel; label all such pixels found as 1. All other pixels in S are labeled 0.
+\item Form an image $f_Q$ such that, at a pair of coordinates...
+%TODO Folie 104 Nr. 1 bis 4 schreiben
+\end{enumerate}
+\subsubsection{Region splitting and merging}
+The image is subdivided initially into a set of arbitrary disjoint regions and then the regions are merge and or split in an attempt to improve the segmentation.\\
+A common scheme to split images is a quadtree.\\
+%TODO Seite 107 Schritt 1 bis 3
+%TODO Seite 107 Bild a und b
+\subsubsection{Segmentation using morphological watersheds}
+The basic idea is to think of images as 3D landscapes. There are three kinds of points:
+\begin{itemize}
+\item Points belonging to a regional minimum.
+\item Points, where water would flow. These are called catchment basin.
+\item Points, where water would be equally likely to fall to more than one such minimum. These are called watershed.
+\end{itemize}
+Basic idea:
+\begin{itemize}
+\item In each basin a hole is punched
+\item The topological image is pushed into a full bathtub. The water rises uniformly in the different basing
+\item As soon as the water in different basins want to merge, a dam is build
+\item At the end only the dams are left. These are the watershed lines wich are connected boundaries segmenting the image into different regions.
+\end{itemize}
+\textbf{Watershed segmentation algorithm}
+\begin{itemize}
+\item $T[n]$ is the set of coordinates flooded $T[n] = {(s,t)|g(s,t)<n}$
+\item The flooding goes in integers from $n=min+1$ to $n=max+1$
+\item The algorithm starts with $C[min+1]=T[min+1]$. This leads to $C_{min+1}(M_i)$ for every minimum. $C[n]=\bigcup\limits_{i=1}^{R}C_n(M_i)$
+\item Now $C[n]$ is created from $C[n-1]$
+\begin{enumerate}
+\item Was a new basin discovered?
+\item Did the basins simply expand?
+\item Did two basins merge?
+\end{enumerate}
+%TODO Algorithm Seite 114 und 115
+%TODO dam building algo Seite 112
+\end{itemize}
+\subsubsection{The use of motion in segmentation}
+%TODO Seiten 117, 118, 119
