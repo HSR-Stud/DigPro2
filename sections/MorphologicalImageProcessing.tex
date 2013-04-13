@@ -109,21 +109,103 @@ The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 \item H-S is called the convex deficiency of S
 \end{itemize}
 The convex hull is constructed with a convex hull with four structuring elements.
-%TODO Image page 26
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/morphological/convex_hull}}
+		\caption{$B^1$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\adjustbox{scale=0.5, angle=270}{\input{tikz/morphological/convex_hull}}
+		\caption{$B^2$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\adjustbox{scale=0.5, angle=180}{\input{tikz/morphological/convex_hull}}
+		\caption{$B^3$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\adjustbox{scale=0.5, angle=90}{\input{tikz/morphological/convex_hull}}
+		\caption{$B^4$}
+	\end{subfigure}
+	\caption{Structuring elements for convex hull}
+\end{figure}
+
 The resulting set is not the smallest convex set that contains A. The following additional constraints can be used:
 \begin{itemize}
 \item The convex hull is not allowed to grow beyond the original vertical and horizontal dimension
 \item 
+%TODO???
 \end{itemize}
 
 \subsubsection{Thinning}
 Thinning is the operation of making the foreground thinner.
-%TODO Image page 29
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/morphological/thinning_origin}}
+		\caption{Original image}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/morphological/thinning_thinned}}
+		\caption{Thinned image}
+	\end{subfigure}
+	\caption{Thinning}
+\end{figure}
 	\[
 		A \otimes  B = A - (A \circledast B)	
 	\]	
 Hit or miss transformation with rotating structuring elements.\\
 
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.1\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/morphological/thinning_mask_1}}
+		\caption{$B^1$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.1\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/morphological/thinning_mask_2}}
+		\caption{$B^2$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.1\textwidth}
+		\centering
+		\adjustbox{scale=0.5, angle=270}{\input{tikz/morphological/thinning_mask_1}}
+		\caption{$B^1$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.1\textwidth}
+		\centering
+		\adjustbox{scale=0.5, angle=270}{\input{tikz/morphological/thinning_mask_2}}
+		\caption{$B^2$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.1\textwidth}
+		\centering
+		\adjustbox{scale=0.5, angle=180}{\input{tikz/morphological/thinning_mask_1}}
+		\caption{$B^1$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.1\textwidth}
+		\centering
+		\adjustbox{scale=0.5, angle=180}{\input{tikz/morphological/thinning_mask_2}}
+		\caption{$B^2$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.1\textwidth}
+		\centering
+		\adjustbox{scale=0.5, angle=90}{\input{tikz/morphological/thinning_mask_1}}
+		\caption{$B^1$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.1\textwidth}
+		\centering
+		\adjustbox{scale=0.5, angle=90}{\input{tikz/morphological/thinning_mask_2}}
+		\caption{$B^2$}
+	\end{subfigure}
+	\caption{Thinning masks}
+\end{figure}
 %TODO Image 8 structuring elements page 31
 	\[
 		A \otimes  {B} = ((\ldots((A \otimes B^{1}) \otimes B^{2})\ldots) \otimes B^{n})	
