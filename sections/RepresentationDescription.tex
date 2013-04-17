@@ -1,0 +1,61 @@
+\section{Representation and Description}
+\subsection{Representation}
+After the image segmentation, the boundaries need to be represented in a form, that is suitable for further processing.
+\subsubsection{Boundary following}
+%TODO 1 bis 5 Folie 2
+%TODO Figure 11.1, Folie 3
+\subsubsection{Chain codes}
+Chain codes are used to represent a boundary by a connected sequence of straight-line segments of specified length and direction. The direction of each segment is coded using a number.
+%TODO Figure 11.3, Folie 5
+Cain codes are quite sensitive to small disturbances. If they are on the pixel grid, they tend to result in rather long codes. Subsampling the boundary, i.e. going to a coarser grid results in a more robust and more efficient code at the expense of representation accuracy.\\
+The resulting code depends on the starting point, which is not desirable. An easy trick is to circumvent this, is the convention to start at that point wich will result in a chain code that represents the smalles integer.\\
+The representation can be made independent of rotation by using the first difference.
+\subsubsection{Polygonal approximation}
+A boundary is represented by a polygon. The goal is to use as few segments as possible, while still capturing the essential features of the boundary. There exist simple approximations which in practice are often good enough\\
+\textbf{Minimum perimeter polygon MPP}\\
+%TODO Figure 11.6, Folie 11 and Figure 11.7, Folie 12
+\begin{enumerate}
+\item Find all convex points (white dots) and concave points (black dots).
+\item Mirror the concave points to their diagonal location in the outer wall.
+\item The orientation (cw or ccw) of a sequence of three points will be necessary. This replaces the convec concave classification
+\begin{enumerate}
+\item $a=(x_1, y_1), b=(x_2, y_2), c=(x_3, y_3)$
+\item $A=\begin{bmatrix}
+	x_1 & y_1 & 1\\
+  	x_2 & y_2 & 1\\
+  	x_3 & y_3 & 1\\
+\end{bmatrix}$
+\item $det(A) =$ 
+\begin{itemize}
+\item $> 0$ if $(a, b, c)$ is a counterclockwise sequence
+\item $= 0$ if the points are collinear
+\item $< 0$ if $(a, b, c)$ is a clockwise sequence
+\end{itemize}
+\end{enumerate}
+\item For notational convenience let $sgn(a,b,c) = det(A)$
+\item Names
+\begin{itemize}
+\item $V_L$ are found vertices of the MPP
+\item $V_K$ is the next possible candidate
+\item $B_C$ is a black vertex
+\item $W_C$ is a white vertex
+\end{itemize} 
+\item $V_K$ lies to the positive side of the line through pair ($V_L$, $W_C$), that is $sgn(V_L, W_C, V_K)>0$. If this condition holds, the next MPP vertex is $W_C$
+\item $V_K$ lies to the negative side of the line through pair ($V_L$, $V_C$), that is $sgn(V_L, B_C, V_K)<0$. If this condition holds, the next MPP vertex is $B_C$.
+\item $V_K$ lies on the negative sine of the linge through pair ($V_L$, $W_C$) or is collinear with it, that is $sgn(V_L, W_C, V_K) \le 0$. At the same time, $V_K$ lies on the positive side of the line through ($V_L$, $B_C$) or is collinear with it, that is $sgn(V_L, V_C, V_K) \ge 0$. If this condition holds, the next candidate MPP vertex is $V_K$; otherwise $B_C = V_K$
+\item Continue with the next vertex in the list.
+%TODO If this .... noch mehr aktionen?
+\end{enumerate}
+\textbf{Merging}\\
+Points on the boundary are merged and a line is fitted to these points. If the fitting error becomes to large, a vertex is set and the procedure starts from the beginning.\\
+\textbf{Splitting}\\
+%TODO describe this
+\textbf{Signatures}\\
+A signature is a 1D function that represents a boundary. This results in a significant complexity reduction. There are several schemes:\\
+\begin{itemize}
+\item Find the centroid. The boundary is described as a function of the angle around this point.
+\begin{itemize}
+\item Rotational invariance: this can be achieved by selecting the point on the eigen axis that is farthest from the centroid.
+\item Scaling invariance: this can be achieved by dividing the signature by its standard deviation.
+\end{itemize}
+\end{itemize}
