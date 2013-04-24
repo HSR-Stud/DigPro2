@@ -1,18 +1,17 @@
-\section{Representation and Description}
-\subsection{Representation}
+\section{Representation}
 After the image segmentation, the boundaries need to be represented in a form, that is suitable for further processing.
-\subsubsection{Boundary following}
+\subsection{Boundary following}
 %TODO 1 bis 5 Folie 2
 %TODO Figure 11.1, Folie 3
-\subsubsection{Chain codes}
+\subsection{Chain codes}
 Chain codes are used to represent a boundary by a connected sequence of straight-line segments of specified length and direction. The direction of each segment is coded using a number.
 %TODO Figure 11.3, Folie 5
 Cain codes are quite sensitive to small disturbances. If they are on the pixel grid, they tend to result in rather long codes. Subsampling the boundary, i.e. going to a coarser grid results in a more robust and more efficient code at the expense of representation accuracy.\\
 The resulting code depends on the starting point, which is not desirable. An easy trick is to circumvent this, is the convention to start at that point wich will result in a chain code that represents the smalles integer.\\
 The representation can be made independent of rotation by using the first difference.
-\subsubsection{Polygonal approximation}
+\subsection{Polygonal approximation}
 A boundary is represented by a polygon. The goal is to use as few segments as possible, while still capturing the essential features of the boundary. There exist simple approximations which in practice are often good enough\\
-\textbf{Minimum perimeter polygon MPP}\\
+\subsubsection{Minimum perimeter polygon MPP}
 %TODO Figure 11.6, Folie 11 and Figure 11.7, Folie 12
 \begin{enumerate}
 \item Find all convex points (white dots) and concave points (black dots).
@@ -46,11 +45,11 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
 \item Continue with the next vertex in the list.
 %TODO If this .... noch mehr aktionen?
 \end{enumerate}
-\textbf{Merging}\\
+\subsubsection{Merging}
 Points on the boundary are merged and a line is fitted to these points. If the fitting error becomes to large, a vertex is set and the procedure starts from the beginning.\\
-\textbf{Splitting}\\
+\subsubsection{Splitting}
 %TODO describe this
-\textbf{Signatures}\\
+\subsubsection{Signatures}
 A signature is a 1D function that represents a boundary. This results in a significant complexity reduction. There are several schemes:\\
 \begin{itemize}
 \item Find the centroid. The boundary is described as a function of the angle around this point.
@@ -59,3 +58,69 @@ A signature is a 1D function that represents a boundary. This results in a signi
 \item Scaling invariance: this can be achieved by dividing the signature by its standard deviation.
 \end{itemize}
 \end{itemize}
+\subsubsection{Boundary segments}
+The convex hull H of an arbitrary set S is the smallest convex set containing S. The difference $D=H-S$ is the convex deficiency. Follow the contour of S and mark the spots where the contour makes a transition into or out of D. These marking $\alpha$ (0...1) are relative to the total length of the contour D.\\
+This is in theory invariant to:\\
+\begin{itemize}
+\item Rotation
+\item Translation
+\item Scaling
+\end{itemize}
+In practice, boundaries have some noise. Often smooting along the boundaries is used.\\
+\subsubsection{Skeletons}
+Medial axis transform (MAT)
+\begin{itemize}
+\item Every point in the region finds its closest boundary point.
+\item If a point in the region has two closest boundary points, it belongs to the skeleton of the region.
+\item Direct implementation of this is computationally expensive.
+\end{itemize}
+Algorithms for efficient MAT iteratively delete boundary points subject to
+\begin{enumerate}
+\item keep end points
+\item keep connectivity
+\item do not erode that region excessively
+\end{enumerate}
+Thinning algorithm is 2 steps applied successively to border points\\
+%TODO 1 Matrix von Folie 30
+Step 1:\\
+Flag for deletion if all of these conditions are satisfied:
+\begin{enumerate} %TODO make this a-d
+\item $2\leq N(P_1)\leq 6$ with $N(p_1)=p_2 + p_3 + \ldots + p_9$
+\item $T(p_1)=1$ where $T(p_1)$ is the number of $0-1$ transitions in the ordered sequence $p_2,p_3,\ldots ,p_8,p_9,p_2$
+\item $p_2 \cdot p_4 \cdot p_6 = 0$
+\item $p_4 \cdot p_6 \cdot p_8 = 0$
+\end{enumerate}
+The last conditions are satisfied simultaneously by the minimum set of values: $(p_4=0\ or\ p_6=0)\ or \ (p_2=0\ and \ p_8=0)$\\
+After processing all boundary points, the marked ones are deleted\\
+Step 2:\\
+Simultaneous to Step 1 except the new conditions $c'$ and $d'$\\
+\begin{enumerate} %TODO make this a, b, c', d'
+\item $2\leq N(P_1)\leq 6$ with $N(p_1)=p_2 + p_3 + \ldots + p_9$
+\item $T(p_1)=1$ where $T(p_1)$ is the number of $0-1$ transitions in the ordered sequence $p_2,p_3,\ldots ,p_8,p_9,p_2$
+\item $p_2 \cdot p_4 \cdot p_8 = 0$
+\item $p_2 \cdot p_6 \cdot p_8 = 0$
+\end{enumerate}
+
+\section{Boundary descriptors}
+Having seen different representations of boundaries, the goal is now to develop descriptors for these boundaries.
+\subsection{Simple descriptors}
+\subsubsection{Length}
+\subsubsection{Diameter of boundary B}
+\subsubsection{Major axis}
+The line connecting the two extreme points of the boundary is called the major axis of the boundary.\\
+%TODO minor axis
+%TODO Bild minor axis?
+The ratio of the major to the minor axis is called the exxentricity of the boundary. This is a useful descriptor.
+\subsubsection{Curvature}
+This is the rate of change of the slope in the boundary. i.e. this is a second derivative
+\subsubsection{Shape numbers}
+The shape number of a boundary (based on 4-directional code) is defined as the first difference of smalles magnitude.\\
+The order n of a shape number is defined as the number of digits in its representation.\\
+One way of aligning the chain code grid with the boundary is to use the basic rectangle box based on the major and minor axes\\
+\subsubsection{Fourier descriptors}
+The coordinates of the boundary represents a complex sampled signal wich can be represented as a xomplex vector $s(k)=x(k)+jy(k)$ wich can be analyzed in the frequency domain.\\
+The DFT of $s(k)$ is $a(u)=\sum\limits_{k=0}^{K-1}s(k)e'{-j2\pi uk/K}$ where $a(u)$ are called the Fourier descriptors of the boundary.\\
+The DFT can also be inversed $s(k)=\frac{1}{K}\sum\limits_{u=0}^{K-1}a(u)e^{j2\pi uk/K}$\\
+Since the high frequency components are responsible for the fine detail, using only a few Fourier descriptors results in a smoothing of the boundary.\\
+Careful! you need to keep both sides of the spectrum, the formula in the book is wrong!\\
+%TODO Folie 53/44 Tabelle Transformation, Boundary, Fourier Descriptor
