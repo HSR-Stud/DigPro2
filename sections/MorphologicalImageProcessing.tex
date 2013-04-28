@@ -177,36 +177,35 @@ Hit or miss transformation with rotating structuring elements.\\
 	\begin{subfigure}[b]{0.1\textwidth}
 		\centering
 		\adjustbox{scale=0.5, angle=270}{\input{tikz/morphological/thinning_mask_1}}
-		\caption{$B^1$}
+		\caption{$B^3$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.1\textwidth}
 		\centering
 		\adjustbox{scale=0.5, angle=270}{\input{tikz/morphological/thinning_mask_2}}
-		\caption{$B^2$}
+		\caption{$B^4$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.1\textwidth}
 		\centering
 		\adjustbox{scale=0.5, angle=180}{\input{tikz/morphological/thinning_mask_1}}
-		\caption{$B^1$}
+		\caption{$B^5$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.1\textwidth}
 		\centering
 		\adjustbox{scale=0.5, angle=180}{\input{tikz/morphological/thinning_mask_2}}
-		\caption{$B^2$}
+		\caption{$B^6$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.1\textwidth}
 		\centering
 		\adjustbox{scale=0.5, angle=90}{\input{tikz/morphological/thinning_mask_1}}
-		\caption{$B^1$}
+		\caption{$B^7$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.1\textwidth}
 		\centering
 		\adjustbox{scale=0.5, angle=90}{\input{tikz/morphological/thinning_mask_2}}
-		\caption{$B^2$}
+		\caption{$B^8$}
 	\end{subfigure}
 	\caption{Thinning masks}
 \end{figure}
-%TODO Image 8 structuring elements page 31
 	\[
 		A \otimes  {B} = ((\ldots((A \otimes B^{1}) \otimes B^{2})\ldots) \otimes B^{n})	
 	\]	
@@ -215,7 +214,20 @@ Hit or miss transformation with rotating structuring elements.\\
 This is the morphological dual of thinning. It is implemented as thinning the background and then taking the complement.
 
 \subsubsection{Skeleton S(A)}
-%TODO Image page 33
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\adjustbox{scale=0.5}{\input{tikz/morphological/skeleton_1}}
+\caption{Positions of Maximum disks}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\adjustbox{scale=0.5}{\input{tikz/morphological/skeleton_2}}
+\caption{Complete Skeleton}
+\end{subfigure}
+\caption{Skeleton algorithm: basic idea}
+\end{figure}
 Finding a disk D that:
 \begin{itemize}
 \item centers at z
@@ -234,7 +246,20 @@ with
 Pruning is a procedure that can remove parasitic components of a length below some threshold.\\
 \begin{enumerate}
 \item Find endpoints with a hit or miss transform with the following structuring elements. Remove the endpoints.
-%TODO 2 structuring elements page 36
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\adjustbox{scale=0.5}{\input{tikz/morphological/pruning_mask_1}}
+\caption{$B^1, B^2, B^3, B^4$ (rotated $90^\circ$)}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\adjustbox{scale=0.5}{\input{tikz/morphological/pruning_mask_2}}
+\caption{$B^5, B^6, B^7, B^8$ (rotated $90^\circ$)}
+\end{subfigure}
+\caption{Pruning structuring elements}
+\end{figure}
 \item Repeat this. If you want to remove all spurs of length 3 or less, repeat for 3 times
 \item Find the endpoints using the same structuring elements
 \item Dilate the endpoints with a 3x3 structuring element and make a logical and with the original set
@@ -276,7 +301,45 @@ Without needing a seed!\\
 \[
 	H = [R_F^D(F)]^C
 \]
-%TODO image series page 48
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[b]{0.13\textwidth}
+\centering
+\adjustbox{scale=0.4}{\input{tikz/morphological/holefilling_I}}
+\caption{$I$}
+\end{subfigure}
+\begin{subfigure}[b]{0.13\textwidth}
+\centering
+\adjustbox{scale=0.4}{\input{tikz/morphological/holefilling_Ic}}
+\caption{$I^c$}
+\end{subfigure}
+\begin{subfigure}[b]{0.13\textwidth}
+\centering
+\adjustbox{scale=0.4}{\input{tikz/morphological/holefilling_F}}
+\caption{$F$}
+\end{subfigure}
+\begin{subfigure}[b]{0.13\textwidth}
+\centering
+\adjustbox{scale=0.4}{\input{tikz/morphological/holefilling_FB}}
+\caption{$C \oplus B$}
+\end{subfigure}
+\begin{subfigure}[b]{0.13\textwidth}
+\centering
+\adjustbox{scale=0.4}{\input{tikz/morphological/holefilling_FBIc}}
+\caption{$C \oplus B \bigcap I^c$}
+\end{subfigure}
+\begin{subfigure}[b]{0.13\textwidth}
+\centering
+\adjustbox{scale=0.4}{\input{tikz/morphological/holefilling_H}}
+\caption{$H$}
+\end{subfigure}
+\begin{subfigure}[b]{0.13\textwidth}
+\centering
+\adjustbox{scale=0.4}{\input{tikz/morphological/holefilling_HIc}}
+\caption{$H \bigcap I^c$}
+\end{subfigure}
+\caption{Hole Filling on a simple image}
+\end{figure}
 
 \textbf{Border clearing}\\
 Remove object that touch the border.
@@ -284,7 +347,37 @@ Remove object that touch the border.
 \subsection{Gray-scale morphology}
 The fundamental operations dilation, erosion, opening and closing can be extended to gray scale. Hence the more advanced operations which are based on the above operations can be extended too. The structuring elements are also gray-scale. In practice, flat structuring elements are preferred.
 
-%TODO ? image 9.34 page 51
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\adjustbox{scale=0.5}{\begin{tikzpicture}
+\draw [shading=radial, outer color=gray, inner color=white] (0,0) circle (2);\end{tikzpicture}}
+\caption{Nonflat SE}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\adjustbox{scale=0.5}{\begin{tikzpicture}
+\draw (0,0) circle (2);\end{tikzpicture}}
+\caption{Flat SE}
+\end{subfigure}\\
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\adjustbox{scale=0.5}{\begin{tikzpicture}
+\draw (0,0) -- (0,2);
+\draw (4,2) arc (0:180:2) ;
+\draw (4,2) -- (4,0);
+\end{tikzpicture}}
+\caption{Intensity profile}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\adjustbox{scale=0.5}{\begin{tikzpicture}
+\draw (0,0) -- (0,4) -- (4,4) -- (4,0);\end{tikzpicture}}
+\caption{Intensity profile}
+\end{subfigure}\\
+\caption{Nonflat and flat structuring elements and corresponding horizontal intensity profiles through their center}
+\end{figure}
 
 Erosion
 \[

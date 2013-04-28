@@ -1,0 +1,11 @@
+\begin{tikzpicture}
+\draw [fill=lightgray] (0,0) rectangle (6,9);
+\draw [fill=white] (1,2) rectangle  (5,8);
+\draw [fill=white] (5,0) rectangle  (6,1);
+\draw [fill=white] (1,0) rectangle  (2,1);
+
+\foreach \x in {0,...,6} {
+\draw (\x,0) -- (\x,9);}
+\foreach \x in {0,...,9} {
+\draw (0,\x) -- (6,\x);}
+\end{tikzpicture}
