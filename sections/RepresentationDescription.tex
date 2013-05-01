@@ -124,3 +124,55 @@ The DFT can also be inversed $s(k)=\frac{1}{K}\sum\limits_{u=0}^{K-1}a(u)e^{j2\p
 Since the high frequency components are responsible for the fine detail, using only a few Fourier descriptors results in a smoothing of the boundary.\\
 Careful! you need to keep both sides of the spectrum, the formula in the book is wrong!\\
 %TODO Folie 53/44 Tabelle Transformation, Boundary, Fourier Descriptor
+\subsubsection{Statistical moments}
+\begin{itemize}
+\item The boundary segment is rotated, so that a function of a single variable results
+\item The amplitude of $g()$ can be treated as a discrete random variable v and a amplitude histogram $p(v_i)$ can be formed
+\end{itemize}
+From the histogram, the following shapes can be distinguished
+\begin{itemize}
+\item Mean
+\item Variance
+\item Skewness (this is a measure of asymmetry)
+\item Kurtosis (peakedness)
+\end{itemize}
+The same can be done with skipping the histogram building.
+
+\subsection{Regional descriptors}
+%TODO cleanup mess with subsection and subsubsection
+\subsubsection{Simple descriptors}
+\begin{itemize}
+\item Area: Number of pixels
+\item Perimeter: Lenght of boundary
+\item Compactness: $Perimeter^2/area$
+\item Circularity ratio
+\item Mean, median, minimum, maximum of intensity
+\item Etc.
+\end{itemize}
+\subsubsection{Topological descriptors}
+Topological descriptors are descriptors that do not change under rubber-sheet distortions. No tearing, noo folding allowed.\\
+The number of holes $H$ and connected components $C$ in a figure can be used to define the Euler number $E=C-H$\\
+%TODO Figure 11.26 folie 61
+\begin{itemize}
+\item Number of vertices V
+\item Number of edges Q
+\item Number of faces F
+\end{itemize}
+Euler proved that $E=V-Q+F=C-H$
+\subsubsection{Texture}
+Smoothness, coarseness, regularity etc.\\
+There are three basic approaches to describe texture:\\
+\textbf{Statistical}\\
+Most common\\
+\begin{itemize}
+\item Intenxity hisogram $p(z_i)$
+\item Moment $\mu_n(z)=\sum\limits_{i=0}^{L-1}(z_i-m)^np(z_i)$ with $m=\sum\limits_{i=0}^{L-1}z_ip(z_i)$
+\item The variance $\sigma ^2(z) =\mu_2 (z)$ is a measure of contrast, which can be used to establish descriptors of smoothness. It should be normalized to 0...1. $R(z)=1-\frac{1}{1+\sigma ^2(z)}$
+\end{itemize}
+
+
+
+\textbf{Structural}\\
+
+\textbf{Spectral}\\
+Good for periodic patterns\\
