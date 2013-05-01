@@ -162,17 +162,16 @@ Euler proved that $E=V-Q+F=C-H$
 \subsubsection{Texture}
 Smoothness, coarseness, regularity etc.\\
 There are three basic approaches to describe texture:\\
-\textbf{Statistical}\\
-Most common\\
+\textbf{Statistical approaches}\\
 \begin{itemize}
 \item Intenxity hisogram $p(z_i)$
-\item Moment $\mu_n(z)=\sum\limits_{i=0}^{L-1}(z_i-m)^np(z_i)$ with $m=\sum\limits_{i=0}^{L-1}z_ip(z_i)$
+\item Moment $\mu_n(z)=\sum\limits_{i=0}^{L-1}(z_i-m)^np(z_i)$ and mean $m=\sum\limits_{i=0}^{L-1}z_ip(z_i)$
 \item The variance $\sigma ^2(z) =\mu_2 (z)$ is a measure of contrast, which can be used to establish descriptors of smoothness. It should be normalized to 0...1. $R(z)=1-\frac{1}{1+\sigma ^2(z)}$
+\item A measure for unifomity $U(z)=\sum\limits_{i=0}^{L-1}p^2(z_i)$
+\item Average entropy $e(z)=-\sum\limits_{i=0}^{L-1}p(z_i)log_2p(z_i)$
 \end{itemize}
-
-
-
+Note the approach with a Q operator described in the book and lecture!\\
 \textbf{Structural}\\
-
+Some texture can be described as a repetition of a simple primitive. For such textures, a description based on rewriting rules is useful.
 \textbf{Spectral}\\
 Good for periodic patterns\\
