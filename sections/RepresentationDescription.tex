@@ -172,6 +172,33 @@ There are three basic approaches to describe texture:\\
 \end{itemize}
 Note the approach with a Q operator described in the book and lecture!\\
 \textbf{Structural}\\
-Some texture can be described as a repetition of a simple primitive. For such textures, a description based on rewriting rules is useful.
+Some texture can be described as a repetition of a simple primitive. For such textures, a description based on rewriting rules is useful.\\
 \textbf{Spectral}\\
 Good for periodic patterns\\
+The energy spectrum $S(r,\theta)$ is analyzed in polar coordinates. It is analyzed for a fixed angle, $S_\theta(r)$ and/or a fixed radius $S_r(\theta)$. The advantage of this is, that these are 1D functions and therefore easier to deal with.\\
+$S(r)=\sum\limits_{\theta = 0}^{\pi}S_\theta(r)$\\
+$S(\theta)=\sum\limits_{r=1}^{R_0}S_r(\theta)$\\
+
+\subsubsection{Moment invariants}
+A set of seven moments for a given image region can be generated as regional descriptors. They are intrinsically invariant to translation, scale change, rotation and even mirroring except for a sign change.\\
+%TODO FOLIE 79
+
+\subsection{Use of principal components for description}
+Principle component analysis (PCA) is a very general tool. It is applicable to boundaries and regions but also to color images and multispectral images. A given pixel in a multispectral image with n spectral components can be written as a vector containing these components. It is assumed that the components are random variables and hence these pixels are random vectors.\\
+
+$x = [x_1, x_2, ..., x_n]$\\ %TODO vektor muss stehen, nicht liegen
+$m_x = E\{x\} = \frac{1}{K}\sum\limits_{k=1}^{K}x_k$\\
+$C_x = E\{(x-m_x)(x-m_x)^T\}=\frac{1}{K}\sum\limits_{k=1}^{K}x_kx_k^T-m_xm_x^T$\\
+
+Since the covariance matrix is real and symmetric, there exists a set of n orthonormal eigenvectors $e_i$ and corresponding eigenvalues $\lambda_i$\\
+$Ce_i=\lambda_ie_i$\\
+The eigenvectors can be arranged into a matrix A:\\
+$A=[e_1^T, e_2^T, ..., e_n^T]$\\
+Now A is used as a transformation matrix to map the vectors x into the vectors y. This is called the Hotelling transform\\
+$y=A(x-m_x)$\\
+Clearly, the mean vector of these new y vectors is zero $m_y=E\{y\}=0$\\
+$C_y=AC_xA^T=$\\ %TODO matrix seite 85
+%TODO weiterbeschreiben bis seite 93
+
+
+
