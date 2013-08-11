@@ -316,8 +316,54 @@ If the location of a boundary is roughly known, it is possible to use the detect
 \end{itemize}
 
 \subsection{Thresholding}
-%TODO Nummern 1 bis 5 Seite 75
-%TODO Summary Otsu Seite 85
+\subsubsection{Basic global thresholding}
+\begin{equation}
+g(x,y)=\begin{cases}1 \qquad \text{if } f(x,y) > T \\0 \qquad  \text{if } f(x,y) \leq T \end{cases} \label{thresholdingBasic}
+\end{equation}
+
+\begin{enumerate}
+\item Select an initial estimate for the global threshold, T
+\item Segment the image using T in Gleichung(\ref{thresholdingBasic}). This will produce two groups of pixels: $G_1$ consisting of all pixels with intensity values $> T$, and $G_2$ consisting of pixels with values $\leq T$
+\item Compute the average (mean) intensity values $m_1$ and $m_2$ for the pixels in $G_1$ and $G_2$, repsectively
+\item Compute a new threshold value: \begin{equation}
+T=\frac{1}{2}(m_1+m_2)\notag
+\end{equation} 
+\item Repeat Steps 2 through 4 until the difference betwenn values of $T$ in successive iterations is smaller than a predefined paramter $\Delta T$
+\end{enumerate}
+\subsubsection{Optimum global thresholding using Otsu’s Method}
+
+Two different variances are important
+\begin{itemize}
+\item Within-class variance
+\item Between-class variance
+\end{itemize}
+\begin{eqnarray}
+\sigma_W^2 = P_1\sigma_1^2+P_2\sigma_2^2 
+& & \sigma_W \text{ Within-class variance} \notag \\
+\sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2
+& & \sigma_B \text{ Between-class variance} \notag \\
+\sum_{i=0}^{L-1} p_i = 1 
+& & \notag \\
+m_G=\sum_{i=0}^{L-1} i \ p_i 
+& & m_G: \text{ global mean}  \notag \\
+\sigma_G^2 = \sum_{i=0}^{L-1} (i-m_G)^2 p_i
+& & \sigma_G \text{global variance} \notag \\
+P_1(k) =\sum_{i=0}^{k} p_i
+& &  P_1: \text{ probability of the background}   \notag \\
+P_2(k)=\sum_{i=k+1}^{L-1}1-P_1(k)
+& & P_2: \text{ probability of the object} \notag \\
+m_1(k)=\frac{1}{P_1(k)}\sum_{i=0}^{k} i \ p_i
+& &  m_1: \text{ mean intensity of the background}  \notag \\
+m_2(k)=\frac{1}{P_2(k)}\sum_{i=k+1}^{L-1} i \ p_i 
+& &  m_2: \text{ mean intensity of the object}  \notag \\
+\sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2 & &  \text{Using algebra to change the form} \notag \\
+=P_1 P_2 (m_1-m_2)^2 = \frac{(m_G P_1 - m)^2}{P_1(1-P_1)} & & \notag \\
+\sigma_B^2(K*)=\max\limits_{0\leq k \leq L-1} \sigma_B^2(K)
+& & \text{Optimum of k for maximizing is } k* \notag \\
+\eta(k)=\frac{\sigma_B^2(k)}{\Sigma_G^2}
+& & 0 \leq  \eta(k*)\leq 1 \notag
+\end{eqnarray}
+
 \subsubsection{Variable Thresholding}
 \textbf{Image Partitioning}\\
 The simplest approach is to partition a given image into non overlapping regions and then use Otsu's method on smaller regions.\\
