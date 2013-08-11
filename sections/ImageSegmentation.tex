@@ -38,11 +38,11 @@ When the intensity changes abruptly in a local neighborhood, this indicates an e
 Abrupt local changes can be detected using derivatives.\\
 First order derivative
 \[
-	\frac{\delta f}{\delta x} = f'(x)=f(x+1)-f(x)
+	\frac{\partial f}{\partial x} = f'(x)=f(x+1)-f(x)
 \]
 The second order derivative
 \[
-	\frac{\delta^2f}{\delta x^2}=\frac{\delta f'(x)}{\delta x}=f''(x)=f(x+1)+f(x-1)-2f(x)
+	\frac{\partial^2f}{\partial x^2}=\frac{\partial f'(x)}{\partial x}=f''(x)=f(x+1)+f(x-1)-2f(x)
 \]
 This can be calculated using a spatial filter.
 \[
@@ -145,7 +145,7 @@ Often, a line of a known direction should be detected. We use special masks for 
 The previously shown method generates edge points. The goal is to keep the ones which truly belong to an edge.\\
 Since first order derivatives are helpful, a nice way of combining the two partial derivatives into one value is the magnitude of the gradient
 \begin{equation}
-	\nabla f = grad(f) = \left[\begin{array}{c} g_x \\ g_y \end{array}\right] =  \left[\displaystyle{\begin{array}{c} \frac{\delta f}{\delta x} \vspace{0.2cm}  \\ \frac{\delta f}{\delta y} \end{array}}\right] \notag
+	\nabla f = grad(f) = \left[\begin{array}{c} g_x \\ g_y \end{array}\right] =  \left[\displaystyle{\begin{array}{c} \frac{\partial f}{\partial x} \vspace{0.2cm}  \\ \frac{\partial f}{\partial y} \end{array}}\right] \notag
 \end{equation}
 
 The gradient (which is a vector) points into the direction of the greatest rate of change of f at the location (x,y)\\
