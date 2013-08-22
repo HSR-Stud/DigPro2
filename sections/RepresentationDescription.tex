@@ -1,4 +1,4 @@
-\section{Representation}
+\section{Representation\buch{Ch. 11.1}}
 After the image segmentation, the boundaries need to be represented in a form, that is suitable for further processing.
 \subsection{Boundary following}
 %TODO 1 bis 5 Folie 2
@@ -101,7 +101,7 @@ Simultaneous to Step 1 except the new conditions $c'$ and $d'$\\
 \item $p_2 \cdot p_6 \cdot p_8 = 0$
 \end{enumerate}
 
-\section{Boundary descriptors}
+\section{Boundary descriptors\buch{Ch. 11.2}}
 Having seen different representations of boundaries, the goal is now to develop descriptors for these boundaries.
 \subsection{Simple descriptors}
 \subsubsection{Length}
@@ -138,9 +138,9 @@ From the histogram, the following shapes can be distinguished
 \end{itemize}
 The same can be done with skipping the histogram building.
 
-\subsection{Regional descriptors}
+\section{Regional descriptors\buch{Ch. 11.3}}
 %TODO cleanup mess with subsection and subsubsection
-\subsubsection{Simple descriptors}
+\subsection{Simple descriptors}
 \begin{itemize}
 \item Area: Number of pixels
 \item Perimeter: Lenght of boundary
@@ -149,7 +149,7 @@ The same can be done with skipping the histogram building.
 \item Mean, median, minimum, maximum of intensity
 \item Etc.
 \end{itemize}
-\subsubsection{Topological descriptors}
+\subsection{Topological descriptors}
 Topological descriptors are descriptors that do not change under rubber-sheet distortions. No tearing, noo folding allowed.\\
 The number of holes $H$ and connected components $C$ in a figure can be used to define the Euler number $E=C-H$\\
 %TODO Figure 11.26 folie 61
@@ -159,7 +159,7 @@ The number of holes $H$ and connected components $C$ in a figure can be used to 
 \item Number of faces F
 \end{itemize}
 Euler proved that $E=V-Q+F=C-H$
-\subsubsection{Texture}
+\subsection{Texture}
 Smoothness, coarseness, regularity etc.\\
 There are three basic approaches to describe texture:\\
 \textbf{Statistical approaches}\\
