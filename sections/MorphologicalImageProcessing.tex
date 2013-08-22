@@ -150,11 +150,12 @@ The convex hull is constructed with a convex hull with four structuring elements
 	\caption{Structuring elements for convex hull}
 \end{figure}
 
-The resulting set is not the smallest convex set that contains A. The following additional constraints can be used:
+This algorithm does not guarantee that the found convex set is the convex hull, which has to be the smallest convex set containing the original object
+
+The following additional constraints can be used:
 \begin{itemize}
-\item The convex hull is not allowed to grow beyond the original vertical and horizontal dimension
-\item 
-%TODO???
+\item easiest is, that the convex hull is not allowed to grow beyond the original vertical and horizontal dimension
+\item More complex constraints are possible, but at a higher computational cost
 \end{itemize}
 
 \subsubsection{Thinning\buchSeite{649}}
