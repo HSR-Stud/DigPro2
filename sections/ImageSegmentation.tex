@@ -79,62 +79,45 @@ Often, a line of a known direction should be detected. We use special masks for 
 	\centering
 	\begin{subfigure}[b]{0.2\textwidth}
 		\centering
-		\[
-		\begin{array}{|c|c|c|}
-			\hline
-			-1 & -1 & -1\\
-			\hline
-			2 & 2 & 2\\
-			\hline
-			-1 & -1 & -1\\
-			\hline
-		\end{array}
-		\]
+		\begin{tikzpicture}
+			\matrix[3x3mask]{
+				-1 & -1 & -1 \\%
+		    	2  & 2  & 2 \\%
+				-1 & -1 & -1\\};
+		\end{tikzpicture}
 		\caption{Horizontal}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.2\textwidth}
 		\centering
-		\[
-		\begin{array}{|c|c|c|}
-			\hline
-			2 & -1 & -1\\
-			\hline
-			-1 & 2 & -1\\
-			\hline
-			-1 & -1 & 2\\
-			\hline
-		\end{array}
-		\]
+		\begin{tikzpicture}
+			\matrix[3x3mask]{
+				2  & -1 & -1 \\%
+				-1 & 2  & -1 \\%
+				-1 & -1 & 2 \\%
+			};
+		\end{tikzpicture}
 		\caption{$+45^\circ$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.2\textwidth}
 		\centering
-		\[
-		\begin{array}{|c|c|c|}
-			\hline
-			-1 & 2 & -1\\
-			\hline
-			-1 & 2 & -1\\
-			\hline
-			-1 & 2 & -1\\
-			\hline
-		\end{array}
-		\]
+		\begin{tikzpicture}
+			\matrix[3x3mask]{
+				-1  & 2 & -1 \\%
+				-1 & 2  & -1 \\%
+				-1 & 2 & -1 \\%
+				};
+		\end{tikzpicture}
 		\caption{Vertical}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.2\textwidth}
 		\centering
-		\[
-		\begin{array}{|c|c|c|}
-			\hline
-			-1 & -1 & 2\\
-			\hline
-			-1 & 2 & -1\\
-			\hline
-			2 & -1 & -1\\
-			\hline
-		\end{array}
-		\]
+		\begin{tikzpicture}
+			\matrix[3x3mask]{
+				-1 & -1 & 2 \\%
+				-1 & 2  & -1 \\%
+				2  & -1 & -1 \\%
+			};
+		\end{tikzpicture}
 		\caption{$+45^\circ$}
 	\end{subfigure}
 	\caption{Line detection masks}
@@ -155,62 +138,46 @@ Gradient operators:\\
 	\centering
 	\begin{subfigure}[b]{0.2\textwidth}
 		\centering
-		\[
-		\begin{array}{|c|c|c|}
-			\hline
-			-1 & -1 & -1\\
-			\hline
-			0 & 0 & 0\\
-			\hline
-			1 & 1 & 1\\
-			\hline
-		\end{array}
-		\]
+		\begin{tikzpicture}
+			\matrix[3x3mask]{
+				-1 & -1 & -1 \\%
+				0  & 0 & 0 \\%
+				1  & 1 & 1 \\%
+			};
+		\end{tikzpicture}
 		\caption{Prewitt}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.2\textwidth}
 		\centering
-		\[
-		\begin{array}{|c|c|c|}
-			\hline
-			-1 & 0 & 1\\
-			\hline
-			-1 & 0 & 1\\
-			\hline
-			-1 & 0 & 1\\
-			\hline
-		\end{array}
-		\]
+		\begin{tikzpicture}
+			\matrix[3x3mask]{
+				-1 & 0 & 1 \\%
+				-1 & 0 & 1 \\%
+				-1 & 0 & 1 \\%
+			};
+		\end{tikzpicture}
 		\caption{Prewitt}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.2\textwidth}
 		\centering
-		\[
-		\begin{array}{|c|c|c|}
-			\hline
-			-1 & -2 & -1\\
-			\hline
-			0 & 0 & 0\\
-			\hline
-			1 & 2 & 1\\
-			\hline
-		\end{array}
-		\]
+		\begin{tikzpicture}
+			\matrix[3x3mask]{
+				-1 & -2 & -1 \\%
+				0 & 0 & 0 \\%
+				1 & 2 & 1 \\%
+			};
+		\end{tikzpicture}
 		\caption{Sobel}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.2\textwidth}
 		\centering
-		\[
-		\begin{array}{|c|c|c|}
-			\hline
-			-1 & 0 & 1\\
-			\hline
-			-2 & 0 & 2\\
-			\hline
-			-1 & 0 & 1\\
-			\hline
-		\end{array}
-		\]
+		\begin{tikzpicture}
+			\matrix[3x3mask]{
+				-1 & 0 & 1 \\%
+				-2 & 0 & 2 \\%
+				-1 & 0 & 1 \\%
+			};
+		\end{tikzpicture}
 		\caption{Sobel}
 	\end{subfigure}
 	\caption{Prewitt and Sobel masks}

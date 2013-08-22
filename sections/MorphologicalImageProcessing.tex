@@ -1,5 +1,7 @@
 \section{Morphological Image Processing\buch{Ch. 9}}
+
 \subsection{Set Theory}
+\begin{multicols}{2}
 \subsubsection{Reflection}
 \[
 	\hat{B} = \{w | w = -b,\quad \text{for} \quad b \in B \}
@@ -48,6 +50,7 @@ Erosion and dilation are dual:
 	(A \oplus B)^c = A^c \ominus \hat{B}
 \]
 
+\end{multicols}
 
 \subsubsection{Opening and closing}
 The opening of A by B is defined: (first erosion then dilation)
@@ -68,7 +71,7 @@ Opening and closing are dual operations:
 	(A \circ B)^c = (A^c \bullet \hat{B})
 \]
 
-\begin{figure}
+\begin{figure}[h!]
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
@@ -101,6 +104,7 @@ The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 		A \circledast B = (A \ominus B_1)\cap (A^c \ominus B_2)	
 	\]	
 \end{itemize}
+
 
 \subsection{Some basic morphological algorithms}
 \subsubsection{Convex hull}
