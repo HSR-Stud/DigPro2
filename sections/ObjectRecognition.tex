@@ -1,2 +1,48 @@
 \section{Object Recognition\buch{Ch. 12}}
+\begin{itemize}
+\item Recognition of \emph{individual} image regions called \emph{object} or \emph{pattern}
+\item Concept of ``learning'' from sample patterns
+\end{itemize}
+
+\subsection{Patterns and Pattern Classes\buch{Ch. 12.1}}
+\begin{itemize}
+	\item A \emph{pattern} is an arrangement of descriptors
+		(as in \ref{sec:representationDescription}) in pattern classification
+		called \emph{features}.
+	\item A \emph{pattern class} is a set of patterns, denoted $\omega_1, \omega_2, ..., \omega_W$ W is the number of classes
+	\item The goal is to assign a given patter into a class
+\end{itemize}
+
+\subsubsection{Vectors}
+\begin{itemize}
+	\item Used for quantitative descriptors
+	\item every dimension contains the numerical value of a descriptor
+	\item $x =
+		\begin{bmatrix}
+			x_1 \\
+			x_2 \\
+			\vdots \\
+			x_n \\
+		\end{bmatrix}$
+\end{itemize}
+Example: Classifying flowers based on petal length and width into one of three
+classes.
+
+\subsubsection{Strings}
+Structural information can be captured in strings. Example
+\nameref{sec:boundaryDescriptors}
+\begin{itemize}
+	\item Connectivity patterns (order is important)
+	\item Compact description, better than sampling into a feature vector
+\end{itemize}
+
+\subsubsection{Tree}
+If there is hierarchy then a descriptor which is based on a tree structure
+should be used.
+
+% TODO: Tikz Tree einfügen
+
+\subsection{Recognition Based on Decision Theory\buch{Ch. 12.2}}
+
+\subsection{Structural Methods\buch{Ch. 12.3}}
 
