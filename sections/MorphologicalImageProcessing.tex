@@ -112,10 +112,13 @@ The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 \beta(A)=A-(A\ominus B)
 \end{align*}
 \subsubsection{Hole Filling\buchSeite{643}}
+To fill a hole, a seed inside the connected border is needed, i.e., in an empty array $X_0$, the seed point is set to 1.
 \begin{align*}
 X_k=(X_{k-1}\oplus B)\cap A^c && k=1,2,3,\ldots
 \end{align*}
+The iteration can stop, when $X_k = X_{k-1}$.
 \subsubsection{Extraction of Connected Components\buchSeite{645}}
+Initial array ($X_0$) contains a 1 in the region of the connected component.
 \begin{align*}
 X_k=(X_{k-1}\oplus B)\cap A && k=1,2,3,\ldots
 \end{align*}
