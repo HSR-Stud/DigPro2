@@ -1,15 +1,15 @@
-\section{Representation\buch{Ch. 11.1}}
+\section{Representation\buch{Ch. 11.1}\buchSeite{796-814}}
 After the image segmentation, the boundaries need to be represented in a form, that is suitable for further processing.
-\subsection{Boundary following}
+\subsection{Boundary following\buchSeite{796}}
 %TODO 1 bis 5 Folie 2
 %TODO Figure 11.1, Folie 3
-\subsection{Chain codes}
+\subsection{Chain codes\buchSeite{798}}
 Chain codes are used to represent a boundary by a connected sequence of straight-line segments of specified length and direction. The direction of each segment is coded using a number.
 %TODO Figure 11.3, Folie 5
 Cain codes are quite sensitive to small disturbances. If they are on the pixel grid, they tend to result in rather long codes. Subsampling the boundary, i.e. going to a coarser grid results in a more robust and more efficient code at the expense of representation accuracy.\\
 The resulting code depends on the starting point, which is not desirable. An easy trick is to circumvent this, is the convention to start at that point wich will result in a chain code that represents the smalles integer.\\
 The representation can be made independent of rotation by using the first difference.
-\subsection{Polygonal approximation}
+\subsection{Polygonal approximation\buchSeite{801}}
 A boundary is represented by a polygon. The goal is to use as few segments as possible, while still capturing the essential features of the boundary. There exist simple approximations which in practice are often good enough\\
 \subsubsection{Minimum perimeter polygon MPP}
 %TODO Figure 11.6, Folie 11 and Figure 11.7, Folie 12
@@ -45,11 +45,11 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
 \item Continue with the next vertex in the list.
 %TODO If this .... noch mehr aktionen?
 \end{enumerate}
-\subsubsection{Merging}
+\subsubsection{Merging\buchSeite{807}}
 Points on the boundary are merged and a line is fitted to these points. If the fitting error becomes to large, a vertex is set and the procedure starts from the beginning.\\
-\subsubsection{Splitting}
+\subsubsection{Splitting\buchSeite{808}}
 %TODO describe this
-\subsubsection{Signatures}
+\subsubsection{Signatures\buchSeite{808}}
 A signature is a 1D function that represents a boundary. This results in a significant complexity reduction. There are several schemes:\\
 \begin{itemize}
 \item Find the centroid. The boundary is described as a function of the angle around this point.
@@ -58,7 +58,7 @@ A signature is a 1D function that represents a boundary. This results in a signi
 \item Scaling invariance: this can be achieved by dividing the signature by its standard deviation.
 \end{itemize}
 \end{itemize}
-\subsubsection{Boundary segments}
+\subsubsection{Boundary segments\buchSeite{810}}
 The convex hull H of an arbitrary set S is the smallest convex set containing S. The difference $D=H-S$ is the convex deficiency. Follow the contour of S and mark the spots where the contour makes a transition into or out of D. These marking $\alpha$ (0...1) are relative to the total length of the contour D.\\
 This is in theory invariant to:\\
 \begin{itemize}
@@ -67,7 +67,7 @@ This is in theory invariant to:\\
 \item Scaling
 \end{itemize}
 In practice, boundaries have some noise. Often smooting along the boundaries is used.\\
-\subsubsection{Skeletons}
+\subsubsection{Skeletons\buchSeite{812}}
 Medial axis transform (MAT)
 \begin{itemize}
 \item Every point in the region finds its closest boundary point.
@@ -101,30 +101,30 @@ Simultaneous to Step 1 except the new conditions $c'$ and $d'$\\
 \item $p_2 \cdot p_6 \cdot p_8 = 0$
 \end{enumerate}
 
-\section{Boundary descriptors\buch{Ch. 11.2}}
+\section{Boundary descriptors\buch{Ch. 11.2}\buchSeite{815-821}}
 Having seen different representations of boundaries, the goal is now to develop descriptors for these boundaries.
-\subsection{Simple descriptors}
-\subsubsection{Length}
-\subsubsection{Diameter of boundary B}
-\subsubsection{Major axis}
+\subsection{Simple descriptors\buchSeite{815}}
+\paragraph{Length}
+\paragraph{Diameter of boundary B}
+\paragraph{Major axis}
 The line connecting the two extreme points of the boundary is called the major axis of the boundary.\\
 %TODO minor axis
 %TODO Bild minor axis?
 The ratio of the major to the minor axis is called the exxentricity of the boundary. This is a useful descriptor.
-\subsubsection{Curvature}
+\paragraph{Curvature}
 This is the rate of change of the slope in the boundary. i.e. this is a second derivative
-\subsubsection{Shape numbers}
+\subsubsection{Shape numbers\buchSeite{816}}
 The shape number of a boundary (based on 4-directional code) is defined as the first difference of smalles magnitude.\\
 The order n of a shape number is defined as the number of digits in its representation.\\
 One way of aligning the chain code grid with the boundary is to use the basic rectangle box based on the major and minor axes\\
-\subsubsection{Fourier descriptors}
+\subsubsection{Fourier descriptors\buchSeite{818}}
 The coordinates of the boundary represents a complex sampled signal wich can be represented as a xomplex vector $s(k)=x(k)+jy(k)$ wich can be analyzed in the frequency domain.\\
 The DFT of $s(k)$ is $a(u)=\sum\limits_{k=0}^{K-1}s(k)e'{-j2\pi uk/K}$ where $a(u)$ are called the Fourier descriptors of the boundary.\\
 The DFT can also be inversed $s(k)=\frac{1}{K}\sum\limits_{u=0}^{K-1}a(u)e^{j2\pi uk/K}$\\
 Since the high frequency components are responsible for the fine detail, using only a few Fourier descriptors results in a smoothing of the boundary.\\
 Careful! you need to keep both sides of the spectrum, the formula in the book is wrong!\\
 %TODO Folie 53/44 Tabelle Transformation, Boundary, Fourier Descriptor
-\subsubsection{Statistical moments}
+\subsubsection{Statistical moments\buchSeite{821}}
 \begin{itemize}
 \item The boundary segment is rotated, so that a function of a single variable results
 \item The amplitude of $g()$ can be treated as a discrete random variable v and a amplitude histogram $p(v_i)$ can be formed
@@ -138,9 +138,9 @@ From the histogram, the following shapes can be distinguished
 \end{itemize}
 The same can be done with skipping the histogram building.
 
-\section{Regional descriptors\buch{Ch. 11.3}}
+\section{Regional descriptors\buch{Ch. 11.3}\buchSeite{822-841}}
 %TODO cleanup mess with subsection and subsubsection
-\subsection{Simple descriptors}
+\subsection{Simple descriptors\buchSeite{822}}
 \begin{itemize}
 \item Area: Number of pixels
 \item Perimeter: Lenght of boundary
@@ -149,7 +149,7 @@ The same can be done with skipping the histogram building.
 \item Mean, median, minimum, maximum of intensity
 \item Etc.
 \end{itemize}
-\subsection{Topological descriptors}
+\subsection{Topological descriptors\buchSeite{823}}
 Topological descriptors are descriptors that do not change under rubber-sheet distortions. No tearing, noo folding allowed.\\
 The number of holes $H$ and connected components $C$ in a figure can be used to define the Euler number $E=C-H$\\
 %TODO Figure 11.26 folie 61
@@ -159,10 +159,10 @@ The number of holes $H$ and connected components $C$ in a figure can be used to 
 \item Number of faces F
 \end{itemize}
 Euler proved that $E=V-Q+F=C-H$
-\subsection{Texture}
+\subsection{Texture\buchSeite{827}}
 Smoothness, coarseness, regularity etc.\\
 There are three basic approaches to describe texture:\\
-\textbf{Statistical approaches}\\
+\paragraph{Statistical approaches\buchSeite{828}}
 \begin{itemize}
 \item Intenxity hisogram $p(z_i)$
 \item Moment $\mu_n(z)=\sum\limits_{i=0}^{L-1}(z_i-m)^np(z_i)$ and mean $m=\sum\limits_{i=0}^{L-1}z_ip(z_i)$
@@ -171,7 +171,13 @@ There are three basic approaches to describe texture:\\
 \item Average entropy $e(z)=-\sum\limits_{i=0}^{L-1}p(z_i)log_2p(z_i)$
 \end{itemize}
 Note the approach with a Q operator described in the book and lecture!\\
-\textbf{Structural}\\
+\paragraph{Structural approaches\buchSeite{836}}
 Some texture can be described as a repetition of a simple primitive. For such textures, a description based on rewriting rules is useful.
-\textbf{Spectral}\\
-Good for periodic patterns\\
+\paragraph{Spectral approaches\buchSeite{837}}
+Good for periodic patterns
+\subsubsection{Moment Invariants\buchSeite{839}}
+%TODO
+\subsection{Use of Principal Components for Description\buchSeite{842}}
+%TODO
+\subsection{Relational Descriptors\buchSeite{852}}
+%TODO
