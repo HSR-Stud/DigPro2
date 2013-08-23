@@ -111,17 +111,20 @@ The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 \begin{align*}
 \beta(A)=A-(A\ominus B)
 \end{align*}
+
 \subsubsection{Hole Filling\buchSeite{643}}
 To fill a hole, a seed inside the connected border is needed, i.e., in an empty array $X_0$, the seed point is set to 1.
 \begin{align*}
 X_k=(X_{k-1}\oplus B)\cap A^c && k=1,2,3,\ldots
 \end{align*}
 The iteration can stop, when $X_k = X_{k-1}$.
+
 \subsubsection{Extraction of Connected Components\buchSeite{645}}
 Initial array ($X_0$) contains a 1 in the region of the connected component.
 \begin{align*}
 X_k=(X_{k-1}\oplus B)\cap A && k=1,2,3,\ldots
 \end{align*}
+
 \subsubsection{Convex hull\buchSeite{647}}
 \begin{itemize}
 \item The convex hull H of a set S is the smalles convex set containing S.
@@ -152,6 +155,13 @@ The convex hull is constructed with a convex hull with four structuring elements
 	\end{subfigure}
 	\caption{Structuring elements for convex hull}
 \end{figure}
+
+\begin{align*}
+	X_0^i &= A \\
+	X_k^i &= (X_{k-1}^i \circledast B^i) \cup A & i &=1,2,3,4 \text{ and } k=1,2,3,\ldots \\
+	\text{when } X_k^i &= X_{k-1}^i \longrightarrow D^i = X_k^i \\
+	C(A) &= \bigcup\limits_{i=1}^4 D_i
+\end{align*}
 
 This algorithm does not guarantee that the found convex set is the convex hull, which has to be the smallest convex set containing the original object
 
