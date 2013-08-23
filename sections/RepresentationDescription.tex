@@ -3,7 +3,13 @@
 \subsection{Representation\buchSeite{796}}
 After the image segmentation, the boundaries need to be represented in a form, that is suitable for further processing.
 \subsubsection{Boundary following\buchSeite{796}}
-%TODO 1 bis 5 Folie 2
+\begin{itemize}
+\item Let the starting point, $b_0$ be the uppermost, leftmost point in the image that is labeled 1. Denote by $c_0$ the west neighbor of $b_0$ clearly, $c_0$ is a background point. Examine the 8-neighbors of $b_0$, starting at $c_0$ and procedding in a clockwise direction. Let $b_1$ denote the first neighor encountered whose value is 1, and let $c_1$ be the (background) point immediately preceding $b_1$ in the sequence. Store the localtions of $b_0$ and $b_1$ for use in Step 5.
+\item Let $b=b_1$ and $c=c_1$
+\item Let the 8-neighbors of $b$, starting at $c$ and proceeding in a clockwise direction, be denoted by $n_1,n_2,\ldots,n_8$. Find the first $n_k$ labeled 1.
+\item Let $b=n_k$ and $c=n_{k-1}$
+\item Repeat Steps 3 and 4 until $b=b_0$ and the next boundary point found is $b_1$. The sequence of $b$ points found when the algorithm stops constitutes the set of ordered boundary points
+\end{itemize}
 %TODO Figure 11.1, Folie 3
 \subsubsection{Chain codes\buchSeite{798}}
 Chain codes are used to represent a boundary by a connected sequence of straight-line segments of specified length and direction. The direction of each segment is coded using a number.
@@ -47,11 +53,12 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
 \item Continue with the next vertex in the list.
 %TODO If this .... noch mehr aktionen?
 \end{enumerate}
-\subsubsection{OtherPolygonal Approximation Approaches\buchSeite{807}}
+\subsubsection{Other Polygonal Approximation Approaches\buchSeite{807}}
 \paragraph{Merging\buchSeite{807}}
 Points on the boundary are merged and a line is fitted to these points. If the fitting error becomes to large, a vertex is set and the procedure starts from the beginning.\\
 \paragraph{Splitting\buchSeite{808}}
-%TODO describe this
+Here the idea is, to divide (split) a boundary segment until a threshold of an criterion is satisfied
+%TODO ?Skize folie 22 wenn nötig?
 \subsubsection{Signatures\buchSeite{808}}
 A signature is a 1D function that represents a boundary. This results in a significant complexity reduction. There are several schemes:\\
 \begin{itemize}
@@ -84,10 +91,10 @@ Algorithms for efficient MAT iteratively delete boundary points subject to
 \item do not erode that region excessively
 \end{enumerate}
 Thinning algorithm is 2 steps applied successively to border points\\
-%TODO 1 Matrix von Folie 30
+%TODO ?nötig? 1 Matrix von Folie 30
 Step 1:\\
 Flag for deletion if all of these conditions are satisfied:
-\begin{enumerate} %TODO make this a-d
+\begin{enumerate}[label={\alph*)}]
 \item $2\leq N(P_1)\leq 6$ with $N(p_1)=p_2 + p_3 + \ldots + p_9$
 \item $T(p_1)=1$ where $T(p_1)$ is the number of $0-1$ transitions in the ordered sequence $p_2,p_3,\ldots ,p_8,p_9,p_2$
 \item $p_2 \cdot p_4 \cdot p_6 = 0$
@@ -97,9 +104,11 @@ The last conditions are satisfied simultaneously by the minimum set of values: $
 After processing all boundary points, the marked ones are deleted\\
 Step 2:\\
 Simultaneous to Step 1 except the new conditions $c'$ and $d'$\\
-\begin{enumerate} %TODO make this a, b, c', d'
+\begin{enumerate}[label={\alph*)}]
 \item $2\leq N(P_1)\leq 6$ with $N(p_1)=p_2 + p_3 + \ldots + p_9$
 \item $T(p_1)=1$ where $T(p_1)$ is the number of $0-1$ transitions in the ordered sequence $p_2,p_3,\ldots ,p_8,p_9,p_2$
+\end{enumerate}
+\begin{enumerate}[label={\alph*')},resume]
 \item $p_2 \cdot p_4 \cdot p_8 = 0$
 \item $p_2 \cdot p_6 \cdot p_8 = 0$
 \end{enumerate}
@@ -108,8 +117,18 @@ Simultaneous to Step 1 except the new conditions $c'$ and $d'$\\
 \label{sec:boundaryDescriptors}
 Having seen different representations of boundaries, the goal is now to develop descriptors for these boundaries.
 \subsubsection{Simple Descriptors\buchSeite{815}}
+
 \paragraph{Length}
+\begin{itemize}
+\item Number of pixels along a Boundary gives a rough approximation of its length
+\item 8-directional Chain Code numbers of vertical and horizontal components plus $\sqrt{2}$ times the number of diagonal components, gives the exact length.
+\end{itemize}
 \paragraph{Diameter of boundary B}
+
+\begin{flalign*}
+& Diam(B)=\max\limits_{i,j}\left[D(p_i,p_j)\right] && \text{Points on boundary:} && p_i,p_j && \text{Distance measure:} && D 
+\end{flalign*}
+
 \paragraph{Major axis}
 The line connecting the two extreme points of the boundary is called the major axis of the boundary.\\
 %TODO minor axis
@@ -122,12 +141,30 @@ The shape number of a boundary (based on 4-directional code) is defined as the f
 The order n of a shape number is defined as the number of digits in its representation.\\
 One way of aligning the chain code grid with the boundary is to use the basic rectangle box based on the major and minor axes\\
 \subsubsection{Fourier descriptors\buchSeite{818}}
-The coordinates of the boundary represents a complex sampled signal wich can be represented as a xomplex vector $s(k)=x(k)+jy(k)$ wich can be analyzed in the frequency domain.\\
-The DFT of $s(k)$ is $a(u)=\sum\limits_{k=0}^{K-1}s(k)e'{-j2\pi uk/K}$ where $a(u)$ are called the Fourier descriptors of the boundary.\\
-The DFT can also be inversed $s(k)=\frac{1}{K}\sum\limits_{u=0}^{K-1}a(u)e^{j2\pi uk/K}$\\
+The coordinates of the boundary represents a complex sampled signal wich can be represented as a complex vector 
+\begin{align*}
+s(k)=x(k)+jy(k) && k=0,1,2,\ldots,K-1
+\end{align*} 
+wich can be analyzed in the frequency domain.\\
+The DFT of $s(k)$ is \begin{align*}
+& \text{Fourier descriptors of the boundary:} && a(u)=\sum\limits_{k=0}^{K-1}s(k)e'{-j2\pi uk/K} && u=0,1,2,\ldots,K-1\\
+& \text{Inverse Fourier transform:} && s(k)=\frac{1}{K}\sum\limits_{u=0}^{K-1}a(u)e^{j2\pi uk/K}
+\end{align*} 
+
 Since the high frequency components are responsible for the fine detail, using only a few Fourier descriptors results in a smoothing of the boundary.\\
 Careful! you need to keep both sides of the spectrum, the formula in the book is wrong!\\
-%TODO Folie 53/44 Tabelle Transformation, Boundary, Fourier Descriptor
+
+\textbf{Boundary Fourier Descriptor}
+
+\begin{tabularx}{\textwidth}{XXX}
+Transformation & Boundary & Fourier Descriptor \\\hline
+Identity & $s(k)$ & $a(u)$ \\
+Rotation & $s_r(k)=s(k)e^{j\theta}$& $a_r(u)=a(u)e^{j\theta}$ \\
+Translation &$s_t(k)=s(k)+\Delta_{xy}$& $a_t(u)=a(u)+\Delta_{xy}\delta(u)$ \\
+Scaling &$s_s(k)=\alpha s(k)$& $a_s(u)=\alpha a(u)$ \\
+Starting point & $s_p(k)s(k-k_0)$& $a_p(u)=a(u)e^{-j2\pi k_0u/K}$ \\
+\end{tabularx}
+
 \subsubsection{Statistical moments\buchSeite{821}}
 \begin{itemize}
 \item The boundary segment is rotated, so that a function of a single variable results
@@ -143,7 +180,6 @@ From the histogram, the following shapes can be distinguished
 The same can be done with skipping the histogram building.
 
 \subsection{Regional descriptors\buchSeite{822}}
-%TODO cleanup mess with subsection and subsubsection
 \subsubsection{Simple descriptors\buchSeite{822}}
 \begin{itemize}
 \item Area: Number of pixels
