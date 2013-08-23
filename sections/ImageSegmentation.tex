@@ -246,8 +246,15 @@ This image is thresholded to find the significant edges and remove the noise.
 \item $T_H$ high threshold. The values above this are almost certainly true edges
 \item $T_L$ low threshold. The values above this are likely to be edges. If they are 8-connected to a edge in $g_{NH}(x,y)$, they are also an edge.
 \end{itemize}
-%TODO Seite 50 summary canny
-%PR
+
+\paragraph{Summary}
+\begin{itemize}
+\item Smooth the input image with a Gaussian filter (same filter as in the Marr-Hildreth edge detector can be used)
+\item Compare the gradient magnitude and angle images (the Sobel operators can be used)
+\item Apply nonmaxima suppression to the gradient magnitude image
+\item Use double thresholding and connactivity analysis to detect and link edges
+\end{itemize}
+
 \subsubsection{Edge linking and boundary detection\buchSeite{725}}
 Three schemes to link edges:\\
 \paragraph{Local processing\buchSeite{726}}
