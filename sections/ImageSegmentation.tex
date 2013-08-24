@@ -360,8 +360,9 @@ T=\frac{1}{2}(m_1+m_2)\notag
 \end{equation} 
 \item Repeat Steps 2 through 4 until the difference betwenn values of $T$ in successive iterations is smaller than a predefined paramter $\Delta T$
 \end{enumerate}
-\subsubsection{Optimum global thresholding using Otsu’s Method\buchSeite{742}}
 
+
+\subsubsection{Optimum global thresholding using Otsu’s Method\buchSeite{742}}
 Two different variances are important
 \begin{itemize}
 \item Within-class variance
@@ -394,6 +395,19 @@ Two different variances are important
 &\eta(k)=\frac{\sigma_B^2(k)}{\sigma_G^2}
 & & 0 \leq  \eta(k^*)\leq 1 
 \end{flalign*}
+
+\textbf{What to do now???}
+\begin{enumerate}
+	\item Compute the normalized histogram of the input image.
+		Denote the components of the histogram by $p_i$, $i = 0, 1, 2, \ldots, L-1$
+	\item Compute the cumulative sums, $P_1(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. 10.3-4 (welche das auch immer ist...).
+	\item Compute the cumulative means, $m(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. 10.3-8 (jawohl, die musst du jetzt suchen!)
+	\item Compute the global intensity mean, $m_g$, using Eq. 10.3-9
+	\item Compute the between-class variance, $\sigma_B^2(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. 10.3-17
+	\item Obtain the Otsu threshold, $k^\ast$, as the value $k$ for which $\sigma_B^2(k)$ is maximum.
+		If the maximum is not unique, obtain $k^\ast$ by averaging the values of $k$ corresponding to the various maxima detected.
+	\item Obtain the separability measure, $\eta^\ast$, by evaluating Eq. 10.3-16 at $k = k^\ast$.
+\end{enumerate}
 
 \subsubsection{Using Image Smoothing to Improve Global Thresholding\buchSeite{747}}
 The obvious approach to improve the situation is to low pass filter the image, i.e., to smooth the image before the global thresholding method is applied
