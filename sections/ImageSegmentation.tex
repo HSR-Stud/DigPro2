@@ -370,15 +370,15 @@ Two different variances are important
 
 \begin{flalign*}
 &\sigma_W^2 = P_1\sigma_1^2+P_2\sigma_2^2 
-& & \sigma_W \text{ Within-class variance}  && \\
+& & \sigma_W: \text{ Within-class variance}  && \\
 &\sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2
-& & \sigma_B \text{ Between-class variance}  && \\
+& & \sigma_B: \text{ Between-class variance}  && \\
 &\sum_{i=0}^{L-1} p_i = 1 
 & &  && \\
 & m_G=\sum_{i=0}^{L-1} i \ p_i 
 & & m_G: \text{ global mean}   && \\
 &\sigma_G^2 = \sum_{i=0}^{L-1} (i-m_G)^2 p_i
-& & \sigma_G \text{global variance}  && \\
+& & \sigma_G^2: \text{global variance}  && \\
 & P_1(k) =\sum_{i=0}^{k} p_i
 & &  P_1: \text{ probability of the background}    && \\
 & P_2(k)=\sum_{i=k+1}^{L-1}1-P_1(k)
@@ -389,10 +389,10 @@ Two different variances are important
 & &  m_2: \text{ mean intensity of the object}   && \\
 & \sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2 & &  \text{Using algebra to change the form}  && \\
 &=P_1 P_2 (m_1-m_2)^2 = \frac{(m_G P_1 - m)^2}{P_1(1-P_1)} & &  && \\
-&\sigma_B^2(k*)=\max\limits_{0\leq k \leq L-1} \sigma_B^2(k)
-& & \text{Optimum of k for maximizing is } k*  && \\
+&\sigma_B^2(k^*)=\max\limits_{0\leq k \leq L-1} \sigma_B^2(k)
+& & \text{Optimum of k for maximizing is } k^*  && \\
 &\eta(k)=\frac{\sigma_B^2(k)}{\sigma_G^2}
-& & 0 \leq  \eta(k*)\leq 1 
+& & 0 \leq  \eta(k^*)\leq 1 
 \end{flalign*}
 
 \subsubsection{Using Image Smoothing to Improve Global Thresholding\buchSeite{747}}
@@ -407,8 +407,8 @@ Only the strongest edges are usually kept, say the top 10%
 & P_2(k)=\sum_{i=k_1+1}^{k_2} p_i && m_2(k)=\frac{1}{P_2(k)}\sum_{i=k_1+1}^{k_2} i \ p_i &&\\
 & P_3(k)=\sum_{i=k_2+1}^{L-1} p_1 && m_3(k)=\frac{1}{P_3(k)}\sum_{i=k_2+1}^{L-1} i \ p_i &&\\
 & m_G = P_1m_1 + P_2m_2 + P_3m_3 && P_1+P_2+P_3=1 &&\\
-&\sigma_B^2(k_1*,k_2*)=\max\limits_{0\leq k_1 \leq k_2 \leq L-1} \sigma_B^2(k_1,k_2)&&
-\eta(k_1*,k_2*)=\frac{\sigma_B^2(k_1*,k_2*)}{\sigma_G^2}&&\\
+&\sigma_B^2(k_1^*,k_2^*)=\max\limits_{0\leq k_1 \leq k_2 \leq L-1} \sigma_B^2(k_1,k_2)&&
+\eta(k_1^*,k_2^*)=\frac{\sigma_B^2(k_1^*,k_2^*)}{\sigma_G^2}&&\\
 \end{flalign*}
 \subsubsection{Variable Thresholding\buchSeite{756}}
 \paragraph{Image Partitioning\buchSeite{756}}
