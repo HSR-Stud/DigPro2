@@ -270,10 +270,28 @@ This image is thresholded to find the significant edges and remove the noise.
 \subsubsection{Edge linking and boundary detection\buchSeite{725}}
 Three schemes to link edges:\\
 \paragraph{Local processing\buchSeite{726}}
-
 For every point at a location the gradient vector magnitude and angle are compared with the magnitude and angle of points in a neighborhood. If these are similar, they belong to the same boundary. This can be indicated by giving them the same color and/or gray value.\\
 A much simpler scheme can be used if the linking follows certain directions and the maximum gap size is roughly known.\\
-%TODO enumerate seite 55
+
+\begin{enumerate}
+	\item Compute the gradient magnitude and angle arrays, $M(x,y)$ and $\alpha(x,y)$ of the input image, $f(x,y)$
+	\item Form a binary image, $g$, whose value at any pair of coordinates $(x,y)$ is given by:
+		\[
+			g(x,y) = 
+				\begin{cases}
+					1 & \text{if } M(x,y) > T_M \text{ and } \alpha(x,y) = A \pm T_A\\
+					0 & \text{otherwise}
+				\end{cases}
+		\]
+		Where $T_M$ is a threshold, $A$ is a specified angle direction, and $\pm T_A$ defines a "band" of acceptable directions about $A$.
+	\item Scan the rows of $g$ and fill (set to 1) all gaps (sets of 0s) in each row that do not exceed a specified length, $K$.
+		Note that, by definition, a gap is bounded at both ends by one or more 1s. 
+		The rows are precessed individiually, with no memory between them.
+	\item To detect gaps in any other direction, $\theta$, rotate $g$ by this angle and apply the horizontal scanning process procedure in Step 3.
+		Rotate the result back by $-\theta$.
+\end{enumerate}
+
+
 \paragraph{Regional processing\buchSeite{728}}
 
 If the location of a boundary is roughly known, it is possible to use the detected edge points as indicators for the suspected boundary.
