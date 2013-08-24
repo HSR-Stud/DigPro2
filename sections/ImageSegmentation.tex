@@ -312,8 +312,23 @@ If the location of a boundary is roughly known, it is possible to use the detect
 	\caption{Regional Processing}
 \end{figure}
 \paragraph{Global processing using the Hough transform\buchSeite{733}}
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.3\textwidth}
+		\input{tikz/segmentation/HoughTransformXYPlane}
+		\caption{$xy$-plane}
+	\end{subfigure}
+	\begin{subfigure}{0.3\textwidth}
+		\input{tikz/segmentation/HoughTransformRTPlane}
+		\caption{$\rho\theta$-plane}
+	\end{subfigure}
+	\begin{subfigure}{0.3\textwidth}
+		\input{tikz/segmentation/HoughTransformAccumulatorCells}
+		\caption{Accumulator Cells}
+	\end{subfigure}
+	\caption{Hough-Transform: From $xy$-plane to $\rho\theta$-plane}
+\end{figure}
 \begin{itemize}
-%TODO Figure 10.31 Seite 63 und Bild Normale Seite 64
 \item Each point in the xy plane belongs to infinetly many lines $y_i=ax_i+b$
 \item If we interpret this line equation differently, then $b=-x_ia+y_i$ represent for each point in the xy plane a line in the ab plane
 \item For each point in the xy plane, a line can be drawn in the ab plane and the principal lines in the xy plane can be found by the points with the most intersections in the ab plane
