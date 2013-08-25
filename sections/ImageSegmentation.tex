@@ -127,8 +127,13 @@ Often, a line of a known direction should be detected. We use special masks for 
 	\caption{Line detection masks}
 \end{figure}
 
-%TODO Seite 20 Figure 10.10
+
 \subsubsection{Edge Models}
+\begin{figure}[!h]
+	\centering
+	\input{tikz/segmentation/EdgeModelsRamp}
+	\caption{Ramp Edge with intensity profile and derivates.}
+\end{figure}
 \subsubsection{Edge localization\buchSeite{706}}
 The previously shown method generates edge points. The goal is to keep the ones which truly belong to an edge.\\
 Since first order derivatives are helpful, a nice way of combining the two partial derivatives into one value is the magnitude of the gradient
