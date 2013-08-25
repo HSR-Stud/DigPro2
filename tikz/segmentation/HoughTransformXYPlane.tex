@@ -1,0 +1,22 @@
+\begin{tikzpicture}
+	% Koordinatensystem
+	\draw[->] (0,0) -- +(3,0) node[right] {$y$};
+	\draw[->] (0,0) -- +(0,-3) node[below] {$x$};
+	
+	% Zwei Punkte definieren, anschreiben
+	\coordinate (p1) at (1, -2.2);
+	\coordinate (p2) at (2, -1.4);	
+	\node[below right] at (p1) {$(x_i, y_i)$};
+	\node[below right] at (p2) {$(x_j, y_j)$};
+	\filldraw[black] (p1) circle (1pt)
+					(p2) circle (1pt);
+	
+	% Linie zwischen Punkten
+	\draw[thick, shorten <=-1cm, shorten >=-1cm] (p1) -- (p2);	
+	% Mittelsenkrechte
+	\draw ($ (p1)!(0,0)!(p2)$) -- (0,0) node[midway, above right] {$\rho$};
+	
+	% Winkel kennzeichnen
+	\draw[->] (0,-1) arc (-90:-52:1);
+	\node at  (0.3, -1.2) {$\theta$};
+\end{tikzpicture}

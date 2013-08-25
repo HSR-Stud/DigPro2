@@ -1,14 +1,25 @@
 \documentclass{scrartcl}
 
 \include{header/zusammenfassung}
+\include{header/hyperref}
 \usepackage{tikz}
 \usepackage{adjustbox}
 \usetikzlibrary{arrows}
 \usetikzlibrary{calc}
+\usetikzlibrary{matrix}
+
+\tikzstyle{3x3mask}=[
+	matrix of nodes, 
+	nodes={draw, minimum size=8mm},
+	column sep=0mm
+]
+
+% Spaltenabstand bei ,ulticols
+\setlength{\columnsep}{1.5em}
 
 \title{DigPro2 Zusammenfassung}
 \subtitle{Dozent: G.Schuster, Buch: Digital Image Processing, Rafael C. Gonzalez and Richard E.Woods}
-\author{J. Rast, G. Köppel}
+\author{J. Rast, G. Köppel, R. Nestler, P. Riedel}
 
 \begin{document}
 \selectlanguage{english}
