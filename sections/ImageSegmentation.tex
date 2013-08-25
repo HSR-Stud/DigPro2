@@ -443,11 +443,27 @@ The goal is to segment the image into regions directly, not using abrupt changes
 \subsubsection{Region splitting and merging\buchSeite{766}}
 The image is subdivided initially into a set of arbitrary disjoint regions and then the regions are merge and or split in an attempt to improve the segmentation.\\
 A common scheme to split images is a quadtree.\\
-\begin{itemize}
-\item Split into four disjooint quadrants any region $R_i$ for which $Q(R)=FALSE$. $R_k$ for which $Q(R_j\bigcup R_k)=TRUE$.
-\item Stop when no further merging is possible
-\end{itemize}
-%TODO Seite 107 Bild a und b
+\begin{enumerate}
+	\item Split into four disjoint quadrants any region $R_i$ for wich $Q(R)= FALSE$. 
+	\item When no further splitting is possible, merge any adjacent regions $R_i$ and $R_k$ for which $Q(R_j\bigcup R_k) = TRUE$.
+	\item Stop when no further merging is possible
+\end{enumerate}
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\input{tikz/segmentation/QuadtreePartionedImage}
+		\caption{Partioned image}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\input{tikz/segmentation/QuadtreeTree}
+		\caption{Corresponding quadtree. $R$ represents the entire image region.}
+	\end{subfigure}
+	\caption{Quadtree example}
+\end{figure}
+
+
 \subsection{Segmentation using morphological watersheds\buchSeite{769}}
 \subsubsection{Background\buchSeite{769}}
 The basic idea is to think of images as 3D landscapes. There are three kinds of points:

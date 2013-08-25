@@ -1,0 +1,24 @@
+\begin{tikzpicture}[
+	every node/.style={
+		draw, 
+		minimum width=2cm, 
+		minimum height=2cm
+	}]
+	\node at (0,2) {$R_1$};
+	\node at (2,2) {$R_2$};
+	\node at (0,0) {$R_3$};
+	\begin{scope}[
+		xshift=1.5cm,
+		yshift=-0.5cm,
+		every node/.style={
+			draw, 
+			minimum width=1cm, 
+			minimum height=1cm}
+		]
+		\node at (0,1) {$R_{41}$};
+		\node at (1,1) {$R_{42}$};
+		\node at (0,0) {$R_{43}$};
+		\node at (1,0) {$R_{44}$};
+	\end{scope}
+	
+\end{tikzpicture}

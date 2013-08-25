@@ -1,0 +1,16 @@
+\begin{tikzpicture}[
+	every node/.style={draw, circle},
+	level 1/.style={sibling distance=12mm},
+	level 2/.style={sibling distance=12mm},
+	]
+	\node {$R$}
+		child { node {$R_1$}}
+		child { node {$R_2$}}
+		child { node {$R_3$}}
+		child { node {$R_4$}
+			child { node {$R_{41}$}}
+			child { node {$R_{42}$}}
+			child { node {$R_{43}$}}
+			child { node {$R_{44}$}}
+		};		
+\end{tikzpicture}
