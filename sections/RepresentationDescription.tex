@@ -223,11 +223,12 @@ $S(\theta)=\sum\limits_{r=1}^{R_0}S_r(\theta)$\\
 A set of seven moments for a given image region can be generated as regional descriptors. They are intrinsically invariant to translation, scale change, rotation and even mirroring except for a sign change.\\
 %TODO FOLIE 79
 \subsection{Use of Principal Components for Description\buchSeite{842}}
-Principle component analysis (PCA) is a very general tool. It is applicable to boundaries and regions but also to color images and multispectral images. A given pixel in a multispectral image with n spectral components can be written as a vector containing these components. It is assumed that the components are random variables and hence these pixels are random vectors.\\
-
-$x = [x_1, x_2, ..., x_n]$\\ %TODO vektor muss stehen, nicht liegen
-$m_x = E\{x\} = \frac{1}{K}\sum\limits_{k=1}^{K}x_k$\\
-$C_x = E\{(x-m_x)(x-m_x)^T\}=\frac{1}{K}\sum\limits_{k=1}^{K}x_kx_k^T-m_xm_x^T$\\
+Principle component analysis (PCA) is a very general tool. It is applicable to boundaries and regions but also to color images and multispectral images. A given pixel in a multispectral image with n spectral components can be written as a vector containing these components. It is assumed that the components are random variables and hence these pixels are random vectors.
+\begin{align*}
+& x = \left[\begin{array}{c} x_1 \\ x_2 \\ \vdots \\ x_n \end{array}\right]&&\\
+& m_x = E\{x\} = \frac{1}{K}\sum\limits_{k=1}^{K}x_k&&\\
+& C_x = E\{(x-m_x)(x-m_x)^T\}=\frac{1}{K}\sum\limits_{k=1}^{K}x_kx_k^T-m_xm_x^T
+\end{align*}
 
 Since the covariance matrix is real and symmetric, there exists a set of n orthonormal eigenvectors $e_i$ and corresponding eigenvalues $\lambda_i$\\
 $Ce_i=\lambda_ie_i$\\
