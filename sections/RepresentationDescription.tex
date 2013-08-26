@@ -314,7 +314,23 @@ $S(r)=\sum\limits_{\theta = 0}^{\pi}S_\theta(r)$\\
 $S(\theta)=\sum\limits_{r=1}^{R_0}S_r(\theta)$\\
 \subsubsection{Moment Invariants\buchSeite{839}}
 A set of seven moments for a given image region can be generated as regional descriptors. They are intrinsically invariant to translation, scale change, rotation and even mirroring except for a sign change.\\
-%TODO FOLIE 79
+\begin{tabular}{ll}
+2D moments of order (p+q) & $m_{pq}=\sum\limits_{x=0}^{M-1}\sum\limits_{y=0}^{N-1}x^py^qf(x,y)$ \\
+The central moments & $\mu_{pq}=\sum\limits_{x=0}^{M-1}\sum\limits_{y=0}^{N-1}(x-\overline{x})^p(y-\overline{y})^qf(x,y)$ \\
+& $\overline{x}=\frac{m_{10}}{m_{00}}$ and $\overline{y}=\frac{m_{01}}{m_{00}}$ \\
+Normalized central moments & $ \eta_{pq}=\frac{\mu_{pq}}{\mu_{00}^\gamma} $ with $\gamma=\frac{p+q}{2}+1 $ \\
+\end{tabular}
+The seven invariant moments:\\
+\begin{align*}
+\phi_1 =& \eta_{20}+\eta_{02} \\
+\phi_2 =& (\eta_{20}-\eta_{02})^2+4\eta_{11}^2 \\
+\phi_3 =& (\eta_{30}-3\eta_{12})^2+(2\eta_{21}-\eta_{03})^2 \\
+\phi_4 =& (\eta_{30}+\eta_{12})^2+(\eta_{21}+\eta_{03})^2 \\
+\phi_5 =& (\eta_{30}-3\eta_{12})(\eta_{30}+\eta_{12})[(\eta_{30}+\eta_{12})^2-3(\eta_{21}+\eta_{03})^2]+(3\eta_{21}-\eta_{03})(\eta_{21}+\eta_{03})[3(\eta_{30}+\eta_{12})^2-(\eta_{21}+\eta_{03})^2] \\
+\phi_6 =& (\eta_{20}-\eta_{02})[(\eta_{30}+\eta_{12})^2-(\eta_{21}+\eta_{03})^2]+4\eta_{11}(\eta_{30}+\eta_{12})(\eta_{21}+\eta_{03})\\
+\phi_7 =& (3\eta_{21}-\eta_{03})(\eta_{30}+\eta_{12})[(\eta_{30}+\eta_{12})^2-3(\eta_{21}+\eta_{03})^2]+(3\eta_{12}-\eta_{30})(\eta_{21}+\eta_{03})[3(\eta_{30}+\eta_{12})^2-(\eta_{21}+\eta_{03})^2]
+\end{align*}
+
 \subsection{Use of Principal Components for Description\buchSeite{842}}
 Principle component analysis (PCA) is a very general tool. It is applicable to boundaries and regions but also to color images and multispectral images. A given pixel in a multispectral image with n spectral components can be written as a vector containing these components. It is assumed that the components are random variables and hence these pixels are random vectors.
 \begin{align*}
@@ -330,7 +346,13 @@ $A=[e_1^T, e_2^T, ..., e_n^T]$\\
 Now A is used as a transformation matrix to map the vectors x into the vectors y. This is called the Hotelling transform\\
 $y=A(x-m_x)$\\
 Clearly, the mean vector of these new y vectors is zero $m_y=E\{y\}=0$\\
-$C_y=AC_xA^T=$\\ %TODO matrix seite 85
+$C_y=AC_xA^T=\left[
+\begin{matrix}
+ \lambda_1 & & & 0 \\
+ & \lambda_2 & & \\
+ & & ... & \\
+ 0 & & & \lambda_n
+\end{matrix}\right]	$\\
 %TODO weiterbeschreiben bis seite 93
 
 \subsection{Relational Descriptors\buchSeite{852}}
