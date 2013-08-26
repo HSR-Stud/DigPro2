@@ -102,8 +102,6 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
 	\caption{MMP obtained by boundary shrinking}
 \end{figure}
 
-
-%TODO Figure 11.6, Folie 11 and Figure 11.7, Folie 12
 \begin{enumerate}
 \item Find all convex points (white dots) and concave points (black dots).
 \item Mirror the concave points to their diagonal location in the outer wall.
@@ -141,7 +139,6 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
 Points on the boundary are merged and a line is fitted to these points. If the fitting error becomes to large, a vertex is set and the procedure starts from the beginning.\\
 \paragraph{Splitting\buchSeite{808}}
 Here the idea is, to divide (split) a boundary segment until a threshold of an criterion is satisfied
-%TODO ?Skize folie 22 wenn nötig?
 \subsubsection{Signatures\buchSeite{808}}
 A signature is a 1D function that represents a boundary. This results in a significant complexity reduction. There are several schemes:\\
 \begin{itemize}
@@ -174,7 +171,13 @@ Algorithms for efficient MAT iteratively delete boundary points subject to
 \item do not erode that region excessively
 \end{enumerate}
 Thinning algorithm is 2 steps applied successively to border points\\
-%TODO ?nötig? 1 Matrix von Folie 30
+\begin{tikzpicture}
+\matrix[3x3mask]{
+p9 & p2 & p3 \\
+p8 & p1 & p4 \\
+p7 & p6 & p5 \\
+};\\
+\end{tikzpicture}\\
 Step 1:\\
 Flag for deletion if all of these conditions are satisfied:
 \begin{enumerate}[label={\alph*)}]
@@ -214,9 +217,10 @@ Having seen different representations of boundaries, the goal is now to develop 
 
 \paragraph{Major axis}
 The line connecting the two extreme points of the boundary is called the major axis of the boundary.\\
-%TODO minor axis
-%TODO Bild minor axis?
-The ratio of the major to the minor axis is called the exxentricity of the boundary. This is a useful descriptor.
+\paragraph{Minor axis}
+The line perpendicular to the major axis and of such length that a box passing through the outer four points of intersection ofthe boundary with the two axes completely encloses the boundary.
+\paragraph{Eccentricity}
+The ratio of the major to the minor axis is called the eccentricity of the boundary. This is a useful descriptor.
 \paragraph{Curvature}
 This is the rate of change of the slope in the boundary. i.e. this is a second derivative
 \subsubsection{Shape numbers\buchSeite{816}}
@@ -275,7 +279,13 @@ The same can be done with skipping the histogram building.
 \subsubsection{Topological descriptors\buchSeite{823}}
 Topological descriptors are descriptors that do not change under rubber-sheet distortions. No tearing, noo folding allowed.\\
 The number of holes $H$ and connected components $C$ in a figure can be used to define the Euler number $E=C-H$\\
-%TODO Figure 11.26 folie 61
+
+\begin{figure}[h]
+	\centering
+	\adjustbox{scale=1.5}{\input{tikz/representation/PolygonalNetwork}}
+	\caption{A region containing a polygonal network}
+\end{figure}
+
 \begin{itemize}
 \item Number of vertices V
 \item Number of edges Q

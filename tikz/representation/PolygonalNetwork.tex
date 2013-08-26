@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+
+\draw [fill=lightgray] (0,0) -- (1,0.5) -- (0.5,1) -- cycle;
+\draw [fill=lightgray] (2.5,1) -- (1,0.5) -- (3.5,0.5) -- cycle;
+
+\draw (0,0) node [circ] {} -- (0.5,1) node [circ] {} -- (1.5,1.5) node [circ] {} -- (2.5,1) node [circ] {} -- (3.5,0.5) node [circ] {} -- (2,-0.5) node [circ] {} -- (0,0);
+\draw (1,0.5) node [circ] {} -- (0.5,1);
+\draw (1,0.5) -- (2.5,1);
+\draw (1,0.5) -- (3.5,0.5);
+\draw (1,0.5) -- (2,-0.5);
+\draw (1,0.5) -- (0,0);
+
+%labels
+
+\draw[->] (2,2)  node [anchor=west] {Vertex} -- (1.5,2) -- (1.5,1.7);
+\draw[->] (3.5,1.5)  node [anchor=west] {Face} -- (3,1.5) -- (2.5,0.7);
+\draw[->] (3,-0.5)  node [anchor=west] {Hole} -- (2.5,-0.5) -- (2,0);
+\draw[->] (1.5,-1)  node [anchor=west] {Edge} -- (1,-1) -- (1,-0.25);
+
+
+
+\draw  plot[smooth, tension=.7] coordinates {(-1,0) (-0.2,1.6) (0.5,2.6) (2.7,2.6) (4.5,2.5) (5.8,1.3) (4.8,0.5) (4.2,-0.9) (2.8,-1.6) (0.5,-1.6) (-0.8,-0.9) (-1,0)};
+\end{tikzpicture}
