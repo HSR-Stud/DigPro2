@@ -1,0 +1,8 @@
+\begin{tikzpicture}
+\pgfmathsetmacro{\a}{sin(45)}
+
+\foreach [count=\i] \x/\y in {1/0, \a/\a, 0/1, -\a/\a, -1/0, -\a/-\a, 0/-1, \a/-\a } {
+	\draw [->, shorten >= 6, shorten <= 2] (0,0) -- (\x,\y) node {\i};
+}
+
+\end{tikzpicture}

@@ -41,6 +41,20 @@ After the image segmentation, the boundaries need to be represented in a form, t
 \end{figure}
 \subsubsection{Chain codes\buchSeite{798}}
 Chain codes are used to represent a boundary by a connected sequence of straight-line segments of specified length and direction. The direction of each segment is coded using a number.
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\adjustbox{scale=1}{\input{tikz/representation/4DirectionNumbers}}
+		\caption{4-directional}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\adjustbox{scale=1}{\input{tikz/representation/8DirectionNumbers}}
+		\caption{8-directional}
+	\end{subfigure}
+	\caption{Direction numbers for chain codes}
+\end{figure}
 %TODO Figure 11.3, Folie 5
 Cain codes are quite sensitive to small disturbances. If they are on the pixel grid, they tend to result in rather long codes. Subsampling the boundary, i.e. going to a coarser grid results in a more robust and more efficient code at the expense of representation accuracy.\\
 The resulting code depends on the starting point, which is not desirable. An easy trick is to circumvent this, is the convention to start at that point wich will result in a chain code that represents the smalles integer.\\
