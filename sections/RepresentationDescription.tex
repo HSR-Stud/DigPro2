@@ -55,13 +55,54 @@ Chain codes are used to represent a boundary by a connected sequence of straight
 	\end{subfigure}
 	\caption{Direction numbers for chain codes}
 \end{figure}
-%TODO Figure 11.3, Folie 5
+
 Cain codes are quite sensitive to small disturbances. If they are on the pixel grid, they tend to result in rather long codes. Subsampling the boundary, i.e. going to a coarser grid results in a more robust and more efficient code at the expense of representation accuracy.\\
 The resulting code depends on the starting point, which is not desirable. An easy trick is to circumvent this, is the convention to start at that point wich will result in a chain code that represents the smalles integer.\\
 The representation can be made independent of rotation by using the first difference.
 \subsubsection{Polygonal approximation using Minimum perimeter polygon MPP\buchSeite{801}}
 A boundary is represented by a polygon. The goal is to use as few segments as possible, while still capturing the essential features of the boundary. There exist simple approximations which in practice are often good enough\\
 \paragraph{Minimum perimeter polygon MPP}
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\adjustbox{scale=0.4}{\input{tikz/representation/PolygonalApprox1}}
+		\caption{Object Boundary}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\adjustbox{scale=0.4}{\input{tikz/representation/PolygonalApprox2}}
+		\caption{Boundary enclodes by gray cells}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\adjustbox{scale=0.4}{\input{tikz/representation/PolygonalApprox3}}
+		\caption{Minimum perimeter polygon}
+	\end{subfigure}
+	\caption{MMP obtained by boundary shrinking}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\adjustbox{scale=0.4}{\input{tikz/representation/PolygonalApprox4}}
+		\caption{Dark gray region resulting from enclosing the original boundary}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\adjustbox{scale=0.4}{\input{tikz/representation/PolygonalApprox5}}
+		\caption{Convex (white) and concave (black) vertices}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\adjustbox{scale=0.4}{\input{tikz/representation/PolygonalApprox6}}
+		\caption{Concave vertices displaced to their diagonal mirror locations}
+	\end{subfigure}
+	\caption{MMP obtained by boundary shrinking}
+\end{figure}
+
+
 %TODO Figure 11.6, Folie 11 and Figure 11.7, Folie 12
 \begin{enumerate}
 \item Find all convex points (white dots) and concave points (black dots).
