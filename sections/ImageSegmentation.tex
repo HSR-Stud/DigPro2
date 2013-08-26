@@ -225,11 +225,17 @@ New Idea: Edges exist on different scales. The edge detector needs to be tuned t
 Rule of thumb: nxn LoG filter should have the smallest odd integer n greater than or equal to $6\sigma$.\\
 \textbf{How to find the zero crossings?}\\
 A zero-crossing exists, if at least one opposing pixelpair has a sign difference.
-%TODO Matrix edge detection
-%*rx 
-%o o
-%xr*
-%zwei paare davon müssen ein vorzeichen ändern
+\begin{figure}[!h]
+	\centering
+	\begin{tikzpicture}
+		\matrix[3x3mask]{
+			a & b & c \\%
+			d & 0 & d \\%
+			c & b & a \\%
+		};
+	\end{tikzpicture}
+	\caption{Zero-Crossing: opposing pixel pairs}	
+\end{figure}
 
 \paragraph{LoG DoG}
 The Laplacian of Gaussian (LoG) can be approximated using a difference of Gaussian (DoG) filter
@@ -246,31 +252,45 @@ DoG(x,y)=\frac{1}{2\pi\sigma_1^2}e^{-\frac{x^2+y^2}{2\sigma_1^2}}-\frac{1}{2\pi\
 \end{itemize}
 
 \paragraph{Canny edge detector\buchSeite{719}}
-More complex, more powerful. The derivation is powerful, the implementation easy. Canny uses the gradient angle image and the linking of weak with strong edges.\\
-Smooth the image and then find the gradient vector magnitude and direction:
-\begin{align*}
-G(x,y) = e^{-\frac{x^2+y^2}{2\sigma^2}}\\
-f_s(x,y)=G(x,y)\star f(x,y)\\
-M(x,y) = \sqrt{g_x^2+g_y^2}\\
-\alpha(x,y) = tan^{-1}\left[\frac{g_y}{g_x}\right]\\
-\end{align*}
-The first new idea is, to thin the edges, using the gradient directional information. This is called nonmaxima suppression.\\
-%TODO ?
-We are looking for the maxima of the gradient magnitude along the gradient direction. $g_N(x,y)$ is the nonmaxima-suppressed image, the gradient magnitude image where the wide ridges have been thinned since the middle value is only kept when it is the maxima within a 3x3 neighborhood along the gradient direction.\\
-This image is thresholded to find the significant edges and remove the noise.
+\begin{enumerate}
+	\item Smooth the image with a Gaussian filter.
+		\begin{align*}
+			G(x,y)	&= e^{-\frac{x^2+y^2}{2\sigma^2}} \\
+			f_s(x,y)&=G(x,y)\star f(x,y
+		\end{align*}
+	\item Compute the gradient magnitude and angle images (Sobel operators).
+		\begin{align*}
+			M(x,y) 		&= \sqrt{g_x^2+g_y^2} \\
+			\alpha(x,y)	&= tan^{-1}\left[\frac{g_y}{g_x}\right]
+		\end{align*}
+	\item Apply nonmaxima suppression to the gradient image:
+		Let $d_1, d_2, d_3$ and $d_4$ denote the four basic edge directions for a 3x3 region: horizontal, $-45^\circ$, vertical and $-45^\circ$. 
+		We can formulate the following nonmaxima suppression scheme for a 3x3 region centered at every point $(x,y)$ in $\alpha(x,y)$:
+		\begin{enumerate}
+			\item Find the direction $d_k$ that is closest to $\alpha(x,y)$
+			\item If the value of $M(x,y)$ is less than at least one of its two neighbors alog $d_k$, let $g_N(x,y) = 0$ (suppression); otherwise, let $g_N(x,y) = M(x,y)$
+		\end{enumerate}
+	\item Use double thresholding and connectivity analysis to detect and link edges:
+		\begin{itemize}
+			\item $T_H$ a high treshold. If the values are above $T_H$, they are almost certainly a true edges
+				\[
+					g_{NH}(x,y) = g_N(x,y) \geq T_H
+				\]
+			\item $T_L$ a low threshold. High enough that most of the noise if filtered out, but much lower (2-3 times lower) than $T_H$ resulting in edge points that are likely to be true edges, but might also contain erroneous edges
+				\[
+					g_{NL}(x,y) = g_N(x,y) \geq T_L \qquad g_{NL} = g_{NL}(x,y) - g_{NH}(x,y)
+				\]
+			\item Now in $g_{NH}(x,y)$ are the strong edge pixels, while in $g_{NL}(x,y)$ are the weak ones.
+			\item A large $T_H$ leads to gaps in the edges, which now can be filled using weak pixels in $g_{NL}(x,y)$ that are 8-connected to valid edge pixels in $g_{NH}(x,y)$:
+				\begin{enumerate}
+					\item Locate the next unvisited edge pixel, $p$, in $g_{NH}(x,y)$
+					\item Mark as valid edge pixels all the weak pixels in $g_{NL}(x,y)$ that are connected to $p$ using 8-connectivity.
+					\item If all nonzero pixels in $g_{NH}(x,y)$ have been visited go to Step d. Else, return to step a.
+					\item Set to zero all pixels in $g_{NL}(x,y)$ that were not marked as valid edge pixels.
+				\end{enumerate}
+		\end{itemize}
+\end{enumerate}
 
-\begin{itemize}
-\item $T_H$ high threshold. The values above this are almost certainly true edges
-\item $T_L$ low threshold. The values above this are likely to be edges. If they are 8-connected to a edge in $g_{NH}(x,y)$, they are also an edge.
-\end{itemize}
-
-\paragraph{Summary}
-\begin{itemize}
-\item Smooth the input image with a Gaussian filter (same filter as in the Marr-Hildreth edge detector can be used)
-\item Compare the gradient magnitude and angle images (the Sobel operators can be used)
-\item Apply nonmaxima suppression to the gradient magnitude image
-\item Use double thresholding and connactivity analysis to detect and link edges
-\end{itemize}
 
 \subsubsection{Edge linking and boundary detection\buchSeite{725}}
 Three schemes to link edges:\\
