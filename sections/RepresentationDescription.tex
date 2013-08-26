@@ -10,7 +10,35 @@ After the image segmentation, the boundaries need to be represented in a form, t
 \item Let $b=n_k$ and $c=n_{k-1}$
 \item Repeat Steps 3 and 4 until $b=b_0$ and the next boundary point found is $b_1$. The sequence of $b$ points found when the algorithm stops constitutes the set of ordered boundary points
 \end{itemize}
-%TODO Figure 11.1, Folie 3
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.19\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/representation/BoundaryFollowing1}}
+		\caption{Step 1}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/representation/BoundaryFollowing2}}
+		\caption{Step 2}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/representation/BoundaryFollowing3}}
+		\caption{Step 3}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/representation/BoundaryFollowing4}}
+		\caption{Step 4}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\textwidth}
+		\centering
+		\adjustbox{scale=0.5}{\input{tikz/representation/BoundaryFollowing5}}
+		\caption{Result}
+	\end{subfigure}
+	\caption{Boundary Following Algorithm}
+\end{figure}
 \subsubsection{Chain codes\buchSeite{798}}
 Chain codes are used to represent a boundary by a connected sequence of straight-line segments of specified length and direction. The direction of each segment is coded using a number.
 %TODO Figure 11.3, Folie 5
