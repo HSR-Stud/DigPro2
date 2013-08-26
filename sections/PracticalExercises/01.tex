@@ -1,0 +1,17 @@
+\subsubsection{Exercise 1}
+Write a Matlab script that generates a gray-scale image f(x,y) as in problem 9.35 and use the appropriate gray-scale morphological image processing procedure to clean up the spikes.
+\textbf{Problem 9.35}
+A gray-scale image, $f(x,y)$, is corrupted by nonoverlapping noise spikes, that can be modeled as small, cylindrical artifacts of radii $R_{min}\leq r\leq R_{max}$ and amplitude $A_{min}\leq a \leq A_{max}$.\\
+\textbf{Solution}
+\begin{lstlisting}
+I = imread('rice.png');
+subplot(3,3,1);
+imshow(I);
+
+for x = 2:9
+    S = strel('square',x);
+    Iopen = imopen(I,S);
+    subplot(3,3,x);
+    imshow(Iopen,[]);
+end
+\end{lstlisting}

@@ -1,7 +1,8 @@
 \documentclass{scrartcl}
-
+\usepackage{etex}
 \include{header/zusammenfassung}
 \include{header/hyperref}
+\include{header/listings}
 \usepackage{tikz}
 \usepackage{adjustbox}
 \usetikzlibrary{arrows}
@@ -17,6 +18,7 @@
 	column sep=0mm
 ]
 
+
 % Spaltenabstand bei ,ulticols
 \setlength{\columnsep}{1.5em}
 
@@ -26,6 +28,8 @@
 
 \begin{document}
 \selectlanguage{english}
+
+\lstset{language=Matlab}
 
 \maketitle
 \newpage
@@ -37,5 +41,6 @@
 \input{sections/ImageSegmentation}
 \input{sections/RepresentationDescription}
 \input{sections/ObjectRecognition}
+\input{sections/PracticalExercises}
 
 \end{document}

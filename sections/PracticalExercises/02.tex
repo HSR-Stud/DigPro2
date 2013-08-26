@@ -1,0 +1,30 @@
+\subsubsection{Exercise 2}
+Write a Matlab script that generates a bright box on top of a dark background. Now use a simple lowpass filter $(out=filter2(ones(N,N)/N^2,in))$ to smear out the edges of the box. Calculate the gradient magnitude image of this smeard out image and display it for different lowpass filters. Calculate the average gradient magnitude per pixel and graph it relative to the size of the lowpass filter. What do you observe?\\
+\textbf{Solution}
+\begin{lstlisting}
+%Generate dark background
+I = zeros(100);
+%Generate bright box
+I(40:80,30:70) = 1;
+
+subplot(2,5,1);
+imshow(I);
+title('Original');
+
+M = [5,10,15,20];
+
+for i = 1:4
+    N = M(i);
+    fsmear = filter2(ones(N,N)/N^2,I);
+
+    subplot(2,5,i+1);
+    imshow(fsmear);
+
+    grad = gradient(fsmear);
+    subplot(2,5,i+6);
+    imshow(grad, []);
+
+    mean(mean(grad))
+end
+\end{lstlisting}
+\textbf{Observation}
