@@ -129,10 +129,9 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
 \item $W_C$ is a white vertex
 \end{itemize} 
 \item $V_K$ lies to the positive side of the line through pair ($V_L$, $W_C$), that is $sgn(V_L, W_C, V_K)>0$. If this condition holds, the next MPP vertex is $W_C$
-\item $V_K$ lies to the negative side of the line through pair ($V_L$, $V_C$), that is $sgn(V_L, B_C, V_K)<0$. If this condition holds, the next MPP vertex is $B_C$.
-\item $V_K$ lies on the negative sine of the linge through pair ($V_L$, $W_C$) or is collinear with it, that is $sgn(V_L, W_C, V_K) \le 0$. At the same time, $V_K$ lies on the positive side of the line through ($V_L$, $B_C$) or is collinear with it, that is $sgn(V_L, V_C, V_K) \ge 0$. If this condition holds, the next candidate MPP vertex is $V_K$; otherwise $B_C = V_K$
+\item $V_K$ lies to the negative side of the line through pair ($V_L$, $B_C$), that is $sgn(V_L, B_C, V_K)<0$. If this condition holds, the next MPP vertex is $B_C$.
+\item $V_K$ lies on the negative side of the line through pair ($V_L$, $W_C$) or is collinear with it, that is $sgn(V_L, W_C, V_K) \le 0$. At the same time, $V_K$ lies on the positive side of the line through ($V_L$, $B_C$) or is collinear with it, that is $sgn(V_L, V_C, V_K) \ge 0$. If this condition holds, the next candidate MPP vertex is $V_K$; otherwise $B_C = V_K$
 \item Continue with the next vertex in the list.
-%TODO If this .... noch mehr aktionen?
 \end{enumerate}
 \subsubsection{Other Polygonal Approximation Approaches\buchSeite{807}}
 \paragraph{Merging\buchSeite{807}}
@@ -353,7 +352,9 @@ $C_y=AC_xA^T=\left[
  & & ... & \\
  0 & & & \lambda_n
 \end{matrix}\right]	$\\
+Hottelling transformation: $y=A(x-m_x)$\\
+Hotteling transform can be inverted: $x=A^Ty+m_x$\\
+
 %TODO weiterbeschreiben bis seite 93
 
 \subsection{Relational Descriptors\buchSeite{852}}
-%TODO
