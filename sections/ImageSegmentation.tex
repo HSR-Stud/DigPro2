@@ -225,11 +225,17 @@ New Idea: Edges exist on different scales. The edge detector needs to be tuned t
 Rule of thumb: nxn LoG filter should have the smallest odd integer n greater than or equal to $6\sigma$.\\
 \textbf{How to find the zero crossings?}\\
 A zero-crossing exists, if at least one opposing pixelpair has a sign difference.
-%TODO Matrix edge detection
-%*rx 
-%o o
-%xr*
-%zwei paare davon müssen ein vorzeichen ändern
+\begin{figure}[!h]
+	\centering
+	\begin{tikzpicture}
+		\matrix[3x3mask]{
+			a & b & c \\%
+			d & 0 & d \\%
+			c & b & a \\%
+		};
+	\end{tikzpicture}
+	\caption{Zero-Crossing: opposing pixel pairs}	
+\end{figure}
 
 \paragraph{LoG DoG}
 The Laplacian of Gaussian (LoG) can be approximated using a difference of Gaussian (DoG) filter
