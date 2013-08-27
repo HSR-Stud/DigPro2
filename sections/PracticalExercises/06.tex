@@ -1,0 +1,40 @@
+\subsubsection{Exercise 5}
+Write a Matlab script that implements the Hough transform for straight lines. Create a test image with several straight lines on it and show how the maxima in the Hough transform plane correspond to these lines.\\
+\textbf{Hough transform}
+\begin{lstlisting}
+I = generateImg;
+
+subplot(1,2,1)
+imshow(I);
+title('Ausgangsbild');
+
+[y x] = size(I);
+
+H = zeros(round(sqrt(x^2+y^2))*2+1,180*2+1);
+
+for a = 1:x
+    for b = 1:y
+        if I(a,b) == 0
+            continue;            
+        end
+        for theta = -90:0.5:90
+            rho = 1+round(a*cos(theta*pi/180) + b*sin(theta*pi/180) + round(sqrt(x^2+y^2)));
+            H(rho,(theta+90)*2+1) = 1; % H(rho,(theta+90)*2+1) + 1;
+        end
+    end
+end
+
+subplot(1,2,2);
+imshow(log2(H), []);
+title('Hough Transform');
+\end{lstlisting}
+\textbf{Image Generation}
+\begin{lstlisting}
+function [ I ]  = generateImg()
+I = zeros(256,256,'uint8');
+x = linspace(1,256,1000);
+y = x;
+index = sub2ind(size(I),round(y),round(x));
+I(index) = 255;
+end
+\end{lstlisting}
