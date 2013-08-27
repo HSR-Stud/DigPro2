@@ -43,6 +43,67 @@ should be used.
 % TODO: Tikz Tree einfügen
 
 \subsection{Recognition Based on Decision Theory\buch{Ch. 12.2}}
+\paragraph{Discriminant functions}
+The core of decision theory $d_i(x)$ defined for each class $\omega_i$.
+These are not known and finding them is the main goal.
+
+A class $\omega_i$ is selected if
+\begin{align*}
+d_i(x) > d_j(x) && j=1,2, \cdots, W; j \neq i
+\end{align*}
+The interesting parts are decision boundaries between classes
+\begin{align*}
+	d_i(x) - d_j(x) = 0
+\end{align*}
+
+\subsubsection{Matching\buchSeite{866}}
+Each class is represented by prototypes.
+A vector $x$ belongs to the class with the shortest distance.
+% TODO: Tikz Diagramm mit klassen, prototypen und grenzen
+\paragraph{Minimum distance classifier}
+The mean vector of a class is a powerful prototype vector.
+\begin{align*}
+	m_j = \frac{1}{N_j} \sum_{x\in \omega_j}x_j && j = 1,2,\dots, W
+\end{align*}
+A simple matching function is the Euclidean distance.
+\begin{align*}
+	D_i(x) = ||x-m_j|| = \left(x^Tm_j\right)^{1/2}
+\end{align*}
+The resulting discriminant function which is the largest, when the distance is
+the smallest.
+\begin{align*}
+	d_j(x) = x^Tm_j - \frac{1}{2}m_j^Tm_j
+\end{align*}
+The decision boundary between class $\omega_i$ and $\omega_j$ will be
+\begin{align*}
+	d_{ij}(x) &= d_i(x) - d_j(x)\\
+	&= x^t(m_i-m_j) - \frac{1}{2}(m_i-m_j)^T(m_i+m_j) = 0
+\end{align*}
+Which is a line through the midpoint of $m_i$ and $m_j$ for $n=2$.
+For $n=3$ its a plane and for $n>3$ it's a hyperplane.
+% TODO: Tikz mit diagram
+% TODO: Evt. Beispiel?
+
+\paragraph{Matching by correlation\buchSeite{869}}
+Calculate cross-correlation between a mask $w(x,y)$ of size $m$ $n$ and an image
+$f(x,y)$ to find the mask in the image.
+\begin{align*}
+	c(c,y) = \sum_s\sum_tw(s,t)f(x+s,y+t)
+\end{align*}
+This is sensitive to contrast and average intensity in $f$ and $w$.
+Hence the normalized cross correlation is used
+\begin{align*}
+	\gamma(x,y) = \frac{\sum_s\sum_t\left[w(s,t)-\bar{w}\right]\left[f(x+s,y+t)-\bar f_{xy}\right]}
+	{
+	\left\lbrace 
+		\sum_s\sum_t\left[w(s,t)-\bar w\right]^2
+		\sum_s\sum_t\left[f(x+s,y+t)-\bar f_{xy}\right]^2
+	\right\rbrace^{\frac{1}{2}}
+	}
+\end{align*}
+$y(x,y)$ is always in range $[-1, 1]$, where +1 is perfect match and -1 a perfect anti-match.
+This is sensitive to scale and rotation.
+
 
 \subsection{Structural Methods\buch{Ch. 12.3}}
 
