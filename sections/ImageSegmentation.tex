@@ -208,7 +208,7 @@ Gradient operators:\\
 \end{figure}\\
 After the gradient images have been calculated, often the magnitude of the gradient is required.
 \[
-	M(x,y) \approx |g_x|+|g_y|
+	M(x,y) = \sqrt{g_x^2 + g_y^2} \approx |g_x|+|g_y|
 \]
 If the goal is to find the dominant edges, then smoothing the image before calculating the magnitude gradient image works well. Alternatively, the magnitude gradient image can also be thresholded such that only values above this value are considered edges (set to one). Everything else is set to 0.
 \subsubsection{More Advanced Techniques for Edge Detection\buchSeite{714}}
@@ -274,7 +274,7 @@ DoG(x,y)=\frac{1}{2\pi\sigma_1^2}e^{-\frac{x^2+y^2}{2\sigma_1^2}}-\frac{1}{2\pi\
 		\end{align*}
 	\item Compute the gradient magnitude and angle images (Sobel operators).
 		\begin{align*}
-			M(x,y) 		&= \sqrt{g_x^2+g_y^2} \\
+			M(x,y) 		&= \sqrt{g_x^2+g_y^2} \approx |g_x| + |g_y| \\
 			\alpha(x,y)	&= tan^{-1}\left[\frac{g_y}{g_x}\right]
 		\end{align*}
 	\item Apply nonmaxima suppression to the gradient image:
