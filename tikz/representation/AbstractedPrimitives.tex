@@ -1,0 +1,13 @@
+\begin{tikzpicture}
+\draw[->, shorten >=4, shorten <= 4] (0,0) node [anchor=north] {Tail} -- (2,2) node [anchor=south] {Head};
+\draw (0,0) node [circ] {};
+\draw (2,2) node [circ] {};
+
+\draw[->, shorten >=4, shorten <= 4] (3.5,-0.5) node [anchor=north] {Tail} -- (4,2) node [anchor=south] {Head};
+\draw (3.5,-0.5) node [circ] {};
+\draw (4,2) node [circ] {};
+
+\draw  plot[smooth, tension=.7] coordinates {(-0.4,0.7) (0.2,1.7) (2.9,2.7) (2.1,0.6) (0.6,-0.6) (-0.3,-0.5) (-0.4,0.7)};
+
+\draw  plot[smooth, tension=.7] coordinates {(3,-0.5) (3.3,0.7) (3.3,2.1) (3.8,3) (4.7,2.2) (4.6,1.2) (4.2,0.5) (4.3,-0.5) (4,-1.3) (3,-1.1) (3,-0.5)};
+\end{tikzpicture}
