@@ -95,7 +95,7 @@ Hence the normalized cross correlation is used
 \begin{align*}
 	\gamma(x,y) = \frac{\sum_s\sum_t\left[w(s,t)-\bar{w}\right]\left[f(x+s,y+t)-\bar f_{xy}\right]}
 	{
-	\left\lbrace 
+	\left\lbrace
 		\sum_s\sum_t\left[w(s,t)-\bar w\right]^2
 		\sum_s\sum_t\left[f(x+s,y+t)-\bar f_{xy}\right]^2
 	\right\rbrace^{\frac{1}{2}}
@@ -104,6 +104,138 @@ Hence the normalized cross correlation is used
 $y(x,y)$ is always in range $[-1, 1]$, where +1 is perfect match and -1 a perfect anti-match.
 This is sensitive to scale and rotation.
 
+\subsubsection{Neural Networks\buchSeite{882}}
+
+Class of algorithms which find decision functions directly by training.
+
+\paragraph{Perceptron for two pattern classes}
+
+The perceptron learns a linear decision function that separates two linearly separable training sets.
+
+\begin{figure}[htb]
+\centering
+\input{tikz/objectrecognition/perzeptron}
+\caption{Perceptron model for two pattern classes}
+\label{fig:perceptron}
+\end{figure}
+\begin{align*}
+d(x) = \sum_{i=1}^nw_ix_i + w_{n+1}
+\end{align*}
+
+The function which maps the weighted sum of the input to the output is called \emph{activation function}.
+In \ref{fig:perceptron} a sign function is used.
+For multilayer NN a sigmoid (\ref{fig:sigmoid}) is common.
+
+The constant input of 1 gives the offset.
+
+A convenient notation is the augmented pattern vector:
+
+\begin{align*}
+y_i &= x_i & i=1,2,\dots,n \\
+y_{n+1} &= 1 \\
+d(y) &= \sum_{i=1}^{n+1}w_iy_i + w_{n+1} = w^Ty \\
+\end{align*}
+
+\paragraph{Training algorithms\buchSeite{886}}
+Train the weights of the perceptron so that it can distinguish between classed, using training sets.
+For linear separable classes, a simple, iterative algorithm is:
+\begin{itemize}
+\item
+Pattern vectors of the training set are presented repetitively, the weight vector is changed if a misclassification happens.
+\item The training stops, when there are no more misclassifications.
+\end{itemize}
+
+for $d(y)>0 \rightarrow \omega_1$ and $d(y)<0 \rightarrow \omega_2$
+
+\begin{align*}
+\text{if } y(k) \in \omega_1 \text{ and } w^T(k)y(k) \leq 0 && \rightarrow && w(k+1) = w(k) +cy(k) \\
+\text{if } y(k) \in \omega_2 \text{ and } w^T(k)y(k) \geq 0 && \rightarrow && w(k+1) = w(k)-cy(k)
+\end{align*}
+
+
+$c$ is a positive correction increment.
+This algorithm converges in a finite number of steps for linearly separable training data.
+
+This is not possible for nonseparable classes.
+Hence minimizing the squared error is the target.
+
+\begin{align*}
+J(w) = \frac{1}{2}(r-w^Ty)^2
+&& r \text{ is the desired response}
+\end{align*}
+
+To minimize this we use the delta correction algorithm
+\begin{align*}
+\Delta w &= \alpha e(k)y(k) \\
+\Delta w &= w(k+1)-w(k) && \text{weighting change} \\
+e(k) &= r(k) - w^T(k)y(k) && \text{error}
+\end{align*}
+
+The change of the error becomes
+\begin{align*}
+\Delta e &= -\alpha e(k) y^T(k) y(k) \\
+ &= - \alpha e(k) ||y(k)||^2
+\end{align*}
+
+So $\alpha$ controls the speed of error reduction.
+For stability $\alpha$ must be smaller than 2.
+In practice $\alpha$ is picked below 1.
+
+\paragraph{Multilayer feedforward neural networks\buchSeite{889}}
+These allow for multiclass pattern recognition, also for non linear separable classes.
+They are stacked banks of perceptrons with the sigmoid as activation function (\ref{fig:sigmoid}).
+
+\begin{figure}[htp]
+\centering
+\input{tikz/objectrecognition/nn}
+\caption{Multilayer feed forward network}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\input{tikz/objectrecognition/sigmoid}
+\caption{Sigmoid function}
+\label{fig:sigmoid}
+\end{figure}
+
+If $K$ is the layer preceding layer $J$ then the input to the activation function of node $j$ in layer $J$ is the weighted sum of the outputs of Layer $K$.
+
+\begin{align*}
+I_j = \sum_{k=1}^{N_k}w_{jk}O_k
+\end{align*}
+
+\paragraph{Training by back propagation}
+\begin{itemize}
+\item A training vector is presented at
+the input and the desired response
+at the output
+\item For all nodes, the input and output values are calculated
+\item Starting at the output layer, the
+deltas are calculated and back
+propagated
+\item Now the weights are updated
+\end{itemize}
+
+\begin{align*}
+\Delta w_{jk} &= \alpha \delta_j O_k& \\
+\delta_j &= (r_j-O_j) h'_j(I_j) & \text{if layer $J$ is the output Layer} \\
+\delta_j &= h'_j(I_j) \sum_{p=1}^{N_p}\delta_p w_{jp} & \text{if layer $J$ is an internal layer and layer $P$ is the next layer}
+\end{align*}
+
+Since $sig'(t) = sig(t)(1-sig(t))$ for $\theta_0=1$ the derivative of the activation function becomes
+\begin{align*}
+h'_j(I_j) = O_j(1-O_j)
+\end{align*}
+
+\paragraph{Some facts about NN}
+\begin{itemize}
+\item Training with noisy data helps improving performance
+\item Training with more patterns also
+\item Single layer perceptron results in hyperplanes
+\item Two layers result in open or closed convex regions
+\item Three layers result in arbitrary (limited by the number of nodes) regions
+\item More than three layers are never needed
+\end{itemize}
 
 \subsection{Structural Methods\buch{Ch. 12.3}}
 
