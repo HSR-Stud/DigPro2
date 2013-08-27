@@ -311,19 +311,19 @@ This is a transformation which uses two images and a structuring element
 \end{itemize}
 \textbf{Geodesic dilation}
 \[
-	D_G^{(1)}(F) = (F\oplus B)\cup G
+	D_G^{(1)}(F) = (F\oplus B)\cap G
 \]
 Can be repeated:
 \begin{align*}
 	D_G^{(0)}(F) = F \\
-	D_G^{(1)}(F) = (F\oplus B)\cup G\\
+	D_G^{(1)}(F) = (F\oplus B)\cap G\\
 	D_G^{(n)}(F) = D_G^{(1)}[D_G^{(n-1)}(F)]
 \end{align*}
 
 \textbf{Geodesic erosion}
 \begin{align*}
 	E_G^{(0)}(F) &= F \\
-	E_G^{(1)}(F) &= (F\ominus B)\cap G \\
+	E_G^{(1)}(F) &= (F\ominus B)\cup G \\
 	E_G^{(n)}(F) &= E_G^{(1)}[E_G^{(n-1)}(F)]
 \end{align*}
 
@@ -334,11 +334,16 @@ This is geodesic dilation/erosion until nothing changes.
 \textbf{Opening and closing by reconstruction}\\
 Opening by reconstruction removes all small object, all others stay unchanged.
 Closing by reconstruction closes gaps, the rest is unchanged. This is in contrast to morphological opening and closing, where the erosion removes the small objects and the dilation "sort of" reconstructs the other objects.\\
+\begin{align*}
+O_R^{(n)}(F)=R_F^D[(F\ominus nB)]\\
+C_R^{(n)}(F)=R_F^E[(F\oplus nB)]
+\end{align*}
 
 \textbf{Filling holes in a binary image I}\\
 Without needing a seed!\\
 \[
-	H = [R_F^D(F)]^C
+	H = [R_F^D(F)]^C  \qquad  \text{with} \qquad \text{F}(x,y)=\begin{cases} 1-I(x,y) & \text{if (x,y) is on the border of I}\\
+                                                             0 & \text{otherwise} \end{cases}   
 \]
 \begin{figure}[h!]
 \centering
@@ -382,6 +387,10 @@ Without needing a seed!\\
 
 \paragraph{Border clearing\buchSeite{661}}
 Remove object that touch the border.
+\[
+X = I-R_I^D(F)  \qquad  \text{with} \qquad \text{F}(x,y)=\begin{cases} I(x,y) & \text{if (x,y) is on the border of I}\\
+0 & \text{otherwise} \end{cases}   
+\]
 
 \subsection{Gray-scale morphology\buchSeite{665}}
 The fundamental operations dilation, erosion, opening and closing can be extended to gray scale. Hence the more advanced operations which are based on the above operations can be extended too. The structuring elements are also gray-scale. In practice, flat structuring elements are preferred.
