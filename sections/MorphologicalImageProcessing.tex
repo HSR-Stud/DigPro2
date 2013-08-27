@@ -138,6 +138,7 @@ Initial array ($X_0$) contains a 1 in the region of the connected component.
 \begin{align*}
 X_k=(X_{k-1}\oplus B)\cap A && k=1,2,3,\ldots
 \end{align*}
+The iteration can stop, when $X_k = X_{k-1}$.
 
 \subsubsection{Convex hull\buchSeite{647}}
 \begin{itemize}
@@ -440,17 +441,23 @@ The fundamental operations dilation, erosion, opening and closing can be extende
 \end{subfigure}\\
 \caption{Nonflat and flat structuring elements and corresponding horizontal intensity profiles through their center}
 \end{figure}
+
 \subsubsection{Erosion and Dilation\buchSeite{666}}
 Erosion
-\[
-	[f\ominus b](x,y) = \min_{(s,t)\epsilon b} \{f(x+s,y+t)\}
-\]
+\begin{align*}
+	[f\ominus b](x,y)	&= \min_{(s,t)\in b} \{f(x+s,y+t)\}				& \text{Flat SE} \\
+	[f\ominus b_N](x,y)	&= \min_{(s,t)\in b_n} \{f(x+s,y+t) -b_N(s,t)\}	& \text{Non-Flat SE}
+\end{align*}
+
 Dilation
-\[
-	[f\oplus b](x,y) = \max_{(s,t)\epsilon b} \{f(x-s,y-t)\}
-\]
+\begin{align*}
+	[f\oplus b](x,y)	&= \max_{(s,t)\in b} \{f(x-s,y-t)\}				& \text{Flat SE} \\
+	[f\oplus b_N](x,y)	&= \max_{(s,t)\in b_N} \{f(x-s,y-t) +b_N(s,t)\}	& \text{Non-Flat SE} 
+\end{align*}
+
 \subsubsection{Opening and Closing\buchSeite{668}}
 Opening and closing are defined exactly the same as in the binary case.
+
 \subsubsection{Some Basic Gray-Scale Morphological Algorithms\buchSeite{670}}
 \paragraph{Morphological smoothing\buchSeite{670}}
 Opening suppresses bright details and closing suppresses dark details. They can be used in combination for image smoothing and/or noise suppression.
