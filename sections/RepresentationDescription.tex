@@ -233,7 +233,7 @@ s(k)=x(k)+jy(k) && k=0,1,2,\ldots,K-1
 \end{align*} 
 wich can be analyzed in the frequency domain.\\
 The DFT of $s(k)$ is \begin{align*}
-& \text{Fourier descriptors of the boundary:} && a(u)=\sum\limits_{k=0}^{K-1}s(k)e'{-j2\pi uk/K} && u=0,1,2,\ldots,K-1\\
+& \text{Fourier descriptors of the boundary:} && a(u)=\sum\limits_{k=0}^{K-1}s(k)e^{-j2\pi uk/K} && u=0,1,2,\ldots,K-1\\
 & \text{Inverse Fourier transform:} && s(k)=\frac{1}{K}\sum\limits_{u=0}^{K-1}a(u)e^{j2\pi uk/K}
 \end{align*} 
 
@@ -248,7 +248,7 @@ Identity & $s(k)$ & $a(u)$ \\
 Rotation & $s_r(k)=s(k)e^{j\theta}$& $a_r(u)=a(u)e^{j\theta}$ \\
 Translation &$s_t(k)=s(k)+\Delta_{xy}$& $a_t(u)=a(u)+\Delta_{xy}\delta(u)$ \\
 Scaling &$s_s(k)=\alpha s(k)$& $a_s(u)=\alpha a(u)$ \\
-Starting point & $s_p(k)s(k-k_0)$& $a_p(u)=a(u)e^{-j2\pi k_0u/K}$ \\
+Starting point & $s_p(k)=s(k-k_0)$& $a_p(u)=a(u)e^{-j2\pi k_0u/K}$ \\
 \end{tabularx}
 
 \subsubsection{Statistical moments\buchSeite{821}}
@@ -271,7 +271,7 @@ The same can be done with skipping the histogram building.
 \item Area: Number of pixels
 \item Perimeter: Lenght of boundary
 \item Compactness: $Perimeter^2/area$
-\item Circularity ratio
+\item Circularity ratio $R_C=\frac{4\pi A}{P^2}$ where $A$ is the area of the region in question and $P$ the lenght of its perimeter
 \item Mean, median, minimum, maximum of intensity
 \item Etc.
 \end{itemize}

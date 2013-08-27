@@ -385,7 +385,7 @@ If the location of a boundary is roughly known, it is possible to use the detect
 \subsubsection{Fundation\buchSeite{738}}
 \begin{flalign}
 & \text{single thresholding} && g(x,y)=\begin{cases}1 \qquad \text{if } f(x,y) > T \\0 \qquad  \text{if } f(x,y) \leq T \end{cases} &&\label{thresholdingBasic}\\
-& \text{multiple thresholding} && g(x,y)=\begin{cases}a \qquad \text{if } f(x,y) > T_2 \\b \qquad  \text{if } T_1 < f(x,y)  \leq T_2 \\b \qquad  \text{if } f(x,y) \leq T_1 \end{cases} &&\label{thresholdingMultiple}
+& \text{multiple thresholding} && g(x,y)=\begin{cases}a \qquad \text{if } f(x,y) > T_2 \\b \qquad  \text{if } T_1 < f(x,y)  \leq T_2 \\c \qquad  \text{if } f(x,y) \leq T_1 \end{cases} &&\label{thresholdingMultiple}
 \end{flalign}
 
 \subsubsection{Basic global thresholding\buchSeite{741}}
@@ -421,14 +421,14 @@ Two different variances are important
 & & \sigma_G^2: \text{global variance}  && \\
 & P_1(k) =\sum_{i=0}^{k} p_i
 & &  P_1: \text{ probability of the background}    && \\
-& P_2(k)=\sum_{i=k+1}^{L-1}1-P_1(k)
+& P_2(k)=\sum_{i=k+1}^{L-1}p_i=1-P_1(k)
 & & P_2: \text{ probability of the object}  && \\
 & m_1(k)=\frac{1}{P_1(k)}\sum_{i=0}^{k} i \ p_i
 & &  m_1: \text{ mean intensity of the background}   && \\
 & m_2(k)=\frac{1}{P_2(k)}\sum_{i=k+1}^{L-1} i \ p_i 
 & &  m_2: \text{ mean intensity of the object}   && \\
 & \sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2 & &  \text{Using algebra to change the form}  && \\
-&=P_1 P_2 (m_1-m_2)^2 = \frac{(m_G P_1 - m)^2}{P_1(1-P_1)} & &  && \\
+&=P_1 P_2 (m_1-m_2)^2 = \frac{(m_G P_1 - m)^2}{P_1(1-P_1)} & & \text{width} \quad m(k)=\sum_{i=0}^{k}i \ p_i && \\
 &\sigma_B^2(k^*)=\max\limits_{0\leq k \leq L-1} \sigma_B^2(k)
 & & \text{Optimum of k for maximizing is } k^*  && \\
 &\eta(k)=\frac{\sigma_B^2(k)}{\sigma_G^2}
@@ -452,7 +452,7 @@ Two different variances are important
 The obvious approach to improve the situation is to low pass filter the image, i.e., to smooth the image before the global thresholding method is applied
 \subsubsection{Using Edges to Improve Global Thresholding\buchSeite{749}}
 Only the strongest edges are usually kept, say the top 10\%
-\subsubsection{Multiple Thresholds}
+\subsubsection{Multiple Thresholds\buchSeite{752}}
 
 \begin{flalign*}
 &\sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2+P_3(m_3-m_G)^2 &&\\

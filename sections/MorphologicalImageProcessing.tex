@@ -329,6 +329,10 @@ Can be repeated:
 
 \paragraph{Morphological reconstruction by dilation and by erosion\buchSeite{658}}
 This is geodesic dilation/erosion until nothing changes.
+\begin{align*}
+    \text{Reconstruction by dilation:} \quad R_G^D(F)=D_G^{(k)} \quad \text{with} \quad D_G^{(k)}(F)=D_G^{(k+1)}(F)\\
+    \text{Reconstruction by erosion:} \quad R_G^E(F)=E_G^{(k)} \quad \text{with} \quad E_G^{(k)}(F)=E_G^{(k+1)}(F)
+\end{align*}
 
 \paragraph{Sample applications\buchSeite{659}}
 \textbf{Opening and closing by reconstruction}\\
@@ -452,7 +456,7 @@ This operation resullts in an image where the edges are enhanced, not unlike a c
 The resulting image contains mostly bright details that are smaller than the structuring element.
 \paragraph{Bottom-hat transformation\buchSeite{672}}
 \[
-	B_{hat}(f) = (f \circ b)-f
+	B_{hat}(f) = (f \bullet b)-f
 \]
 The resulting image contains mostly dark details, that are smaller than the structuring element.
 \paragraph{Granulometry\buchSeite{674}}
