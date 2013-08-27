@@ -1,0 +1,50 @@
+\begin{tikzpicture}
+	\tikzstyle{entry} = [circle, draw, inner sep=1, fill=black]
+	\tikzstyle{perz} = [circle, draw, inner sep=10]
+	\tikzstyle{line} = [draw, -latex']
+	\newcommand{\xstr}{2}
+	\newcommand{\ystr}{2}
+
+	% entries
+	\foreach \y/\yt in {1, 2, 3, 5/n} {
+		\node[entry] (n0\y)  at (0,-\y*\ystr){};
+		\node[left] at (n0\y){$x_{\yt}$};
+	}
+
+	% network
+	\foreach \x in {1,2,3} {
+		\foreach \y in {1,2,3,5} {
+			\node[perz] (n\x\y) at(\x*\xstr,-\y*\ystr) {};
+		}
+	}
+
+	% connections
+	\foreach \na/\nb in {0/1,1/2,2/3} {
+		\foreach \j in { 1, 2,3,5} {
+			\foreach \i in {1,2,3,5} {
+				\draw (n\na\j) -- (n\nb\i);
+			}
+		}
+	}
+
+	% text
+	\foreach \x in {0,1,2,3} {
+		\node[] at(\x*\xstr,-4*\ystr) {$\vdots$};
+	}
+	\node[] at(4*\xstr,-3.5*\ystr) {$\vdots$};
+
+
+	%output
+	\foreach \y/\yt in {2/1,3/2, 5/W} {
+		\node[perz] (n4\y)  at (4*\xstr,-\y*\ystr+0.5*\ystr){};
+		\node[right] (end) at (5*\xstr,-\y*\ystr+0.5*\ystr){Class $\omega_\yt$};
+		\path[line] (n4\y) -- (end);
+		\foreach \yb in {1,2,3,5} {
+			\draw (n3\yb) -- (n4\y);
+		}
+	}
+
+	\foreach \x/\xt/\xtt in {1/J,2/K,3/P,4/Q/Q = W} {
+		\node[below,text width=1.7cm] at(n\x5.south) {Layer \xt{} $N_\xtt$ nodes};
+	}
+\end{tikzpicture}

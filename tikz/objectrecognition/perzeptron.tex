@@ -1,0 +1,27 @@
+\begin{tikzpicture}[font=\tiny
+]
+	\tikzstyle{entry} = [circle, draw, inner sep=0, fill=black]
+	\tikzstyle{line} = [draw, -latex']
+	\tikzstyle{line node} = [rectangle, fill=white]
+	\newcommand{\m}{0.5}
+
+	\node (sum) at (1.5,-3*\m) [draw,circle]{$\Sigma$};
+	\foreach \x/\xtext in {1, 2, 3.5/i, 5/n, 6/n+1} {
+		\node[entry] (in\xtext) at (0,-\x*\m){};
+            \if \x6
+				\node[left]at (in\xtext){$1$};
+            \else
+				\node[left]at (in\xtext){$x_{\xtext}$};
+            \fi
+		\path[line] (in\xtext) -- node[line node]{$w_{\xtext}$}+(1,0) -- (sum);
+	}
+
+	\draw[loosely dotted] (in2) -- (ini) --(inn);
+
+	\node (out) at (2.5,-3*\m) [draw,inner sep=7]{};
+
+	\draw (out.west) --  +(0.4,0);
+	\draw (out.south west) ++(0.1,0.1) -- ++(0.1,0) -- ++(0,0.3) -- ++(0.15,0);
+
+	\path[line] (sum) -> (out);
+\end{tikzpicture}
