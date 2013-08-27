@@ -20,13 +20,27 @@
 \end{itemize}
 
 \subsection{Fundamentals\buchSeite{690}}
-\begin{enumerate}
+\begin{figure}[!h]
+\begin{subfigure}[b]{0.48\textwidth}
+\begin{enumerate}[label={\alph*)}]
 \item $\bigcup\limits_{i=1}^{n}R_i=R$
 \item $R_i$ is a connected set, $i=1,2,...,n$
 \item $R_i\bigcap R_j = $ for all $i$ and $j, i\neq j$
 \item $Q(R_i)=$TRUE for $i=1,2,...n$
 \item $Q(R_i\bigcup R_j)=$FALSE for any adjacent Regions $R_i$ and $R_j$
 \end{enumerate}
+\end{subfigure}
+\begin{subfigure}[b]{0.48\textwidth}
+\begin{itemize}
+\item The entire spatial region that is occupied by an image is called $R$
+\item Image segmentation is the task of partitioning R into sub-regions $R_i$
+\item $Q()$ is a measure of similarity of a particular property
+\item d) must be true, since this defines the region
+\item e) must be false, since otherwise, the regions should have been merged
+\end{itemize}
+\end{subfigure}
+\end{figure}
+
 Focus on the intenxity values
 \begin{itemize}
 \item there are discontinuities, then a new region starts.
