@@ -133,13 +133,12 @@ In \ref{fig:perceptron} a sign function is used.
 For multilayer NN a sigmoid (\ref{fig:sigmoid}) is common.
 
 The constant input of 1 gives the offset.
-
 A convenient notation is the augmented pattern vector:
 
 \begin{align*}
 y_i &= x_i & i=1,2,\dots,n \\
 y_{n+1} &= 1 \\
-d(y) &= \sum_{i=1}^{n+1}w_iy_i + w_{n+1} = w^Ty \\
+d(y) &= \sum_{i=1}^{n+1}w_iy_i = w^Ty \\
 \end{align*}
 
 \paragraph{Training algorithms\buchSeite{886}}
