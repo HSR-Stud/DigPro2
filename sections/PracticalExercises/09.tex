@@ -1,0 +1,73 @@
+\subsubsection{Exercise 9}
+Write a Matlab script that allows you to enter an arbitrary boundary (use the ginput command) interactively. Then calculate the Fourier descriptors and show the reconstructed boundary for the case when only 10, 20, 30, 40 or 50$\%$ of these Fourier descriptors are kept. Are there some descriptors that are more important than others?\\
+\textbf{Solution nicht komplett!}
+\begin{lstlisting}
+% 1) Interaktives einlesen eines beliebigen Boundaries (ginput)
+% Countervariable
+button = 1;
+ImSize=10;
+scalefactor = 20;
+I = zeros(ImSize);
+f = figure;
+zz = [];
+while(1)
+    imshow(imresize(I,scalefactor,'nearest'));
+    title('Mit LMB Punkte Zeichen, mit RMB fertig');
+    [X, Y, button] = ginput(1);
+    if(button ~= 1)
+        close(f);
+        break;
+    end
+    Y = ceil(Y/scalefactor);
+    X = ceil(X/scalefactor);
+    
+    %Durchlauf ueberspringen falls der klick ausserhalb war
+    if X > ImSize || Y > ImSize || X <= 0 || Y <= 0 || I(Y,X) == 1
+        continue
+    end
+    I(Y,X) = 1;
+    zz = [zz (X+1i*Y)];
+end
+% 2) Desktriptoren berechnen
+% Darstellung Originalbild
+subplot(2,3,1);
+plot(zz,'-*');
+axis([0 ImSize 0 ImSize]);
+axis ij;
+axis square;
+title('Original Image');
+% FFT berechnen
+fftzz=fft(zz);
+
+% 3) Boundary darstellen mit 10%, 20%, ...,50% der Deskriptoren
+% Bild komplett rekonstruieren
+subplot(2,3,2);
+plot([zz ifft(fftzz)],'-*');
+axis([0 ImSize 0 ImSize]);
+axis ij;
+axis square;
+title('Reconstructed with 100%');
+
+% 70%
+fftzztemp = fftzz;
+k = length(fftzztemp);
+k2 = k*0.1;
+fftzztemp(k2:k-k2)=0;
+subplot(2,3,3);
+plot([ifft(fftzztemp)],'-*');
+axis([0 ImSize 0 ImSize]);
+axis ij;
+axis square;
+title('Reconstructed with 10%');
+
+fftzztemp = fftzz;
+k = length(fftzztemp);
+k2 = k*0.2;
+fftzztemp(k2:k-k2)=0;
+subplot(2,3,4);
+plot([ifft(fftzztemp)],'-*');
+axis([0 ImSize 0 ImSize]);
+axis ij;
+axis square;
+title('Reconstructed with 20%');
+\end{lstlisting}

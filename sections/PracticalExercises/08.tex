@@ -1,0 +1,71 @@
+\subsubsection{Exercise 8}
+Write a Matlab script that implements a 4-directional chain code. The input to the script should be a binary image containing one closed 4-connect boundary. Make the code start point independent by normalizing it to the integer of minimum magnitude. Now make the code 4-connect rotational independent by building the first order difference. Test your code by feeding it the same binary image rotated by 90, 180 and 270 degrees. In all cases, you should get the same description of the boundary.\\
+\textbf{Solution nicht komplett!}
+\begin{lstlisting}
+% 0. Bild laden, schoene kante basteln
+I = imread('circles.png');
+subplot(2,2,1);
+imshow(I);
+title('Ausgangsbild');
+se = [1, 1, 1; 1, 1, 1; 1, 1, 1];
+I2 = imerode(I,se);
+I = I - I2;
+subplot(2,2,2);
+imshow(I);
+title('Kanten Ausgangsbild');
+% 1. Chain code implementieren
+% Find uppermost, leftmost point
+xStart = 0;
+yStart = 0;
+[Iy, Ix] = size(I);
+for y=1:Iy
+    for x=1:Ix
+        if I(y,x) == 1
+            xStart = x;
+            yStart = y;
+            break
+        end
+    end
+    if xStart ~= 0 || yStart ~= 0
+        break
+    end
+end
+%
+CC = [];
+xCurr = xStart+1;
+yCurr = yStart+1;
+CC(1) = 0;
+counter = 2;
+% Follow path
+while 1
+    CC(counter) = -1;
+    % Links
+    if (I(yCurr-1,xCurr)==1) && CC(counter-1)~=0
+        CC(counter) = 2;
+        yCurr = yCurr+1;
+    % Oben
+    elseif I(yCurr+1,xCurr+1)==1 && CC(counter-1)~=3
+        CC(counter) = 1;   
+        xCurr = xCurr+1;
+        yCurr = yCurr+1;
+    % Rechts
+    elseif I(yCurr+1,xCurr)==1 && CC(counter-1)~=2
+        CC(counter) = 0;   
+        yCurr = yCurr+1;
+    % Unten
+    elseif I(yCurr-1,xCurr-1)==1 && CC(counter-1)~=1
+        CC(counter) = 3; 
+        xCurr = xCurr-1;
+        yCurr = yCurr-1;
+    else
+        break
+    end;
+    if xCurr == xStart && yCurr == yStart
+        break
+    end
+    counter = counter + 1;
+end
+% 2. Startpunkt normalisieren
+% 3. First order difference
+% 4. Test (Testbild um 0, 90, 180, 270 Grad drehen)
+\end{lstlisting}

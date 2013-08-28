@@ -1,0 +1,67 @@
+\subsubsection{Exercise 7}
+Write a matlab script that implements the Accumulative Difference method and use it to re-ceate figure 10.59 in the text.\\
+\textbf{Solution}
+\begin{lstlisting}
+% Groesse der Bilder
+xsize = 64;
+ysize = 64;
+framenr = 20;
+
+% Serie von Bildern
+frames=zeros(xsize,ysize,framenr);
+
+% Absolute ADI
+A=zeros(xsize,ysize);
+% Positive ADI
+P=zeros(xsize,ysize);
+% Negative ADI
+N=zeros(xsize,ysize);
+% Reference Image
+R=zeros(xsize,ysize);
+% Threshold
+T = 0.5;
+
+% 10 Bilder generieren
+% 1 weisser, wandernder Block
+for i=1:framenr
+    frames(10+2*i:40+2*i,10+2*i:30+2*i,i) = 1;
+    %frame = frames(:,:,i);
+    %figure;
+    %imshow(frame);
+end
+
+R = frames(:,:,1);
+
+% A, P und N berechnen
+for i=2:framenr
+    % Durch Bilder loopen
+    for x=1:xsize
+       for y=1:ysize
+          %A
+          if (abs(R(x,y) - frames(x,y,i))>T)
+              A(x,y) = A(x,y) + 1;
+          end
+          %P
+          if (R(x,y) - frames(x,y,i)>T)
+              P(x,y) = P(x,y) + 1;
+          end
+          %N
+          if (R(x,y) - frames(x,y,i)<-T)
+              N(x,y) = N(x,y) + 1;
+          end
+       end
+    end
+end
+
+% Bilder darstellen
+figure;
+subplot(1,3,1);
+imshow(A, []);
+title('Absolute ADI');
+subplot(1,3,2);
+imshow(P, []);
+title('Positive ADI');
+subplot(1,3,3);
+imshow(N, []);
+title('Negative ADI');
+\end{lstlisting}

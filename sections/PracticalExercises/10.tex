@@ -1,0 +1,89 @@
+\subsubsection{Exercise 10}
+Write a Matlab script that calculates for a given 8 bit gray scale image the values in the table 11.2. Create an artificial test set of images, one random, one smooth and one periodic and calculate the entries in the table for each image. Could you use these regional descriptors to distinguish the different images?
+\\
+\textbf{Solution}
+\begin{lstlisting}
+% Drei Bilder generieren. Der einfachheit halber alle gleich gross
+Irandom = rand([100 100]);
+Ismooth = repmat(1:100,100,1)/100;
+Iperiodic = repmat([zeros(100,10) ones(100,10)],1,5);
+
+% Show images
+subplot(2,3,1);
+imshow(Irandom);
+title('Random Image');
+subplot(2,3,4);
+imhist(Irandom);
+title('Hist Random Image');
+subplot(2,3,2);
+imshow(Ismooth);
+title('Smooth Image');
+subplot(2,3,5);
+imhist(Ismooth);
+title('Hist Smooth Image');
+subplot(2,3,3);
+imshow(Iperiodic);
+title('Periodic Image');
+subplot(2,3,6);
+imhist(Iperiodic);
+title('Hist Periodic Image');
+
+% Werte in Tabelle 11.2 berechnen
+% Mean
+MeanRand = mean(Irandom(:))
+MeanSmooth = mean(Ismooth(:))
+MeanPeriodic = mean(Iperiodic(:))
+% Standard Deviation
+StDevRand = std(Irandom(:))
+StDevSmooth = std(Ismooth(:))
+StDevPeriodic = std(Iperiodic(:))
+% Variance
+VarRand = var(Irandom(:))
+VarSmooth = var(Ismooth(:))
+VarPeriodic = var(Iperiodic(:))
+% R normalized
+RRand = 1-1/(1+VarRand)
+RSmooth = 1-1/(1+VarSmooth)
+RPeriodic = 1-1/(1+VarPeriodic)
+% Third moment
+[CountRand XRand] = imhist(Irandom);
+TMRand = 0;
+UniRand = 0;
+EntropyRand = 0;
+for i = 1:256
+    TMRand = TMRand + ((XRand(i)-MeanRand).^3 * CountRand(i)/100^2);
+    UniRand = UniRand + (CountRand(i)/100^2)^2;
+    EntropyRand = EntropyRand + (CountRand(i)/100^2) .* log2(CountRand(i)/100^2);
+end
+TMRand
+
+[CountSmooth XSmooth] = imhist(Ismooth);
+TMSmooth = 0;
+UniSmooth = 0;
+EntropySmooth = 0;
+for i = 1:256
+    TMSmooth = TMSmooth + ((XSmooth(i)-MeanSmooth).^3 * CountSmooth(i)/100^2);
+    UniSmooth = UniSmooth + (CountSmooth(i)/100^2)^2;
+    EntropySmooth = EntropySmooth + (CountSmooth(i)/100^2) .* log2(CountSmooth(i)/100^2);
+end
+TMSmooth
+
+[CountPeriodic XPeriodic] = imhist(Iperiodic);
+TMPeriodic = 0;
+UniPeriodic = 0;
+EntropyPeriodic = 0;
+for i = 1:256
+    TMPeriodic = TMPeriodic + ((XPeriodic(i)-MeanPeriodic).^3 * CountPeriodic(i)/100^2);
+    UniPeriodic = UniPeriodic + (CountPeriodic(i)/100^2)^2;
+    EntropyPeriodic = EntropyPeriodic + (CountPeriodic(i)/100^2) .* log2(CountPeriodic(i)/100^2);
+end
+TMPeriodic
+% Unifomity
+UniRand
+UniSmooth
+UniPeriodic
+% Entropy
+EntropyRand = -EntropyRand
+%EntropySmooth = -EntropySmooth
+%EntropyPeriodic = -EntropyPeriodic
+\end{lstlisting}

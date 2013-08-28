@@ -1,0 +1,89 @@
+\subsubsection{Exercise 11}
+Write a Matlab script that allows you to enter an arbitrary boundary (use the ginput command) interactively. Then use the principal component approach to normalize the boundary  (i.e., make it independent of position, rotation and scale). Now randomly rotate, scale and move the original boundary over and over again and observe how the normalized boundary reacts to these operations. What do you observe?\\
+
+\textbf{Solution}
+\begin{lstlisting}
+% Principal Component
+% 1) mit ginput() beliebiges Boundary einlesen
+button = 1;
+ImSize=10;
+scalefactor = 20;
+I = zeros(ImSize);
+f = figure;
+zz = [];
+zz2 = [];
+while(1)
+    imshow(imresize(I,scalefactor,'nearest'));
+    title('Mit LMB Punkte Zeichen, mit RMB fertig');
+    [X, Y, button] = ginput(1);
+    if(button ~= 1)
+        close(f);
+        break;
+    end
+    Y = ceil(Y/scalefactor);
+    X = ceil(X/scalefactor);
+    
+    %Durchlauf ueberspringen falls der klick ausserhalb war
+    if X > ImSize || Y > ImSize || X <= 0 || Y <= 0 || I(Y,X) == 1
+        continue
+    end
+    I(Y,X) = 1;
+    zz = [zz (X+1i*Y)];
+    zz2 = [zz2; X, Y];
+end
+% Darstellung Originalbild
+subplot(2,3,1);
+plot(zz,'-*');
+axis([0 ImSize 0 ImSize]);
+axis ij;
+axis square;
+title('Original Image');
+% 2) Mit PCA normalisieren
+
+Cx = cov(zz2);
+mx = mean(zz2);
+[V,Cy] = eig(Cx);
+
+A=V';
+
+y = (zz2 - ones(size(zz2,1),1)*mx)*A;
+
+y = [y(:,1)/sqrt(Cy(1,1)), y(:,2)/sqrt(Cy(2,2))];
+
+% plot image
+subplot(2,3,2);
+plot(y(:,1), y(:,2)); 
+%axis([0 ImSize 0 ImSize]);
+%axis ij;
+%axis square;
+title('Normalized image');
+
+% 3) Rotieren, verschieben, skalieren und wieder PCA-Normalisieren
+zz3 = zz2 .*3 + ones(size(zz2,1),2)*20;
+subplot(2,3,3);
+plot(zz3(:,1),zz3(:,2));
+%axis([0 ImSize 0 ImSize]);
+axis ij;
+axis square;
+title('trashed image');
+
+% 4) vergleichen mit 1. normalisierung
+zz2 = zz3;
+Cx = cov(zz2);
+mx = mean(zz2);
+[V,Cy] = eig(Cx);
+
+A=V';
+
+y = (zz2 - ones(size(zz2,1),1)*mx)*A;
+
+y = [y(:,1)/sqrt(Cy(1,1)), y(:,2)/sqrt(Cy(2,2))];
+
+% plot image
+subplot(2,3,4);
+plot(y(:,1), y(:,2)); 
+%axis([0 ImSize 0 ImSize]);
+%axis ij;
+%axis square;
+title('Normalized image');
+\end{lstlisting}
