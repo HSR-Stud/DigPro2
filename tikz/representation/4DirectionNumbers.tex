@@ -1,6 +1,6 @@
 \begin{tikzpicture}
 
-\foreach [count=\i] \x/\y in {1/0, 0/1, -1/0, 0/-1} {
+\foreach [count=\i from 0] \x/\y in {1/0, 0/1, -1/0, 0/-1} {
 	\draw [->, shorten >= 6, shorten <= 2] (0,0) -- (\x,\y) node {\i};
 }
 
