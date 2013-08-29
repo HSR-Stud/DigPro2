@@ -211,6 +211,19 @@ I_j = \sum_{k=1}^{N_k}w_{jk}O_k
 \end{align*}
 
 \paragraph{Training by back propagation}
+Target is to minimize the total squared error between the desired responses
+$r_q$ and the actual response $O_q$ in the output layer $Q$
+\begin{align*}
+	E_Q = \frac{1}{2} \sum_{q=1}^{N_Q}(r_q-O_q)^2
+\end{align*}
+
+Back-Propagation is deriving the Error with respect to the weights
+\begin{align*}
+	\Delta w_{qp} &= -\alpha \frac{\partial E_Q}{\partial w_{qp}}
+\end{align*}
+$\Delta w$ is the change in weight vector, $\alpha$ the correction increment,
+$E_Q$ the error and $w_{qp}$ the current weight vector
+
 \begin{itemize}
 \item A training vector is presented at
 the input and the desired response
@@ -221,6 +234,7 @@ deltas are calculated and back
 propagated
 \item Now the weights are updated
 \end{itemize}
+
 
 \begin{align*}
 \Delta w_{jk} &= \alpha \delta_j O_k& \\
