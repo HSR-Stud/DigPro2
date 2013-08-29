@@ -454,7 +454,16 @@ m(k)&= \sum_{i=0}^{k}ip_i
 \subsubsection{Using Image Smoothing to Improve Global Thresholding\buchSeite{747}}
 The obvious approach to improve the situation is to low pass filter the image, i.e., to smooth the image before the global thresholding method is applied
 \subsubsection{Using Edges to Improve Global Thresholding\buchSeite{749}}
-Only the strongest edges are usually kept, say the top 10\%
+Useful when trying to find small objects.
+Only the strongest edges are usually kept, say the top 10\%, to calculate the threshold.
+\begin{enumerate}
+	\item Compute an edge image using any method
+	\item Threshold the edge image to produce a binary image $g_T(x,y)$ use
+		this as a \emph{mask image} to select pixels from the original image
+	\item Compute the histogram of the selected pixels
+	\item Use this histogram to calculate the global segmentation threshold
+		using, for example, Otsu's method
+\end{enumerate}
 \subsubsection{Multiple Thresholds\buchSeite{752}}
 
 \begin{flalign*}
