@@ -368,7 +368,7 @@ If the location of a boundary is roughly known, it is possible to use the detect
 	\caption{Hough-Transform: From $xy$-plane to $\rho\theta$-plane}
 \end{figure}
 \begin{itemize}
-\item Each point in the xy plane belongs to infinetly many lines $y_i=ax_i+b$
+\item Each point in the xy plane belongs to infinite many lines $y_i=ax_i+b$
 \item If we interpret this line equation differently, then $b=-x_ia+y_i$ represent for each point in the xy plane a line in the ab plane
 \item For each point in the xy plane, a line can be drawn in the ab plane and the principal lines in the xy plane can be found by the points with the most intersections in the ab plane
 \item Vertical lines require an infinite a, this does not work. Use the line normal as representation. A point in the xy plane does not result in a simple straight line in the parameter space ($\theta\rho$). The curve $\rho = f(\theta)$ is now a sinusoidal
@@ -392,8 +392,8 @@ If the location of a boundary is roughly known, it is possible to use the detect
 
 \begin{enumerate}
 \item Select an initial estimate for the global threshold, T
-\item Segment the image using T in Gleichung(\ref{thresholdingBasic}). This will produce two groups of pixels: $G_1$ consisting of all pixels with intensity values $> T$, and $G_2$ consisting of pixels with values $\leq T$
-\item Compute the average (mean) intensity values $m_1$ and $m_2$ for the pixels in $G_1$ and $G_2$, repsectively
+\item Segment the image using T in equation \eqref{thresholdingBasic}. This will produce two groups of pixels: $G_1$ consisting of all pixels with intensity values $> T$, and $G_2$ consisting of pixels with values $\leq T$
+\item Compute the average (mean) intensity values $m_1$ and $m_2$ for the pixels in $G_1$ and $G_2$, respectively
 \item Compute a new threshold value: \begin{equation}
 T=\frac{1}{2}(m_1+m_2)\notag
 \end{equation} 
@@ -404,48 +404,51 @@ T=\frac{1}{2}(m_1+m_2)\notag
 \subsubsection{Optimum global thresholding using Otsu’s Method\buchSeite{742}}
 Two different variances are important
 \begin{itemize}
-\item Within-class variance
-\item Between-class variance
+\item Within-class variance $\sigma_W^2 = P_1\sigma_1^2+P_2\sigma_2^2$
+\item Between-class variance $\sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2$
 \end{itemize}
 
+The target is to maximize the ratio between the between-class variance and the within-class variance.
+This is the same as maximizing the between-class variance.
+
 \begin{flalign*}
-&\sigma_W^2 = P_1\sigma_1^2+P_2\sigma_2^2 
-& & \sigma_W^2: \text{ Within-class variance}  && \\
-&\sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2
-& & \sigma_B^2: \text{ Between-class variance}  && \\
-&\sum_{i=0}^{L-1} p_i = 1 
-& &  && \\
-& m_G=\sum_{i=0}^{L-1} i \ p_i 
-& & m_G: \text{ global mean}   && \\
-&\sigma_G^2 = \sum_{i=0}^{L-1} (i-m_G)^2 p_i
+\sum_{i=0}^{L-1} p_i &= 1
+& & \text{normalized histogram}  && \\
+m_G&=\sum_{i=0}^{L-1} i \ p_i
+& & m_G: \text{ global mean}   && \numberthis \label{eq:mG}\\
+\sigma_G^2 &= \sum_{i=0}^{L-1} (i-m_G)^2 p_i
 & & \sigma_G^2: \text{global variance}  && \\
-& P_1(k) =\sum_{i=0}^{k} p_i
-& &  P_1: \text{ probability of the background}    && \\
-& P_2(k)=\sum_{i=k+1}^{L-1}p_i=1-P_1(k)
+P_1(k) &=\sum_{i=0}^{k} p_i
+& &  P_1: \text{ probability of the background}    && \numberthis \label{eq:P1}\\
+P_2(k)&=\sum_{i=k+1}^{L-1}p_i=1-P_1(k)
 & & P_2: \text{ probability of the object}  && \\
-& m_1(k)=\frac{1}{P_1(k)}\sum_{i=0}^{k} i \ p_i
+m_1(k)&=\frac{1}{P_1(k)}\sum_{i=0}^{k} i \ p_i
 & &  m_1: \text{ mean intensity of the background}   && \\
-& m_2(k)=\frac{1}{P_2(k)}\sum_{i=k+1}^{L-1} i \ p_i 
+m_2(k)&=\frac{1}{P_2(k)}\sum_{i=k+1}^{L-1} i \ p_i
 & &  m_2: \text{ mean intensity of the object}   && \\
-& \sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2 & &  \text{Using algebra to change the form}  && \\
-&=P_1 P_2 (m_1-m_2)^2 = \frac{(m_G P_1 - m)^2}{P_1(1-P_1)} & & \text{width} \quad m(k)=\sum_{i=0}^{k}i \ p_i && \\
-&\sigma_B^2(k^*)=\max\limits_{0\leq k \leq L-1} \sigma_B^2(k)
+m(k)&= \sum_{i=0}^{k}ip_i
+& &  m: \text{ cummulative mean up to level $k$}   && \numberthis \label{eq:m} \\
+\sigma_B^2 &= P_1(m_1-m_G)^2+P_2(m_2-m_G)^2
+& & \sigma_B^2 \text{: between-class variance}  && \\
+ &= P_1 P_2 (m_1-m_2)^2 & & \text{Using algebra to change the form}  && \\
+ \sigma_B^2(k)&=\frac{(m_G P_1(k) - m(k))^2}{P_1(k)(1-P_1(k))} & & \sigma_B^2 \text{ in dependence of } k && \numberthis \label{eq:sigmaB} \\
+\sigma_B^2(k^*)&=\max\limits_{0\leq k \leq L-1} \sigma_B^2(k)
 & & \text{Optimum of k for maximizing is } k^*  && \\
-&\eta(k)=\frac{\sigma_B^2(k)}{\sigma_G^2}
-& & 0 \leq  \eta(k^*)\leq 1 
+\eta(k)&=\frac{\sigma_B^2(k)}{\sigma_G^2}
+& & 0 \leq  \eta(k^*)\leq 1 \numberthis \label{eq:eta}
 \end{flalign*}
 
-\textbf{What to do now???}
+\textbf{What to do now?}
 \begin{enumerate}
 	\item Compute the normalized histogram of the input image.
 		Denote the components of the histogram by $p_i$, $i = 0, 1, 2, \ldots, L-1$
-	\item Compute the cumulative sums, $P_1(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. 10.3-4 (welche das auch immer ist...).
-	\item Compute the cumulative means, $m(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. 10.3-8 (jawohl, die musst du jetzt suchen!)
-	\item Compute the global intensity mean, $m_g$, using Eq. 10.3-9
-	\item Compute the between-class variance, $\sigma_B^2(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. 10.3-17
+	\item Compute the cumulative sums, $P_1(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. \eqref{eq:P1} (10.3-4)
+	\item Compute the cumulative means, $m(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. \eqref{eq:m} (10.3-8)
+	\item Compute the global intensity mean, $m_G$, using Eq. \eqref{eq:mG} (10.3-9)
+	\item Compute the between-class variance, $\sigma_B^2(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. \eqref{eq:sigmaB} (10.3-17)
 	\item Obtain the Otsu threshold, $k^\ast$, as the value $k$ for which $\sigma_B^2(k)$ is maximum.
 		If the maximum is not unique, obtain $k^\ast$ by averaging the values of $k$ corresponding to the various maxima detected.
-	\item Obtain the separability measure, $\eta^\ast$, by evaluating Eq. 10.3-16 at $k = k^\ast$.
+	\item Obtain the separability measure, $\eta^\ast$, by evaluating Eq. \eqref{eq:eta} (10.3-16) at $k = k^\ast$.
 \end{enumerate}
 
 \subsubsection{Using Image Smoothing to Improve Global Thresholding\buchSeite{747}}
