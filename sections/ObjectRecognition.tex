@@ -17,13 +17,14 @@
 \begin{itemize}
 	\item Used for quantitative descriptors
 	\item every dimension contains the numerical value of a descriptor
-	\item $x =
+	\item $\mathbf{x} =
 		\begin{bmatrix}
 			x_1 \\
 			x_2 \\
 			\vdots \\
 			x_n \\
-		\end{bmatrix}$
+		\end{bmatrix}
+		 = (x_1, x_2, \ldots, x_n)^T $
 \end{itemize}
 Example: Classifying flowers based on petal length and width into one of three
 classes.
@@ -44,16 +45,16 @@ should be used.
 
 \subsection{Recognition Based on Decision Theory\buch{Ch. 12.2}}
 \paragraph{Discriminant functions}
-The core of decision theory $d_i(x)$ defined for each class $\omega_i$.
+The core of decision theory $d_i(\mathbf{x})$ defined for each class $\omega_i$.
 These are not known and finding them is the main goal.
 
 A class $\omega_i$ is selected if
 \begin{align*}
-d_i(x) > d_j(x) && j=1,2, \cdots, W; j \neq i
+d_i(\mathbf{x}) > d_j(\mathbf{x}) && j=1,2, \cdots, W; j \neq i
 \end{align*}
 The interesting parts are decision boundaries between classes
 \begin{align*}
-	d_i(x) - d_j(x) = 0
+	d_i(\mathbf{x}) - d_j(\mathbf{x}) = 0
 \end{align*}
 
 \subsubsection{Matching\buchSeite{866}}
@@ -63,21 +64,21 @@ A vector $x$ belongs to the class with the shortest distance.
 \paragraph{Minimum distance classifier}
 The mean vector of a class is a powerful prototype vector.
 \begin{align*}
-	m_j = \frac{1}{N_j} \sum_{x\in \omega_j}x_j && j = 1,2,\dots, W
+	\mathbf{m}_j = \frac{1}{N_j} \sum_{\mathbf{x} \in \omega_j}\mathbf{x}_j && j = 1,2,\dots, W
 \end{align*}
 A simple matching function is the Euclidean distance.
 \begin{align*}
-	D_j(x) = ||x-m_j|| = \left((x-m_j)^T(x-m_j)\right)^{1/2}
+	D_j(\mathbf{x}) = ||\mathbf{x}-\mathbf{m}_j|| = \left((\mathbf{x}-\mathbf{m}_j)^T(\mathbf{x}-\mathbf{m}_j)\right)^{1/2}
 \end{align*}
 The resulting discriminant function which is the largest, when the distance is
 the smallest.
 \begin{align*}
-	d_j(x) = x^Tm_j - \frac{1}{2}m_j^Tm_j
+	d_j(\mathbf{x}) = \mathbf{x}^T \mathbf{m}_j - \frac{1}{2}\mathbf{m}_j^T \mathbf{m}_j
 \end{align*}
 The decision boundary between class $\omega_i$ and $\omega_j$ will be
 \begin{align*}
-	d_{ij}(x) &= d_i(x) - d_j(x)\\
-	&= x^T(m_i-m_j) - \frac{1}{2}(m_i-m_j)^T(m_i+m_j) = 0
+	d_{ij}(\mathbf{x}) &= d_i(\mathbf{x}) - d_j(\mathbf{x})\\
+	&= \mathbf{x}^T(\mathbf{m}_i-\mathbf{m}_j) - \frac{1}{2}(\mathbf{m}_i-\mathbf{m}_j)^T(\mathbf{m}_i+\mathbf{m}_j) = 0
 \end{align*}
 Which is a line through the midpoint of $m_i$ and $m_j$ for $n=2$.
 For $n=3$ its a plane and for $n>3$ it's a hyperplane.
@@ -85,7 +86,7 @@ For $n=3$ its a plane and for $n>3$ it's a hyperplane.
 % TODO: Evt. Beispiel?
 
 \paragraph{Matching by correlation\buchSeite{869}}
-Calculate cross-correlation between a mask $w(x,y)$ of size $m$ $n$ and an image
+Calculate cross-correlation between a mask $w(x,y)$ of size $m\times n$ and an image
 $f(x,y)$ to find the mask in the image.
 \begin{align*}
 	c(x,y) = \sum_s\sum_tw(s,t)f(x+s,y+t)
