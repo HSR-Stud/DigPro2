@@ -67,7 +67,7 @@ The mean vector of a class is a powerful prototype vector.
 \end{align*}
 A simple matching function is the Euclidean distance.
 \begin{align*}
-	D_i(x) = ||x-m_j|| = \left(x^Tm_j\right)^{1/2}
+	D_j(x) = ||x-m_j|| = \left((x-m_j)^T(x-m_j)\right)^{1/2}
 \end{align*}
 The resulting discriminant function which is the largest, when the distance is
 the smallest.
@@ -77,7 +77,7 @@ the smallest.
 The decision boundary between class $\omega_i$ and $\omega_j$ will be
 \begin{align*}
 	d_{ij}(x) &= d_i(x) - d_j(x)\\
-	&= x^t(m_i-m_j) - \frac{1}{2}(m_i-m_j)^T(m_i+m_j) = 0
+	&= x^T(m_i-m_j) - \frac{1}{2}(m_i-m_j)^T(m_i+m_j) = 0
 \end{align*}
 Which is a line through the midpoint of $m_i$ and $m_j$ for $n=2$.
 For $n=3$ its a plane and for $n>3$ it's a hyperplane.
@@ -88,7 +88,7 @@ For $n=3$ its a plane and for $n>3$ it's a hyperplane.
 Calculate cross-correlation between a mask $w(x,y)$ of size $m$ $n$ and an image
 $f(x,y)$ to find the mask in the image.
 \begin{align*}
-	c(c,y) = \sum_s\sum_tw(s,t)f(x+s,y+t)
+	c(x,y) = \sum_s\sum_tw(s,t)f(x+s,y+t)
 \end{align*}
 This is sensitive to contrast and average intensity in $f$ and $w$.
 Hence the normalized cross correlation is used
@@ -101,7 +101,7 @@ Hence the normalized cross correlation is used
 	\right\rbrace^{\frac{1}{2}}
 	}
 \end{align*}
-$y(x,y)$ is always in range $[-1, 1]$, where +1 is perfect match and -1 a perfect anti-match.
+$\gamma(x,y)$ is always in range $[-1, 1]$, where +1 is perfect match and -1 a perfect anti-match.
 This is sensitive to scale and rotation.
 
 \subsubsection{Optimum Statistical Classifiers\buchSeite{872}}
