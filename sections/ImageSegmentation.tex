@@ -481,7 +481,18 @@ The simplest approach is to partition a given image into non overlapping regions
 \paragraph{Based on local image properties\buchSeite{758}}
 A threshold is computed for each point. The threshold depends on some property of a local neighborhood. Common properties are the mean and standard deviation for each pixel.
 An even more powerful scheme can be built, if the 1 or 0 decision is based on some logical condition.\\
+\paragraph{Using moving averages\buchSeite{759}}
+Useful to reduce illumination effects.
+Very fast to calculate, since only subtracting the oldest sample $z_{k-n}$ and
+adding the new sample $z_{k+1}$ to the current average are needed.
+\begin{align*}
+	m(k+1) &= \frac{1}{n} \sum_{i=k+2-n}^{k+1} z_i \\
+	&= m(k) + \frac{1}{n}(z_{k+1}-z_{k-n})
+\end{align*}
+
 \subsubsection{Multivariable Thresholding\buchSeite{761}}
+% Nicht relevant für Prüfung
+
 \subsection{Region based segmentation\buchSeite{763}}
 The goal is to segment the image into regions directly, not using abrupt changes or thresholding.
 \subsubsection{Region growing\buchSeite{763}}
