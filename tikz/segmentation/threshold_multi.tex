@@ -1,0 +1,42 @@
+\begin{tikzpicture}
+	\begin{axis}[
+	            xtick=data,
+	            axis x line = bottom,
+	            axis y line = left,
+	            axis line style={->},
+	            xtick=\empty,
+	            ytick=\empty,
+	            ymin = 0,
+	            ymax = 80,
+	            xmin = 0,
+	            xmax = 19,
+	            bar width=6pt,
+	            height=6cm,
+	            width=8cm
+	          ]
+	            \addplot[ybar,fill=black] coordinates {
+	                (1,10)
+	                (2,60)
+	                (3,40)
+	                (4,5)
+	                (5,1)
+	                (6,0)
+	                (7,5)
+	                (8,20)
+	                (9,40)
+	                (10,15)
+	                (11,5)
+	                (12,2)
+	                (13,0)
+	                (14,20)
+	                (15,60)
+	                (16,40)
+	                (17,20)
+	            };
+	\end{axis}
+	
+	\draw[thick] (2.05,0.1) -- (2.05,-0.1);
+	\node at (2.05,-0.5) {$T_1$};
+	\draw[thick] (4.45,0.1) -- (4.45,-0.1);
+	\node at (4.45,-0.5) {$T_2$};
+\end{tikzpicture}
