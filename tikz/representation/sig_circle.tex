@@ -1,0 +1,29 @@
+\begin{tikzpicture}
+
+% Circle
+\node[draw,thick,circle,minimum size=2cm] at (0,0) {};
+\draw (0,0) -- (1,0);
+\draw[->] (0,0) -- (0.866,0.5);
+\node at (0.5,0.4) {\tiny r};
+\node at (0.6,0.15) {\tiny $\theta$};
+\draw[<->] (0,-1.2) -- (1,-1.2);
+\node at (0.5,-1.4) {\tiny $A$};
+
+% Signature
+
+\draw[->] (3,-1) -- (6,-1);
+\draw[->] (3,-1) -- (3,1);
+\node at (3,1.2) {\tiny $r(\theta)$};
+\node at (6.2,-1) {\tiny $\theta$};
+
+\node at (3,-1.2) {\tiny $0$};
+\node at (3.7,-1.2) {\tiny $\frac{\pi}{2}$};
+\node at (4.4,-1.2) {\tiny $\pi$};
+\node at (5.1,-1.2) {\tiny $\frac{3\pi}{2}$};
+\node at (5.8,-1.2) {\tiny $2\pi$};
+
+\node at (2.8,0) {\tiny $A$};
+
+\draw[thick] (3,0) -- (5.8,0);
+
+\end{tikzpicture}

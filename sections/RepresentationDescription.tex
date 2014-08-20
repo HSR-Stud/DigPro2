@@ -3,13 +3,14 @@
 \subsection{Representation\buchSeite{796}}
 After the image segmentation, the boundaries need to be represented in a form, that is suitable for further processing.
 \subsubsection{Boundary following\buchSeite{796}}
-\begin{itemize}
+The following algorithm is the moore boundary tracking algorithm.
+\begin{enumerate}
 \item Let the starting point, $b_0$ be the uppermost, leftmost point in the image that is labeled 1. Denote by $c_0$ the west neighbor of $b_0$ clearly, $c_0$ is a background point. Examine the 8-neighbors of $b_0$, starting at $c_0$ and procedding in a clockwise direction. Let $b_1$ denote the first neighor encountered whose value is 1, and let $c_1$ be the (background) point immediately preceding $b_1$ in the sequence. Store the localtions of $b_0$ and $b_1$ for use in Step 5.
 \item Let $b=b_1$ and $c=c_1$
 \item Let the 8-neighbors of $b$, starting at $c$ and proceeding in a clockwise direction, be denoted by $n_1,n_2,\ldots,n_8$. Find the first $n_k$ labeled 1.
 \item Let $b=n_k$ and $c=n_{k-1}$
 \item Repeat Steps 3 and 4 until $b=b_0$ and the next boundary point found is $b_1$. The sequence of $b$ points found when the algorithm stops constitutes the set of ordered boundary points
-\end{itemize}
+\end{enumerate}
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}[b]{0.19\textwidth}
@@ -39,26 +40,38 @@ After the image segmentation, the boundaries need to be represented in a form, t
 	\end{subfigure}
 	\caption{Boundary Following Algorithm}
 \end{figure}
+Of course this algorithm also works counter-clock-wise.
+
 \subsubsection{Chain codes\buchSeite{798}}
 Chain codes are used to represent a boundary by a connected sequence of straight-line segments of specified length and direction. The direction of each segment is coded using a number.
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}[b]{0.45\textwidth}
+	\begin{subfigure}[b]{0.3\textwidth}
 		\centering
 		\adjustbox{scale=1}{\input{tikz/representation/4DirectionNumbers}}
 		\caption{4-directional}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
+	\begin{subfigure}[b]{0.3\textwidth}
 		\centering
 		\adjustbox{scale=1}{\input{tikz/representation/8DirectionNumbers}}
 		\caption{8-directional}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\input{tikz/representation/chain_example}
+		\caption{Example}
+		\label{fig:chaincode_example}
 	\end{subfigure}
 	\caption{Direction numbers for chain codes}
 \end{figure}
 
 Cain codes are quite sensitive to small disturbances. If they are on the pixel grid, they tend to result in rather long codes. Subsampling the boundary, i.e. going to a coarser grid results in a more robust and more efficient code at the expense of representation accuracy.\\
 The resulting code depends on the starting point, which is not desirable. An easy trick is to circumvent this, is the convention to start at that point wich will result in a chain code that represents the smalles integer.\\
-The representation can be made independent of rotation by using the first difference.
+
+The representation can be made independent of rotation by using the \emph{first difference}. 
+For each segment, assume the current direction is 0 and encode the direction of the next segment as before. \\
+Example: Fig. \ref{fig:chaincode_example}. black: chain code, red: first difference.
+
 \subsubsection{Polygonal approximation using Minimum perimeter polygon MPP\buchSeite{801}}
 A boundary is represented by a polygon. The goal is to use as few segments as possible, while still capturing the essential features of the boundary. There exist simple approximations which in practice are often good enough\\
 \paragraph{Minimum perimeter polygon MPP}
@@ -133,11 +146,18 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
 \item $V_K$ lies on the negative side of the line through pair ($V_L$, $W_C$) or is collinear with it, that is $sgn(V_L, W_C, V_K) \le 0$. At the same time, $V_K$ lies on the positive side of the line through ($V_L$, $B_C$) or is collinear with it, that is $sgn(V_L, V_C, V_K) \ge 0$. If this condition holds, the next candidate MPP vertex is $V_K$; otherwise $B_C = V_K$
 \item Continue with the next vertex in the list.
 \end{enumerate}
+
 \subsubsection{Other Polygonal Approximation Approaches\buchSeite{807}}
 \paragraph{Merging\buchSeite{807}}
-Points on the boundary are merged and a line is fitted to these points. If the fitting error becomes to large, a vertex is set and the procedure starts from the beginning.\\
+Points on the boundary are merged and a line is fitted to these points. 
+If the fitting error becomes to large, a vertex is set and the procedure starts from the beginning.
+This approach is very simple, but there is no guarantee for a good approximation.
+E.g. it does not set vertices at corners, but always a bit later. 
+
 \paragraph{Splitting\buchSeite{808}}
-Here the idea is, to divide (split) a boundary segment until a threshold of an criterion is satisfied
+Here the idea is, to divide (split) a boundary segment until a threshold of an criterion is satisfied.
+E.g. until the distances from the boundary to the approximated lines are below a certain number.
+
 \subsubsection{Signatures\buchSeite{808}}
 A signature is a 1D function that represents a boundary. This results in a significant complexity reduction. There are several schemes:\\
 \begin{itemize}
@@ -147,6 +167,20 @@ A signature is a 1D function that represents a boundary. This results in a signi
 \item Scaling invariance: this can be achieved by dividing the signature by its standard deviation.
 \end{itemize}
 \end{itemize}
+\begin{figure}[h]
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\input{tikz/representation/sig_circle}
+		\caption{Signature of a circle}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\input{tikz/representation/sig_square}
+		\caption{Signature of a square}
+	\end{subfigure}
+	\caption{Examples for signatures}
+\end{figure}
+
 \subsubsection{Boundary segments\buchSeite{810}}
 The convex hull H of an arbitrary set S is the smallest convex set containing S. The difference $D=H-S$ is the convex deficiency. Follow the contour of S and mark the spots where the contour makes a transition into or out of D. These marking $\alpha$ (0...1) are relative to the total length of the contour D.\\
 This is in theory invariant to:\\
@@ -166,7 +200,7 @@ Medial axis transform (MAT)
 Algorithms for efficient MAT iteratively delete boundary points subject to
 \begin{enumerate}
 \item keep end points
-\item keep connectivity
+\item keep connectivity (\small note that morphological thinning does \emph{not} account for this)
 \item do not erode that region excessively
 \end{enumerate}
 Thinning algorithm is 2 steps applied successively to border points\\
@@ -177,7 +211,7 @@ p8 & p1 & p4 \\
 p7 & p6 & p5 \\
 };\\
 \end{tikzpicture}\\
-Step 1:\\
+\paragraph{Step 1:} south or east boundary points\\
 Flag for deletion if all of these conditions are satisfied:
 \begin{enumerate}[label={\alph*)}]
 \item $2\leq N(P_1)\leq 6$ with $N(p_1)=p_2 + p_3 + \ldots + p_9$
@@ -185,9 +219,9 @@ Flag for deletion if all of these conditions are satisfied:
 \item $p_2 \cdot p_4 \cdot p_6 = 0$
 \item $p_4 \cdot p_6 \cdot p_8 = 0$
 \end{enumerate}
-The last conditions are satisfied simultaneously by the minimum set of values: $(p_4=0\ or\ p_6=0)\ or \ (p_2=0\ and \ p_8=0)$\\
+The last conditions are satisfied simultaneously by the minimum set of values: $(p_4=0\ or\ p_6=0)\ or \ (p_2=0\ \text{and} \ p_8=0)$\\
 After processing all boundary points, the marked ones are deleted\\
-Step 2:\\
+\paragraph{Step 2:} north or west boundary points\\
 Simultaneous to Step 1 except the new conditions $c'$ and $d'$\\
 \begin{enumerate}[label={\alph*)}]
 \item $2\leq N(P_1)\leq 6$ with $N(p_1)=p_2 + p_3 + \ldots + p_9$
@@ -211,7 +245,7 @@ Having seen different representations of boundaries, the goal is now to develop 
 \paragraph{Diameter of boundary B}
 
 \begin{flalign*}
-& Diam(B)=\max\limits_{i,j}\left[D(p_i,p_j)\right] && \text{Points on boundary:} && p_i,p_j && \text{Distance measure:} && D 
+& \text{Diam}(B)=\max\limits_{i,j}\left[D(p_i,p_j)\right] && \text{Points on boundary:} && p_i,p_j && \text{Distance measure:} && D 
 \end{flalign*}
 
 \paragraph{Major axis}
@@ -221,26 +255,48 @@ The line perpendicular to the major axis and of such length that a box passing t
 \paragraph{Eccentricity}
 The ratio of the major to the minor axis is called the eccentricity of the boundary. This is a useful descriptor.
 \paragraph{Curvature}
-This is the rate of change of the slope in the boundary. i.e. this is a second derivative
+This is the rate of change of the slope in the boundary. i.e. this is a second derivative. 
+Note that the curvature is often very noisy. It is therefore often applied to a polygon approximation.
+
 \subsubsection{Shape numbers\buchSeite{816}}
 The shape number of a boundary (based on 4-directional code) is defined as the first difference of smalles magnitude.\\
 The order n of a shape number is defined as the number of digits in its representation.\\
 One way of aligning the chain code grid with the boundary is to use the basic rectangle box based on the major and minor axes\\
+
 \subsubsection{Fourier descriptors\buchSeite{818}}
 The coordinates of the boundary represents a complex sampled signal wich can be represented as a complex vector 
 \begin{align*}
 s(k)=x(k)+jy(k) && k=0,1,2,\ldots,K-1
 \end{align*} 
-wich can be analyzed in the frequency domain.\\
+which can be analyzed in the frequency domain.\\
+
+Note that the axis are changed:
+\begin{figure}[h]
+	\begin{subfigure}{0.5\textwidth}
+		 \centering
+		 \input{tikz/representation/axis_normal}
+		 \caption{Normal}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\input{tikz/representation/axis_fourier}
+		\caption{for Fourier descriptors}
+	\end{subfigure}
+	\caption{Axes of image}
+\end{figure}
+
 The DFT of $s(k)$ is \begin{align*}
 & \text{Fourier descriptors of the boundary:} && a(u)=\sum\limits_{k=0}^{K-1}s(k)e^{-j2\pi uk/K} && u=0,1,2,\ldots,K-1\\
 & \text{Inverse Fourier transform:} && s(k)=\frac{1}{K}\sum\limits_{u=0}^{K-1}a(u)e^{j2\pi uk/K}
 \end{align*} 
 
-Since the high frequency components are responsible for the fine detail, using only a few Fourier descriptors results in a smoothing of the boundary.\\
-Careful! you need to keep both sides of the spectrum, the formula in the book is wrong!\\
+Since the high frequency components are responsible for the fine detail, using only the first few Fourier descriptors results in a smoothing of the boundary and image compression.\\
+The reconstruction of the image is, when using the first $P$ coefficients
+	\[
+	\hat{s}(k) = \frac{1}{K} \sum\limits_{u=0}^{P-1} a(u) e^{j 2 \pi u k / K}
+	\]
 
-\textbf{Boundary Fourier Descriptor}
+\paragraph{Basic properties of Fourier descriptors} ~\\
 
 \begin{tabularx}{\textwidth}{XXX}
 Transformation & Boundary & Fourier Descriptor \\\hline
@@ -248,41 +304,56 @@ Identity & $s(k)$ & $a(u)$ \\
 Rotation & $s_r(k)=s(k)e^{j\theta}$& $a_r(u)=a(u)e^{j\theta}$ \\
 Translation &$s_t(k)=s(k)+\Delta_{xy}$& $a_t(u)=a(u)+\Delta_{xy}\delta(u)$ \\
 Scaling &$s_s(k)=\alpha s(k)$& $a_s(u)=\alpha a(u)$ \\
-Starting point & $s_p(k)=s(k-k_0)$& $a_p(u)=a(u)e^{-j2\pi k_0u/K}$ \\
+Starting point & $s_p(k)=s(k-k_0)$& $a_p(u)=a(u)e^{-j2\pi k_0u/K}$ \\ \hline
 \end{tabularx}
 
 \subsubsection{Statistical moments\buchSeite{821}}
+The boundary segment is rotated, so that it can be interpreted as a function of a single variable. \\
+
+The amplitude of $g()$ can be treated as a discrete random variable v and a amplitude histogram $p(v_i)$ can be formed. 
+From the histogram, the statistical moments can be calculated.
+
+\begin{align*}
+	m &= \sum\limits_{i=0}^{A-1} v_i p(v_i) \\
+	\mu_n(v) &= \sum\limits_{i=0}^{A-1} (v_i-m)^n p(v_i)
+\end{align*}
+
+The statistical moments are:
 \begin{itemize}
-\item The boundary segment is rotated, so that a function of a single variable results
-\item The amplitude of $g()$ can be treated as a discrete random variable v and a amplitude histogram $p(v_i)$ can be formed
+\item $m$ or $\mu_1$: Mean
+\item $\mu_2$: Variance
+\item $\mu_3$: Skewness (this is a measure of asymmetry)
+\item $\mu_4$: Kurtosis (peakedness)
 \end{itemize}
-From the histogram, the following shapes can be distinguished
-\begin{itemize}
-\item Mean
-\item Variance
-\item Skewness (this is a measure of asymmetry)
-\item Kurtosis (peakedness)
-\end{itemize}
-The same can be done with skipping the histogram building.
+
+If $g()$ is normalized such that it represents a probability density function (pdf), i.e. it sums up to 1, 
+the histogram building can be skipped and $g()$ can directly be analyzed by statistical moments.
 
 \subsection{Regional descriptors\buchSeite{822}}
 \subsubsection{Simple descriptors\buchSeite{822}}
 \begin{itemize}
 \item Area: Number of pixels
 \item Perimeter: Lenght of boundary
-\item Compactness: $Perimeter^2/area$
-\item Circularity ratio $R_C=\frac{4\pi A}{P^2}$ where $A$ is the area of the region in question and $P$ the lenght of its perimeter
+\item Compactness: $\text{Perimeter}^2/\text{area}$
+\item Circularity ratio $R_C=\frac{4\pi A}{P^2}$ where $A$ is the area of the region in question and $P$ the length of its perimeter
 \item Mean, median, minimum, maximum of intensity
 \item Etc.
 \end{itemize}
 \subsubsection{Topological descriptors\buchSeite{823}}
-Topological descriptors are descriptors that do not change under rubber-sheet distortions. No tearing, noo folding allowed.\\
+Topological descriptors are descriptors that do not change under rubber-sheet distortions. No tearing, no folding allowed.\\
 The number of holes $H$ and connected components $C$ in a figure can be used to define the Euler number $E=C-H$\\
 
 \begin{figure}[h]
 	\centering
-	\adjustbox{scale=1.5}{\input{tikz/representation/PolygonalNetwork}}
+	\adjustbox{scale=1.2}{\input{tikz/representation/PolygonalNetwork}}
 	\caption{A region containing a polygonal network}
+	
+	In this example: \\
+	\begin{align*}
+	V=7 \quad Q=11 \quad F=2 \qquad &\Rightarrow E=-2 \\
+	C=1 \quad H=3 \qquad &\Rightarrow E=-2
+	\end{align*}
+
 \end{figure}
 
 \begin{itemize}
@@ -294,18 +365,59 @@ Euler proved that $E=V-Q+F=C-H$
 \subsubsection{Texture\buchSeite{827}}
 Smoothness, coarseness, regularity etc.\\
 There are three basic approaches to describe texture:\\
+
 \paragraph{Statistical approaches\buchSeite{828}}
 \begin{itemize}
 \item Intensity histogram $p(z_i)$
 \item Moment $\mu_n(z)=\sum\limits_{i=0}^{L-1}(z_i-m)^np(z_i)$ and mean $m=\sum\limits_{i=0}^{L-1}z_ip(z_i)$
-\item The variance $\sigma ^2(z) =\mu_2 (z)$ is a measure of contrast, which can be used to establish descriptors of smoothness. It should be normalized to 0...1. $R(z)=1-\frac{1}{1+\sigma ^2(z)}$
+\item The variance $\sigma ^2(z) =\mu_2 (z)$ is a measure of contrast, which can be used to establish descriptors of smoothness. It should be normalized to $0 \ldots 1$ by dividing by $\left(\frac{L-1}{2}\right)^2$. $R(z)=1-\frac{1}{1+\sigma ^2(z)}$
 \item A measure for uniformity $U(z)=\sum\limits_{i=0}^{L-1}p^2(z_i)$
-\item Average entropy $e(z)=-\sum\limits_{i=0}^{L-1}p(z_i)\log_2p(z_i)$
+\item Average entropy $e(z)=-\sum\limits_{i=0}^{L-1}p(z_i)\log_2p(z_i)$ \\ Note that $e$ is zero for constant regions.
 \end{itemize}
-Note the approach with a Q operator described in the book and lecture!\\
+
+\paragraph{Relative positions} Measures with only histograms have no information about the relative positions of pixels with respect to each other.
+Thus, a $Q$ operator, that defines the positions of two pixels relative to each other, is introduced. 
+A \emph{co-occurrence matrix} $\mathbf{G}$ is generated, whose elements $g_{i,j}$ are how many times a certain pixel pair $(z_i,z_j)$ appears. \\
+
+\begin{figure}[h]
+	\centering
+	\input{tikz/representation/co_occurence_matrix}
+	\caption{Co-occurrence matrix $\mathbf{G}$}
+\end{figure}
+
+\begin{table}[h]
+	\begin{tabular}{lll}
+		$n$	& & sum of elements in $\mathbf{G}$ \\
+		$K$ & & size of co-occurrence matrix $\mathbf{G}$ (size: $K \times K$) \\
+		$g_{ij}$ & & element of $\mathbf{G}$ \\
+		$p_{ij}$ & $= g_{i,j} / n$ & estimate for probability of a pair $(z_i,z_j)$ \\
+		$m_r$ &= $\sum\limits_{i=1}^{K} i \sum\limits_{j=1}^{K} p_{ij}$ & mean, computed along rows of $\mathbf{G}$ \\
+		$m_c$ &= $\sum\limits_{j=1}^{K} j \sum\limits_{i=1}^{K} p_{ij}$ & mean, computed along columns of $\mathbf{G}$ \\
+		$\sigma_r^2$ &= $\sum\limits_{i=1}^{K} (i-m_r)^2 \sum\limits_{j=1}^{K} p_{ij}$ & variance, computed along rows of $\mathbf{G}$ \\
+		$\sigma_c^2$ &= $\sum\limits_{j=1}^{K} (j-m_r)^2 \sum\limits_{i=1}^{K} p_{ij}$ & variance, computed along columns of $\mathbf{G}$ \\
+	\end{tabular}
+\end{table}
+
+First, all probabilities $p_{ij}$ and the means $m_r, m_c$ and variances $\sigma_r^2,\sigma_c^2$ are calculated. 
+Then, the following descriptors can be calculated, if needed. Note that the correlation and the entropy are the most common descriptors.
+
+\begin{table}[h]
+	\begin{tabularx}{\textwidth}{lXl}
+		\textbf{Descriptor} & \textbf{Explanation} & \textbf{Formula} \\ \hline
+		Maximum probability & Measures the strongest response of $\mathbf{G}$. The range of values is $[0,1]$. & $\displaystyle\max_{i,j}(p_{ij})$ \\
+		Correlation & A measure of how correlated a pixel is to its neighbor over the entire image. Range of values is $1$ to $-1$, corresponding to perfect positive or negative correlations. & $\displaystyle\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K}\frac{(i-m_r)(j-m_c)p_{ij}}{\sigma_r \sigma_c}$ \\
+		Contrast & A measure of intensity contrast between a pixel and its neighbor over the entire image. The range of values is $0$ (when $\mathbf{G}$ is constant) to $(K-1)^2$. & $\displaystyle\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K}(i-j)^2 p_{ij}$ \\
+		Uniformity (Energy) & A measure of uniformity in the range $[0,1]$. Uniformity is $1$ for a constant image. & $\displaystyle\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K} p_{ij}^2$ \\
+		Homogeneity & Measures the spatial closeness of the distribution of elements in $\mathbf{G}$ to the diagonal. The range of values is $[0,1]$, with the maximum being achieved when $\mathbf{G}$ is a diagonal matrix. & $\displaystyle\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K}\frac{p_{ij}}{1+|i-j|}$ \\
+		Entropy & Measures the randomness of the elements of $\mathbf{G}$. The entropy is $0$ when all $p_{ij}$'s are $0$ and is maximum when all $p_{ij}$'s are equal. The maximum value is $2 \log_2 K$. & $\displaystyle -\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K} p_{ij} \log_2 p_{ij}$ \\
+		\hline
+	\end{tabularx}
+\end{table}
+
 
 \paragraph{Structural approaches\buchSeite{836}}
 Some texture can be described as a repetition of a simple primitive. For such textures, a description based on rewriting rules is useful.
+
 \paragraph{Spectral approaches\buchSeite{837}}
 Good for periodic patterns\\
 The energy spectrum $S(r,\theta)$ is analyzed in polar coordinates. It is analyzed for a fixed angle, $S_\theta(r)$ and/or a fixed radius $S_r(\theta)$. The advantage of this is, that these are 1D functions and therefore easier to deal with.\\
@@ -333,27 +445,38 @@ The seven invariant moments:\\
 \subsection{Use of Principal Components for Description\buchSeite{842}}
 Principle component analysis (PCA) is a very general tool. It is applicable to boundaries and regions but also to color images and multispectral images. A given pixel in a multispectral image with n spectral components can be written as a vector containing these components. It is assumed that the components are random variables and hence these pixels are random vectors.
 \begin{align*}
-& x = \left[\begin{array}{c} x_1 \\ x_2 \\ \vdots \\ x_n \end{array}\right]&&\\
-& m_x = E\{x\} = \frac{1}{K}\sum\limits_{k=1}^{K}x_k&&\\
-& C_x = E\{(x-m_x)(x-m_x)^T\}=\frac{1}{K}\sum\limits_{k=1}^{K}x_kx_k^T-m_xm_x^T
+& \mathbf{x} = \left[\begin{array}{c} x_1 \\ x_2 \\ \vdots \\ x_n \end{array}\right]&&\\
+& \mathbf{m_x} = E\{\mathbf{x}\} = \frac{1}{K}\sum\limits_{k=1}^{K}\mathbf{x}_k&&\\
+& \mathbf{C_x} = E\{(\mathbf{x}-\mathbf{m_x})(\mathbf{x}-\mathbf{m_x})^T\}=\frac{1}{K}\sum\limits_{k=1}^{K}\mathbf{x}_k\mathbf{x}_k^T-\mathbf{m_x}\mathbf{m_x}^T
 \end{align*}
 
-Since the covariance matrix is real and symmetric, there exists a set of n orthonormal eigenvectors $e_i$ and corresponding eigenvalues $\lambda_i$\\
-$Ce_i=\lambda_ie_i$\\
-The eigenvectors can be arranged into a matrix A:\\
-$A=[e_1^T, e_2^T, ..., e_n^T]$\\
-Now A is used as a transformation matrix to map the vectors x into the vectors y. This is called the Hotelling transform\\
-$y=A(x-m_x)$\\
-Clearly, the mean vector of these new y vectors is zero $m_y=E\{y\}=0$\\
-$C_y=AC_xA^T=\left[
+Since the covariance matrix is real and symmetric, there exists a set of n orthonormal eigenvectors $\mathbf{e}_i$ and corresponding eigenvalues $\lambda_i$\\
+$\mathbf{C}\mathbf{e}_i=\lambda_i\mathbf{e}_i$\\
+The eigenvectors can be arranged into a matrix $\mathbf{A}$:\\
+$\mathbf{A}=[\mathbf{e}_1^T, \mathbf{e}_2^T, ..., \mathbf{e}_n^T]^T$\\
+Now $\mathbf{A}$ is used as a transformation matrix to map the vectors $\mathbf{x}$ into the vectors $\mathbf{y}$. This is called the \emph{Hotelling transform}. \\
+	\[
+		\mathbf{y}=\mathbf{A}(\mathbf{x}-\mathbf{m_x})
+	\]
+Clearly, the mean vector of these new y vectors is zero $\mathbf{m_y}=E\{\mathbf{y}\}=0$\\
+$\mathbf{C_y}=\mathbf{AC_xA}^T=\left[
 \begin{matrix}
  \lambda_1 & & & 0 \\
  & \lambda_2 & & \\
  & & ... & \\
  0 & & & \lambda_n
 \end{matrix}\right]	$\\
-Hottelling transformation: $y=A(x-m_x)$\\
-Hotteling transform can be inverted: $x=A^Ty+m_x$\\
+The elements of the $\mathbf{y}$ vectors are uncorrelated! $\mathbf{C_x}$ and $\mathbf{C_y}$ have the same eigenvalues.
+
+The Hotelling transform can easily be inverted using the fact that because $\mathbf{A}$ is orthonormal, $\mathbf{A}^{-1} = \mathbf{A}^T$:
+	\[
+		\mathbf{x} = \mathbf{A}^T \mathbf{y} + \mathbf{m_x}
+	\]
+If however a matrix $\mathbf{A}_k$ from the $k$ eigenvectors with the largest $k$ eigenvalues is formed, the reconstruction is no longer exact, but has a mean square error of $e_{ms} = \sum\limits_{j=k+1}^{n} \lambda_j$, which decreases monotonically. 
+Thus an image compression is possible by using only $k$ eigenvectors. The reconstructed image is then
+	\[
+		\hat{\mathbf{x}} = \mathbf{A}_k^T \mathbf{y}_k + \mathbf{m_x}
+	\]
 
 \subsection{Relational Descriptors\buchSeite{852}}
 
@@ -374,6 +497,7 @@ boundary can be described
 \item The abstracted primitives need
 some specific primitives, which
 contain all directions
+\item A shape can now be described as a string of operations.
 \end{itemize}
 \begin{figure}[h]
 	\centering
