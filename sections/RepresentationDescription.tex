@@ -480,14 +480,29 @@ Thus an image compression is possible by using only $k$ eigenvectors. The recons
 
 \subsection{Relational Descriptors\buchSeite{852}}
 
-\paragraph{Rewriting Rules:}
-Example:
+\paragraph{Rewriting Rules}
+Example: 
+Two primitive elements $a$ and $b$ are defined. They can be repetitively used to describe staircases.
+Rewriting rules are defined as follows: $S$ is the starting symbol, $A$ is a variable.
+Now a recursive definition can be made for describing the staircase.
+
+\begin{multicols}{2}
+\begin{center}
+	\input{tikz/representation/rewriting_rules} \\
+	Example: staircase and the used elements $a$ and $b$
+\end{center}
+\vfill
+\columnbreak
 \begin{align*}
-& 1 && \text{Start} && S \rightarrow aA\\
-& 2 && \text{got to 1 or to 3} &&  A \rightarrow bS \\
-& 3 && \text{end} &&  A \rightarrow b \\
+& 1) && \text{start} && S \rightarrow aA\\
+& 2) && \text{repeat 1)} &&  A \rightarrow bS \\
+& 3) && \text{end} &&  A \rightarrow b \\
 \end{align*}
-\paragraph{Directed line segments:} The idea is, that section of an image are described by directed line segments
+\end{multicols}
+Now any staircase made up of $a$s and $b$ can be described by repeating these rules. 
+E.g. $(1,3)$ is a staircase $a,b$. $(1,2,1,3)$ is $a,b,a,b$ , $\ldots$. \\
+
+\paragraph{Directed line segments} The idea is, that section of an image are described by directed line segments
 
 \begin{itemize}
 \item There needs to be a set of
@@ -503,35 +518,33 @@ contain all directions
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\adjustbox{scale=1}{\input{tikz/representation/AbstractedPrimitives}}
+		\adjustbox{scale=0.6}{\input{tikz/representation/AbstractedPrimitives}}
 		\caption{Abstracted Primitives}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\adjustbox{scale=1}{\input{tikz/representation/PrimitivesOperations}}
+		\adjustbox{scale=0.8}{\input{tikz/representation/PrimitivesOperations}}
 		\caption{Operations among primitives}
 	\end{subfigure}
 	\caption{Primitives}
 \end{figure}
 
-\begin{align*}
-& a+b &&\\
-& a-b  &&\\
-& a \times b &&\\
-& a\ast b &&\\
-\end{align*}
+\paragraph{Tree descriptors} 
+Information describing the meaning of a node and relating it to its neighbors can be stored in trees.
+A texture may some times not be connected, then it can be described by trees. \\
 
-\paragraph{Tree descriptors}
+Each tree has a unique node called the root $\$$ and is made up of subtrees. All leaves of a tree are called the frontier of the tree.
+
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\adjustbox{scale=1}{\input{tikz/representation/CompositeRegion}}
+		\adjustbox{scale=0.6}{\input{tikz/representation/CompositeRegion}}
 		\caption{Simple composite region}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\adjustbox{scale=1}{\input{tikz/representation/TreeRepresentation}}
+		\adjustbox{scale=0.8}{\input{tikz/representation/TreeRepresentation}}
 		\caption{Tree representation}
 	\end{subfigure}
 	\caption{Tree descriptors}
