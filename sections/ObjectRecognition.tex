@@ -1,4 +1,4 @@
-\section{Object Recognition\buch{Ch. 12}}
+\section{Object Recognition\buch{Ch. 12}\buchSeite{861-907}}
 \begin{itemize}
 \item Recognition of \emph{individual} image regions called \emph{object} or \emph{pattern}
 \item Concept of ``learning'' from sample patterns
@@ -41,8 +41,6 @@ Structural information can be captured in strings. Example
 If there is hierarchy then a descriptor which is based on a tree structure
 should be used.
 
-% TODO: Tikz Tree einfügen
-
 \subsection{Recognition Based on Decision Theory\buch{Ch. 12.2}}
 \paragraph{Discriminant functions}
 The core of decision theory $d_i(\mathbf{x})$ defined for each class $\omega_i$.
@@ -64,7 +62,7 @@ For two classes, a single discriminant function can be introduced
 \subsubsection{Matching\buchSeite{866}}
 Each class is represented by prototypes.
 A vector $x$ belongs to the class with the shortest distance.
-% TODO: Tikz Diagramm mit klassen, prototypen und grenzen
+
 \paragraph{Minimum distance classifier}
 The mean vector of a class is a powerful prototype vector.
 \begin{align*}
@@ -86,8 +84,6 @@ The decision boundary between class $\omega_i$ and $\omega_j$ will be
 \end{align*}
 Which is a line through the midpoint of $m_i$ and $m_j$ for $n=2$.
 For $n=3$ its a plane and for $n>3$ it's a hyperplane.
-% TODO: Tikz mit diagram
-% TODO: Evt. Beispiel?
 
 \paragraph{Matching by correlation\buchSeite{869}}
 Calculate cross-correlation between a mask $w(x,y)$ of size $m\times n$ and an image
