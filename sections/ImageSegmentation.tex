@@ -83,7 +83,7 @@ The Laplacian is isotropic with respect to $0^\circ, 45^\circ, 90^\circ \text{ a
 
 Point detection is now achieved by filtering the image with the mask and thresholding this result image $R$.
 \[
-	g(x,y) = 
+	g(x,y) =
 	\begin{cases}
 		1 & \text{if} |R(x,y)| \geq T \\
 		0 & \text{otherwise}
@@ -149,7 +149,7 @@ edge detection.
 
 \begin{figure}[!h]
 	\centering
-	\input{tikz/segmentation/EdgeModelsRamp}
+	\includegraphics[width=.5\linewidth]{tikz/segmentation/EdgeModelsRamp.png}
 	\caption{Ramp Edge with intensity profile and derivates.}
 	\label{fig:imseg_edgemodels}
 \end{figure}
@@ -260,7 +260,7 @@ A zero-crossing exists, if at least two opposing pixelpairs (a-a, b-b, c-c, d-d)
 			c & b & a \\%
 		};
 	\end{tikzpicture}
-	\caption{Zero-Crossing: opposing pixel pairs}	
+	\caption{Zero-Crossing: opposing pixel pairs}
 \end{figure}
 
 \paragraph{LoG DoG}
@@ -290,7 +290,7 @@ DoG(x,y)=\frac{1}{2\pi\sigma_1^2}e^{-\frac{x^2+y^2}{2\sigma_1^2}}-\frac{1}{2\pi\
 			\alpha(x,y)	&= tan^{-1}\left[\frac{g_y}{g_x}\right]
 		\end{align*}
 	\item Apply nonmaxima suppression to the gradient image:
-		Let $d_1, d_2, d_3$ and $d_4$ denote the four basic edge directions for a 3x3 region: horizontal, $-45^\circ$, vertical and $-45^\circ$. 
+		Let $d_1, d_2, d_3$ and $d_4$ denote the four basic edge directions for a 3x3 region: horizontal, $-45^\circ$, vertical and $-45^\circ$.
 		We can formulate the following nonmaxima suppression scheme for a 3x3 region centered at every point $(x,y)$ in $\alpha(x,y)$:
 		\begin{enumerate}
 			\item Find the direction $d_k$ that is closest to $\alpha(x,y)$
@@ -334,7 +334,7 @@ A much simpler scheme can be used if the linking follows certain directions and 
 	\item Compute the gradient magnitude and angle arrays, $M(x,y)$ and $\alpha(x,y)$ of the input image, $f(x,y)$
 	\item Form a binary image, $g$, whose value at any pair of coordinates $(x,y)$ is given by:
 		\[
-			g(x,y) = 
+			g(x,y) =
 				\begin{cases}
 					1 & \text{if } M(x,y) > T_M \text{ and } \alpha(x,y) = A \pm T_A\\
 					0 & \text{otherwise}
@@ -342,7 +342,7 @@ A much simpler scheme can be used if the linking follows certain directions and 
 		\]
 		Where $T_M$ is a threshold, $A$ is a specified angle direction, and $\pm T_A$ defines a "band" of acceptable directions about $A$.
 	\item Scan the rows of $g$ and fill (set to 1) all gaps (sets of 0s) in each row that do not exceed a specified length, $K$.
-		Note that, by definition, a gap is bounded at both ends by one or more 1s. 
+		Note that, by definition, a gap is bounded at both ends by one or more 1s.
 		The rows are precessed individiually, with no memory between them.
 	\item To detect gaps in any other direction, $\theta$, rotate $g$ by this angle and apply the horizontal scanning process procedure in Step 3.
 		Rotate the result back by $-\theta$. Note that rotating is computationally expensive, so this method is best for horizontal or vertical edges.
@@ -433,7 +433,7 @@ To be able to partition an image into regions based on intensity values, the his
 \item Compute the average (mean) intensity values $m_1$ and $m_2$ for the pixels in $G_1$ and $G_2$, respectively
 \item Compute a new threshold value: \begin{equation}
 T=\frac{1}{2}(m_1+m_2)\notag
-\end{equation} 
+\end{equation}
 \item Repeat Steps 2 through 4 until the difference betwenn values of $T$ in successive iterations is smaller than a predefined paramter $\Delta T$
 \end{enumerate}
 
@@ -514,7 +514,7 @@ Only the strongest edges are usually kept, say the top 10\%, to calculate the th
 \end{flalign*}
 \subsubsection{Variable Thresholding\buchSeite{756}}
 \paragraph{Image Partitioning\buchSeite{756}}
-The simplest approach is to partition a given image into non overlapping regions and then use Otsu's method on smaller regions. 
+The simplest approach is to partition a given image into non overlapping regions and then use Otsu's method on smaller regions.
 This works well if the illumination is changing slowly. \\
 \paragraph{Based on local image properties\buchSeite{758}}
 A threshold is computed for each point. The threshold depends on some property of a local neighborhood. Common properties are the mean and standard deviation for each pixel.
@@ -554,7 +554,7 @@ The goal is to segment the image into regions directly, not using abrupt changes
 The image is subdivided initially into a set of arbitrary disjoint regions and then the regions are merge and or split in an attempt to improve the segmentation.\\
 A common scheme to split images is a quadtree.\\
 \begin{enumerate}
-	\item Split into four disjoint quadrants any region $R_i$ for wich $Q(R)= FALSE$. 
+	\item Split into four disjoint quadrants any region $R_i$ for wich $Q(R)= FALSE$.
 	\item When no further splitting is possible, merge any adjacent regions $R_i$ and $R_k$ for which $Q(R_j\bigcup R_k) = TRUE$.
 	\item Stop when no further merging is possible
 \end{enumerate}
@@ -612,23 +612,23 @@ Basic idea:
 If an object moves in a scene, it can easily be segmented from the background using its motion information.
 
 \subsubsection{Spatial Techniques\buchSeite{778}}
-For a sequence of images $f(x,y,t_k)$, a reference image $R(x,y)$ is needed. 
-Usually the first image is chosen: $R(x,y) = f(x,y,1)$. 
+For a sequence of images $f(x,y,t_k)$, a reference image $R(x,y)$ is needed.
+Usually the first image is chosen: $R(x,y) = f(x,y,1)$.
 One can also use a IIR lowpass filtered image of all frames: $R_k(x,y) = (1-\alpha) R_{k-1}(x,y) + \alpha f(x,y,k)$. (using a small $\alpha$) \\
 
-The \emph{accumulative difference image} (ADI) is generated by comparing this reference image with every subsequent image in the scene. 
+The \emph{accumulative difference image} (ADI) is generated by comparing this reference image with every subsequent image in the scene.
 \begin{align*}
-	A_k(x,y) &= 
+	A_k(x,y) &=
 		\begin{cases}
 			A_{k-1}(x,y) + 1 & \text{if} \left|R(x,y) - f(x,y,k)\right| > T \\
 			A_{k-1}(x,y) & \text{otherwise}
 		\end{cases} \\
-	P_k(x,y) &= 
+	P_k(x,y) &=
 		\begin{cases}
 			P_{k-1}(x,y) + 1 & \text{if} \left(R(x,y) - f(x,y,k)\right) > T \\
 			P_{k-1}(x,y) & \text{otherwise}
 		\end{cases} \\
-	N_k(x,y) &= 
+	N_k(x,y) &=
 		\begin{cases}
 			N_{k-1}(x,y) + 1 & \text{if} \left(R(x,y) - f(x,y,k)\right) < -T \\
 			N_{k-1}(x,y) & \text{otherwise}

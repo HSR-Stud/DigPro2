@@ -63,7 +63,7 @@ The \emph{closing} of A by B is defined: (first dilation then erosion)
 	A  \bullet B = (A \oplus B) \ominus B
 \]
 
-Opening and closing are dual operations: 
+Opening and closing are dual operations:
 \[
 	(A  \bullet B)^c = (A^c \circ \hat{B})
 \]
@@ -105,18 +105,18 @@ The \textbf{closing} operation satisfies the following properties:
 The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 \begin{itemize}
 	\item Through erosion of the image by the object, possible locations for the object in the image are left, since elements smaller than the objects disappear
-	
+
 	\item Through erosion of the background of the image with the local background of the object, possible locations for the object in the image are left
-	
+
 	\item The intersection of these possible locations result in a reliable  detection of the object location
 	\[
 		A \circledast B = (A \ominus D) \cap [ A^c \ominus (W-D)]
 	\]
-	
+
 	\item In general, if B1 is the object and B2 is the corresponding background this can be written
 	\[
-		A \circledast B = (A \ominus B_1)\cap (A^c \ominus B_2)	
-	\]	
+		A \circledast B = (A \ominus B_1)\cap (A^c \ominus B_2)
+	\]
 \end{itemize}
 
 
@@ -149,7 +149,7 @@ Initial array ($X_0$) contains a 1 in the region of the connected component.
 X_k=(X_{k-1}\oplus B)\cap A && k=1,2,3,\ldots
 \end{align*}
 The iteration can stop, when $X_k = X_{k-1}$. \\
-The mask \quad \adjustbox{max width=1cm}{\input{tikz/morphological/mask_all}} 
+The mask \quad \adjustbox{max width=1cm}{\input{tikz/morphological/mask_all}}
 \quad leads to 8-connected regions.
 \end{multicols}
 
@@ -218,8 +218,8 @@ Thinning is the operation of making the foreground thinner.
 	\caption{Thinning}
 \end{figure}
 	\[
-		A \otimes  B = A - (A \circledast B)	
-	\]	
+		A \otimes  B = A - (A \circledast B)
+	\]
 Hit-or-miss transformation with rotating structuring elements. Note that the hit-or-miss is applied without background. \\
 
 \begin{figure}[h]
@@ -267,9 +267,9 @@ Hit-or-miss transformation with rotating structuring elements. Note that the hit
 	\caption{Thinning masks}
 \end{figure}
 	\[
-		A \otimes  {B} = ((\ldots((A \otimes B^{1}) \otimes B^{2})\ldots) \otimes B^{n})	
+		A \otimes  {B} = ((\ldots((A \otimes B^{1}) \otimes B^{2})\ldots) \otimes B^{n})
 	\]
-	
+
 This is repeated until nothing changes anymore.
 
 \subsubsection{Thickening\buchSeite{650}}
@@ -315,7 +315,7 @@ and
 	\[
 		K = \max\left\{ k | (A \ominus kB \neq \emptyset) \right\}
 	\]
-	
+
 $K$ is the last iterative step before $A$ is eroded to an empty step. \\
 
 Reconstruction can be achieved by
@@ -328,7 +328,7 @@ Reconstruction can be achieved by
 	\item The skeleton is a bit thicker than it needs to be.
 \end{itemize}
 \end{multicols}
-	
+
 \subsubsection{Pruning\buchSeite{654}}
 Pruning is a procedure that can remove parasitic components of a length below some threshold.\\
 \begin{enumerate}
@@ -376,7 +376,7 @@ This can be repeated:
 
 \textbf{Geodesic erosion}
 	\[
-		E_G^{(0)}(F) = F 
+		E_G^{(0)}(F) = F
 	\]
 is the erosion of $F$ by $B$, where the result contains at least $G$.
 \begin{align*}
@@ -404,7 +404,7 @@ C_R^{(n)}(F)=R_F^E[(F\oplus nB)]
 Without needing a seed!\\
 \[
 	H = [R_F^D(F)]^C  \qquad  \text{with} \qquad \text{F}(x,y)=\begin{cases} 1-I(x,y) & \text{if (x,y) is on the border of I}\\
-                                                             0 & \text{otherwise} \end{cases}   
+                                                             0 & \text{otherwise} \end{cases}
 \]
 \begin{figure}[h!]
 \centering
@@ -450,7 +450,7 @@ Without needing a seed!\\
 Remove object that touch the border.
 \[
 X = I-R_I^D(F)  \qquad  \text{with} \qquad \text{F}(x,y)=\begin{cases} I(x,y) & \text{if (x,y) is on the border of I}\\
-0 & \text{otherwise} \end{cases}   
+0 & \text{otherwise} \end{cases}
 \]
 
 \subsection{Gray-scale morphology\buchSeite{665}}
@@ -460,8 +460,7 @@ The fundamental operations dilation, erosion, opening and closing can be extende
 \centering
 \begin{subfigure}[b]{0.45\textwidth}
 \centering
-\adjustbox{scale=0.5}{\begin{tikzpicture}
-\draw [shading=radial, outer color=gray, inner color=white] (0,0) circle (2);\end{tikzpicture}}
+\adjustbox{scale=0.5}{\includegraphics[width=5cm]{tikz/morphological/nonflatSE.png}}
 \caption{Nonflat SE}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\textwidth}
@@ -498,13 +497,13 @@ Erosion
 Dilation
 \begin{align*}
 	[f\oplus b](x,y)	&= \max_{(s,t)\in b} \{f(x-s,y-t)\}				& \text{Flat SE} \\
-	[f\oplus b_N](x,y)	&= \max_{(s,t)\in b_N} \{f(x-s,y-t) +b_N(s,t)\}	& \text{Non-Flat SE} 
+	[f\oplus b_N](x,y)	&= \max_{(s,t)\in b_N} \{f(x-s,y-t) +b_N(s,t)\}	& \text{Non-Flat SE}
 \end{align*}
 
 \subsubsection{Opening and Closing\buchSeite{668}}
 Opening and closing are defined exactly the same as in the binary case:
 \begin{align*}
-	f \circ b = (f \ominus b) \oplus b && 
+	f \circ b = (f \ominus b) \oplus b &&
 	f  \bullet b = (f \oplus b) \ominus b
 \end{align*}
 
