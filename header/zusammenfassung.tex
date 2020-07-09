@@ -1,0 +1,62 @@
+\input{header/header}
+\input{header/hsrColors}
+\input{header/mathe}
+\input{header/enumitem}
+\input{header/listings}
+
+% Seitenränder für Formelsammlungen 
+\usepackage[left=1cm,right=1cm,top=0.5cm,bottom=0.5cm,includeheadfoot]{geometry}
+
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage[europeanresistors,americaninductors]{circuitikz}
+\usepackage{multirow} % Create tabular cells spanning multiple rows
+\usepackage{multicol} % In­ter­mix sin­gle and mul­ti­ple columns
+\usepackage{rotating} % Rotation tools, including rotated fullpage floats
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Layout der Kopf und Fusszeile %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\deftripstyle{zusammenfassung}[0pt][0.5pt]
+	{\Title}	% Kopfzeile innen
+	{\headmark}	% Kopfzeile mitte
+	{\pagemark}	% Kopfzeile aussen
+	{\Author}	% Fusszeile innen
+	{\includegraphics[width=1.6cm]{./header/lizenzen/cc-by-nc-sa/small.png}}			% Fusszeile mitte
+	{\Date}	% Fusszeile aussen
+\pagestyle{zusammenfassung}
+
+% Nummerierte und unnummerierte paragraph headings
+\setcounter{secnumdepth}{5}
+
+\RedeclareSectionCommands[
+  afterskip=1em
+]{paragraph,subparagraph}
+
+\renewcommand*{\paragraphformat}{\theparagraph\autodot\enskip}
+\renewcommand*{\subparagraphformat}{\thesubparagraph\autodot\enskip}
+
+
+%%Makros%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+% Command for images in table
+\newcommand\tabImg[2][]{%
+    \raisebox{0pt}[\dimexpr\totalheight+\dp\strutbox\relax][\dp\strutbox]{%
+        \includegraphics[#1]{#2}%
+    }%
+}
+
+% Makros für Verweise auf ein Buch oder Skript
+\newcommand{\buch}[1]{\texorpdfstring{$_{\textcolor{HSRLakeGreen}{\mbox{\small{#1}}}}$}{}}
+\newcommand{\buchSeite}[1]{\texorpdfstring{\ensuremath{_{\textcolor{red}{\mbox{\small{ S#1}}}}}}{}}
+\newcommand{\skript}[1]{\texorpdfstring{$_{\textcolor{HSRReed}{\mbox{\small{#1}}}}$}{}}
+\newcommand{\formelbuch}[1]{$_{\textcolor{red}{\mbox{\small{S#1}}}}$}
+
+% Zeilenhöhe Tabellen:
+\newcommand{\arraystretchOriginal}{1.5}
+\renewcommand{\arraystretch}{\arraystretchOriginal}
+
+\setlength{\parindent}{0pt}
+
+% Todo command
+\newcommand{\todo}[1]{\textbf{\color{red}{TO DO: #1}}}
