@@ -1,4 +1,5 @@
-\section{Image Segmentation\buch{Ch. 10}\buchSeite{689-794}}
+%!TEX root = ../DigPro2.tex
+\section{Image Segmentation\buch{Ch. 10}\buchSeite{699-810}}
 \paragraph{Preliminaries}
 \begin{itemize}
 \item Separate the image into different parts, i.e. regions or objects
@@ -11,7 +12,7 @@
 \end{itemize}
 \end{itemize}
 
-\subsection{Fundamentals\buchSeite{690}}
+\subsection{Fundamentals\buchSeite{700}}
 \begin{multicols}{2}
 \begin{enumerate}[label={\alph*)}]
 \item $\bigcup\limits_{i=1}^{n}R_i=R$
@@ -37,11 +38,11 @@ Focus on the intensity values
 \item If the intensity does not vary much, then this is one region.
 \end{itemize}
 
-\subsection{Point, line and edge detection\buchSeite{692}}
+\subsection{Point, line and edge detection\buchSeite{701}}
 
 When the intensity changes abruptly in a local neighborhood, this indicates an edge. It can be a simple point or a line.
 
-\subsubsection{Background\buchSeite{692}}
+\subsubsection{Background\buchSeite{702}}
 
 Abrupt local changes can be detected using derivatives.\\
 First order derivative
@@ -66,7 +67,7 @@ This can be calculated using a spatial filter.
 \item Second order in y direction $w_6=1, w_4=1, w_5=-2$
 \item Second order in x direction $w_8=1, w_2=1, w_5=-2$
 \end{itemize}
-\subsubsection{Detection of Isolated Points\buchSeite{696}}
+\subsubsection{Detection of Isolated Points\buchSeite{706}}
 The Laplacian combines the second derivatives in both spatial directions. This results in
 \[
 	\nabla^2f(x,y)=f(x+1,y)+f(x-1,y)+f(x,y+1)+f(x,y-1)-4f(x,y)
@@ -90,7 +91,7 @@ Point detection is now achieved by filtering the image with the mask and thresho
 	\end{cases}
 \]
 
-\subsubsection{Line Detection\buchSeite{697}}
+\subsubsection{Line Detection\buchSeite{707}}
 Often, a line of a known direction should be detected. We use special masks for that particular direction
 \begin{figure}[h]
 	\centering
@@ -141,7 +142,7 @@ Often, a line of a known direction should be detected. We use special masks for 
 \end{figure}
 
 
-\subsubsection{Edge Models}
+\subsubsection{Edge Models\buchSeite{710}}
 
 The typical intensity profile of an edge is shown in figure \ref{fig:imseg_edgemodels}.
 Note that the derivatives are very sensitive to noise. Usually the image is smoothed before
@@ -154,7 +155,7 @@ edge detection.
 	\label{fig:imseg_edgemodels}
 \end{figure}
 
-\subsubsection{Edge localization\buchSeite{706}}
+\subsubsection{Basic edge detection\buchSeite{716}}
 The previously shown method generates edge points. The goal is to keep the ones which truly belong to an edge.\\
 Since first order derivatives are helpful, a nice way of combining the two partial derivatives into one value is the magnitude of the gradient
 \begin{equation}
@@ -219,8 +220,8 @@ After the gradient images have been calculated, often the magnitude of the gradi
 \end{align*}
 
 If the goal is to find the dominant edges, then smoothing the image before calculating the magnitude gradient image works well. Alternatively, the magnitude gradient image can also be thresholded such that only values above this value are considered edges (set to one). Everything else is set to 0.
-\subsubsection{More Advanced Techniques for Edge Detection\buchSeite{714}}
-\paragraph{Marr-Hildreth edge detector\buchSeite{714}}
+\subsubsection{More Advanced Techniques for Edge Detection\buchSeite{724}}
+\paragraph{Marr-Hildreth edge detector\buchSeite{724}}
 New Idea: Edges exist on different scales. The edge detector needs to be tuned to the scale of the desired edge. Use a Gaussian filter (with space constant $\sigma$) and then take the Laplacian. The Gaussian filter is a low pass, wich blurs the image for large $\sigma$. This results in a Laplacian of Gaussian (LoG) filter.
 \[
 	\nabla^2 G(x,y) = \left[ \frac{x^2 + y^2 - 2 \sigma^2}{\sigma^4 } \right] e^{-\frac{x^2+y^2}{2 \sigma^2}}
@@ -263,7 +264,7 @@ A zero-crossing exists, if at least two opposing pixelpairs (a-a, b-b, c-c, d-d)
 	\caption{Zero-Crossing: opposing pixel pairs}
 \end{figure}
 
-\paragraph{LoG DoG}
+\paragraph{LoG DoG\buchSeite{727}}
 The Laplacian of Gaussian (LoG) can be approximated using a difference of Gaussian (DoG) filter
 \begin{align}
 DoG(x,y)=\frac{1}{2\pi\sigma_1^2}e^{-\frac{x^2+y^2}{2\sigma_1^2}}-\frac{1}{2\pi\sigma_2^2}e^{-\frac{x^2+y^2}{2\sigma_2^2}}\notag\\
@@ -277,7 +278,7 @@ DoG(x,y)=\frac{1}{2\pi\sigma_1^2}e^{-\frac{x^2+y^2}{2\sigma_1^2}}-\frac{1}{2\pi\
 \item The LoG and the DoG filters can be implemented by 1 D convolutions (they are separable)
 \end{itemize}
 
-\paragraph{Canny edge detector\buchSeite{719}}
+\paragraph{Canny edge detector\buchSeite{729}}
 \begin{enumerate}
 	\item Smooth the image with a Gaussian filter.
 		\begin{align*}
@@ -319,9 +320,9 @@ DoG(x,y)=\frac{1}{2\pi\sigma_1^2}e^{-\frac{x^2+y^2}{2\sigma_1^2}}-\frac{1}{2\pi\
 \end{enumerate}
 
 
-\subsubsection{Edge linking and boundary detection\buchSeite{725}}
+\subsubsection{Linking edge points\buchSeite{735}}
 Three schemes to link edges:\\
-\paragraph{Local processing\buchSeite{726}}
+\paragraph{Local processing\buchSeite{735}}
 For every edge-point at a location the gradient vector magnitude and angle are compared with the magnitude and angle of edge-points in a neighborhood. If these are similar, they belong to the same boundary. This can be indicated by giving them the same color and/or gray value.
 
 \begin{align*}
@@ -350,7 +351,7 @@ A much simpler scheme can be used if the linking follows certain directions and 
 
 
 \paragraph{Regional processing\buchSeite{728}}
-
+%TODO: not present in 4th edition of book -> delete or merge with other section
 If the location of a boundary is roughly known, it is possible to use the detected edge points as indicators for the suspected boundary.
 \begin{enumerate}
 \item Let P be a sequence of ordered, destinct, 1-valued points of a binary image. Specify two starting points, A and B. these are two starting vertices of the polygon.
@@ -368,7 +369,7 @@ If the location of a boundary is roughly known, it is possible to use the detect
 	\adjustbox{scale=0.5}{\input{tikz/segmentation/RegionalProcessing}}
 	\caption{Regional Processing}
 \end{figure}
-\paragraph{Global processing using the Hough transform\buchSeite{733}}
+\paragraph{Global processing using the Hough transform\buchSeite{737}}
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}{0.3\textwidth}
@@ -403,8 +404,8 @@ If the location of a boundary is roughly known, it is possible to use the detect
 
 This theory can be generalized to find e.g. circles etc.
 
-\subsection{Thresholding\buchSeite{738}}
-\subsubsection{Foundation\buchSeite{738}}
+\subsection{Thresholding\buchSeite{742}}
+\subsubsection{Foundation\buchSeite{742}}
 To be able to partition an image into regions based on intensity values, the histograms have to be able to be separated.
 \begin{figure}[ht!]
 	\begin{subfigure}{0.5\textwidth}
@@ -425,7 +426,7 @@ To be able to partition an image into regions based on intensity values, the his
 & \text{multiple thresholding} && g(x,y)=\begin{cases}a \qquad \text{if } f(x,y) > T_2 \\b \qquad  \text{if } T_1 < f(x,y)  \leq T_2 \\c \qquad  \text{if } f(x,y) \leq T_1 \end{cases} &&\label{thresholdingMultiple}
 \end{flalign}
 
-\subsubsection{Basic global thresholding\buchSeite{741}}
+\subsubsection{Basic global thresholding\buchSeite{746}}
 
 \begin{enumerate}
 \item Select an initial estimate for the global threshold, T
@@ -438,7 +439,7 @@ T=\frac{1}{2}(m_1+m_2)\notag
 \end{enumerate}
 
 
-\subsubsection{Optimum global thresholding using Otsu’s Method\buchSeite{742}}
+\subsubsection{Optimum global thresholding using Otsu’s Method\buchSeite{747}}
 Two different variances are important
 \begin{itemize}
 \item Within-class variance $\sigma_W^2 = P_1\sigma_1^2+P_2\sigma_2^2$
@@ -488,9 +489,9 @@ m(k)&= \sum_{i=0}^{k}ip_i
 	\item Obtain the separability measure, $\eta^\ast$, by evaluating Eq. \eqref{eq:eta} (10.3-16) at $k = k^\ast$.
 \end{enumerate}
 
-\subsubsection{Using Image Smoothing to Improve Global Thresholding\buchSeite{747}}
+\subsubsection{Using Image Smoothing to Improve Global Thresholding\buchSeite{752}}
 The obvious approach to improve the situation is to low pass filter the image, i.e., to smooth the image before the global thresholding method is applied
-\subsubsection{Using Edges to Improve Global Thresholding\buchSeite{749}}
+\subsubsection{Using Edges to Improve Global Thresholding\buchSeite{753}}
 Useful when trying to find small objects.
 Only the strongest edges are usually kept, say the top 10\%, to calculate the threshold.
 \begin{enumerate}
@@ -501,7 +502,7 @@ Only the strongest edges are usually kept, say the top 10\%, to calculate the th
 	\item Use this histogram to calculate the global segmentation threshold
 		using, for example, Otsu's method
 \end{enumerate}
-\subsubsection{Multiple Thresholds\buchSeite{752}}
+\subsubsection{Multiple Thresholds\buchSeite{757}}
 
 \begin{flalign*}
 &\sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2+P_3(m_3-m_G)^2 &&\\
@@ -512,14 +513,14 @@ Only the strongest edges are usually kept, say the top 10\%, to calculate the th
 &\sigma_B^2(k_1^*,k_2^*)=\max\limits_{0\leq k_1 \leq k_2 \leq L-1} \sigma_B^2(k_1,k_2)&&
 \eta(k_1^*,k_2^*)=\frac{\sigma_B^2(k_1^*,k_2^*)}{\sigma_G^2}&&\\
 \end{flalign*}
-\subsubsection{Variable Thresholding\buchSeite{756}}
-\paragraph{Image Partitioning\buchSeite{756}}
+\subsubsection{Variable Thresholding\buchSeite{761}}
+\paragraph{Image Partitioning\buchSeite{761}} %TODO: not present in 4th edition?
 The simplest approach is to partition a given image into non overlapping regions and then use Otsu's method on smaller regions.
 This works well if the illumination is changing slowly. \\
-\paragraph{Based on local image properties\buchSeite{758}}
+\paragraph{Based on local image properties\buchSeite{761}}
 A threshold is computed for each point. The threshold depends on some property of a local neighborhood. Common properties are the mean and standard deviation for each pixel.
 An even more powerful scheme can be built, if the 1 or 0 decision is based on some logical condition.\\
-\paragraph{Using moving averages\buchSeite{759}}
+\paragraph{Using moving averages\buchSeite{763}}
 Useful to reduce illumination effects.
 Very fast to calculate, since only subtracting the oldest sample $z_{k-n}$ and
 adding the new sample $z_{k+1}$ to the current average are needed.
@@ -540,17 +541,18 @@ This is achieved by moving along zig-zag scan lines:
 
 \subsubsection{Multivariable Thresholding\buchSeite{761}}
 % Nicht relevant für Prüfung
+%TODO: not present in 4th edition?
 
-\subsection{Region based segmentation\buchSeite{763}}
+\subsection{Region based segmentation\buchSeite{764}}
 The goal is to segment the image into regions directly, not using abrupt changes or thresholding.
-\subsubsection{Region growing\buchSeite{763}}
+\subsubsection{Region growing\buchSeite{764}}
 \begin{enumerate}
 \item Find all connected components in $S(x,y)$ and erode each connected component to one pixel; label all such pixels found as 1. All other pixels in S are labeled 0.
 \item Form an image $f_Q$ such that, at a pair of coordinates $(x,y)$, let $f_Q(x,y)=1$ if the input image satisfies the given predicate, Q, at those coordinates; otherwise, let $f_Q(x,y)=0$
 \item Let $g$ be an image formed by appending to each seed point in S all the 1-valued points in $f_Q$ that are 8-connected to that seed point
 \item Label each connected component in $g$ with a different region label (e.g. 1,2,3,...). This is the segmented image optained by Region growing.
 \end{enumerate}
-\subsubsection{Region splitting and merging\buchSeite{766}}
+\subsubsection{Region splitting and merging\buchSeite{768}}
 The image is subdivided initially into a set of arbitrary disjoint regions and then the regions are merge and or split in an attempt to improve the segmentation.\\
 A common scheme to split images is a quadtree.\\
 \begin{enumerate}
@@ -574,8 +576,8 @@ A common scheme to split images is a quadtree.\\
 \end{figure}
 
 
-\subsection{Segmentation using morphological watersheds\buchSeite{769}}
-\subsubsection{Background\buchSeite{769}}
+\subsection{Segmentation using morphological watersheds\buchSeite{786}}
+\subsubsection{Background\buchSeite{786}}
 The basic idea is to think of images as 3D landscapes. There are three kinds of points:
 \begin{itemize}
 \item Points belonging to a regional minimum.
@@ -589,12 +591,12 @@ Basic idea:
 \item As soon as the water in different basins want to merge, a dam is build
 \item At the end only the dams are left. These are the watershed lines wich are connected boundaries segmenting the image into different regions.
 \end{itemize}
-\subsubsection{Dam Construction\buchSeite{772}}
+\subsubsection{Dam Construction\buchSeite{789}}
 \begin{itemize}
 \item The easiest way to construct such a dam is using dilation
 \item When basins merge, then a dam needs to be constructed
 \end{itemize}
-\subsubsection{Watershed segmentation algorithm\buchSeite{774}}
+\subsubsection{Watershed segmentation algorithm\buchSeite{791}}
 \begin{itemize}
 \item $T[n]$ is the set of coordinates flooded \qquad $T[n] = {(s,t)|g(s,t)<n}$
 \item The flooding goes in integers from $n=\min+1$ to $n=\max+1$
@@ -608,10 +610,10 @@ Basic idea:
 	\end{enumerate}
 \end{itemize}
 
-\subsection{The use of motion in segmentation\buchSeite{778}}
+\subsection{The use of motion in segmentation\buchSeite{796}}
 If an object moves in a scene, it can easily be segmented from the background using its motion information.
 
-\subsubsection{Spatial Techniques\buchSeite{778}}
+\subsubsection{Spatial Techniques\buchSeite{796}}
 For a sequence of images $f(x,y,t_k)$, a reference image $R(x,y)$ is needed.
 Usually the first image is chosen: $R(x,y) = f(x,y,1)$.
 One can also use a IIR lowpass filtered image of all frames: $R_k(x,y) = (1-\alpha) R_{k-1}(x,y) + \alpha f(x,y,k)$. (using a small $\alpha$) \\
@@ -636,5 +638,5 @@ The \emph{accumulative difference image} (ADI) is generated by comparing this re
 \end{align*}
 where $A_k(x,y), \: P_k(x,y), Y: N_k(x,y)$ are the absolute, positive and negative ADIs, after the $k$th image in the sequence is encountered and $T$ is threshold, e.g. $5\%$ of the brightness.
 
-\subsubsection{Frequency Domain Techniques\buchSeite{782}}
+\subsubsection{Frequency Domain Techniques\buchSeite{799}}
 % not relevant

@@ -1,8 +1,9 @@
-\section{Representation and Description\buch{Ch. 11}\buchSeite{796-860}}
-\label{sec:representationDescription}
-\subsection{Representation\buchSeite{796}}
+%!TEX root = ../DigPro2.tex
+\section{Feature Extraction\buch{Ch. 11}\buchSeite{811-902}}
+\label{sec:featureExtraction}
+\subsection{Boundary preprocessing\buchSeite{814}}
 After the image segmentation, the boundaries need to be represented in a form, that is suitable for further processing.
-\subsubsection{Boundary following\buchSeite{796}}
+\subsubsection{Boundary following (tracing)\buchSeite{814}}
 The following algorithm is the moore boundary tracking algorithm.
 \begin{enumerate}
 \item Let the starting point, $b_0$ be the uppermost, leftmost point in the image that is labeled 1. Denote by $c_0$ the west neighbor of $b_0$ clearly, $c_0$ is a background point. Examine the 8-neighbors of $b_0$, starting at $c_0$ and procedding in a clockwise direction. Let $b_1$ denote the first neighor encountered whose value is 1, and let $c_1$ be the (background) point immediately preceding $b_1$ in the sequence. Store the localtions of $b_0$ and $b_1$ for use in Step 5.
@@ -42,7 +43,7 @@ The following algorithm is the moore boundary tracking algorithm.
 \end{figure}
 Of course this algorithm also works counter-clock-wise.
 
-\subsubsection{Chain codes\buchSeite{798}}
+\subsubsection{Chain codes\buchSeite{816}}
 Chain codes are used to represent a boundary by a connected sequence of straight-line segments of specified length and direction. The direction of each segment is coded using a number.
 \begin{figure}[h]
 	\centering
@@ -68,13 +69,13 @@ Chain codes are used to represent a boundary by a connected sequence of straight
 Cain codes are quite sensitive to small disturbances. If they are on the pixel grid, they tend to result in rather long codes. Subsampling the boundary, i.e. going to a coarser grid results in a more robust and more efficient code at the expense of representation accuracy.\\
 The resulting code depends on the starting point, which is not desirable. An easy trick is to circumvent this, is the convention to start at that point wich will result in a chain code that represents the smalles integer.\\
 
-The representation can be made independent of rotation by using the \emph{first difference}. 
+The representation can be made independent of rotation by using the \emph{first difference}.
 For each segment, assume the current direction is 0 and encode the direction of the next segment as before. \\
 Example: Fig. \ref{fig:chaincode_example}. black: chain code, red: first difference.
 
-\subsubsection{Polygonal approximation using Minimum perimeter polygon MPP\buchSeite{801}}
+\subsubsection{Boundary approximations using Minimum-perimeter polygons MPP\buchSeite{821}}
 A boundary is represented by a polygon. The goal is to use as few segments as possible, while still capturing the essential features of the boundary. There exist simple approximations which in practice are often good enough\\
-\paragraph{Minimum perimeter polygon MPP}
+\paragraph{MPP algorithm\buchSeite{822}}
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}[b]{0.3\textwidth}
@@ -126,7 +127,7 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
   	x_2 & y_2 & 1\\
   	x_3 & y_3 & 1\\
 \end{bmatrix}$
-\item $det(A) =$ 
+\item $det(A) =$
 \begin{itemize}
 \item $> 0$ if $(a, b, c)$ is a counterclockwise sequence
 \item $= 0$ if the points are collinear
@@ -140,25 +141,25 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
 \item $V_K$ is the next possible candidate
 \item $B_C$ is a black vertex
 \item $W_C$ is a white vertex
-\end{itemize} 
+\end{itemize}
 \item $V_K$ lies to the positive side of the line through pair ($V_L$, $W_C$), that is $sgn(V_L, W_C, V_K)>0$. If this condition holds, the next MPP vertex is $W_C$
 \item $V_K$ lies to the negative side of the line through pair ($V_L$, $B_C$), that is $sgn(V_L, B_C, V_K)<0$. If this condition holds, the next MPP vertex is $B_C$.
 \item $V_K$ lies on the negative side of the line through pair ($V_L$, $W_C$) or is collinear with it, that is $sgn(V_L, W_C, V_K) \le 0$. At the same time, $V_K$ lies on the positive side of the line through ($V_L$, $B_C$) or is collinear with it, that is $sgn(V_L, V_C, V_K) \ge 0$. If this condition holds, the next candidate MPP vertex is $V_K$; otherwise $B_C = V_K$
 \item Continue with the next vertex in the list.
 \end{enumerate}
 
-\subsubsection{Other Polygonal Approximation Approaches\buchSeite{807}}
-\paragraph{Merging\buchSeite{807}}
-Points on the boundary are merged and a line is fitted to these points. 
+\subsubsection{Other Polygonal Approximation Approaches\buchSeite{826}}
+\paragraph{Merging} %TODO: not present in 4th edition?
+Points on the boundary are merged and a line is fitted to these points.
 If the fitting error becomes to large, a vertex is set and the procedure starts from the beginning.
 This approach is very simple, but there is no guarantee for a good approximation.
-E.g. it does not set vertices at corners, but always a bit later. 
+E.g. it does not set vertices at corners, but always a bit later.
 
-\paragraph{Splitting\buchSeite{808}}
+\paragraph{Splitting} %TODO: not present in 4th edition?
 Here the idea is, to divide (split) a boundary segment until a threshold of an criterion is satisfied.
 E.g. until the distances from the boundary to the approximated lines are below a certain number.
 
-\subsubsection{Signatures\buchSeite{808}}
+\subsubsection{Signatures\buchSeite{826}}
 A signature is a 1D function that represents a boundary. This results in a significant complexity reduction. There are several schemes:\\
 \begin{itemize}
 \item Find the centroid. The boundary is described as a function of the angle around this point.
@@ -181,7 +182,7 @@ A signature is a 1D function that represents a boundary. This results in a signi
 	\caption{Examples for signatures}
 \end{figure}
 
-\subsubsection{Boundary segments\buchSeite{810}}
+\subsubsection{Boundary segments} %TODO: not present in 4th edition?
 The convex hull H of an arbitrary set S is the smallest convex set containing S. The difference $D=H-S$ is the convex deficiency. Follow the contour of S and mark the spots where the contour makes a transition into or out of D. These marking $\alpha$ (0...1) are relative to the total length of the contour D.\\
 This is in theory invariant to:\\
 \begin{itemize}
@@ -190,7 +191,7 @@ This is in theory invariant to:\\
 \item Scaling
 \end{itemize}
 In practice, boundaries have some noise. Often smooting along the boundaries is used.\\
-\subsubsection{Skeletons\buchSeite{812}}
+\subsubsection{Skeletons, medial axes, and distance transforms\buchSeite{828}}
 Medial axis transform (MAT)
 \begin{itemize}
 \item Every point in the region finds its closest boundary point.
@@ -232,10 +233,10 @@ Simultaneous to Step 1 except the new conditions $c'$ and $d'$\\
 \item $p_2 \cdot p_6 \cdot p_8 = 0$
 \end{enumerate}
 
-\subsection{Boundary Descriptors\buchSeite{815}}
-\label{sec:boundaryDescriptors}
+\subsection{Boundary Feature Descriptors\buchSeite{831}}
+\label{sec:boundaryFeatureDescriptors}
 Having seen different representations of boundaries, the goal is now to develop descriptors for these boundaries.
-\subsubsection{Simple Descriptors\buchSeite{815}}
+\subsubsection{Basic Boundary Descriptors\buchSeite{832}}
 
 \paragraph{Length}
 \begin{itemize}
@@ -245,7 +246,7 @@ Having seen different representations of boundaries, the goal is now to develop 
 \paragraph{Diameter of boundary B}
 
 \begin{flalign*}
-& \text{Diam}(B)=\max\limits_{i,j}\left[D(p_i,p_j)\right] && \text{Points on boundary:} && p_i,p_j && \text{Distance measure:} && D 
+& \text{Diam}(B)=\max\limits_{i,j}\left[D(p_i,p_j)\right] && \text{Points on boundary:} && p_i,p_j && \text{Distance measure:} && D
 \end{flalign*}
 
 \paragraph{Major axis}
@@ -255,19 +256,19 @@ The line perpendicular to the major axis and of such length that a box passing t
 \paragraph{Eccentricity}
 The ratio of the major to the minor axis is called the eccentricity of the boundary. This is a useful descriptor.
 \paragraph{Curvature}
-This is the rate of change of the slope in the boundary. i.e. this is a second derivative. 
+This is the rate of change of the slope in the boundary. i.e. this is a second derivative.
 Note that the curvature is often very noisy. It is therefore often applied to a polygon approximation.
 
-\subsubsection{Shape numbers\buchSeite{816}}
+\subsubsection{Shape numbers\buchSeite{834}}
 The shape number of a boundary (based on 4-directional code) is defined as the first difference of smalles magnitude.\\
 The order n of a shape number is defined as the number of digits in its representation.\\
 One way of aligning the chain code grid with the boundary is to use the basic rectangle box based on the major and minor axes\\
 
-\subsubsection{Fourier descriptors\buchSeite{818}}
-The coordinates of the boundary represents a complex sampled signal wich can be represented as a complex vector 
+\subsubsection{Fourier descriptors\buchSeite{835}}
+The coordinates of the boundary represents a complex sampled signal wich can be represented as a complex vector
 \begin{align*}
 s(k)=x(k)+jy(k) && k=0,1,2,\ldots,K-1
-\end{align*} 
+\end{align*}
 which can be analyzed in the frequency domain.\\
 
 Note that the axis are changed:
@@ -288,7 +289,7 @@ Note that the axis are changed:
 The DFT of $s(k)$ is \begin{align*}
 & \text{Fourier descriptors of the boundary:} && a(u)=\sum\limits_{k=0}^{K-1}s(k)e^{-j2\pi uk/K} && u=0,1,2,\ldots,K-1\\
 & \text{Inverse Fourier transform:} && s(k)=\frac{1}{K}\sum\limits_{u=0}^{K-1}a(u)e^{j2\pi uk/K}
-\end{align*} 
+\end{align*}
 
 Since the high frequency components are responsible for the fine detail, using only the first few Fourier descriptors results in a smoothing of the boundary and image compression.\\
 The reconstruction of the image is, when using the first $P$ coefficients
@@ -296,7 +297,7 @@ The reconstruction of the image is, when using the first $P$ coefficients
 	\hat{s}(k) = \frac{1}{K} \sum\limits_{u=0}^{P-1} a(u) e^{j 2 \pi u k / K}
 	\]
 
-\paragraph{Basic properties of Fourier descriptors} ~\\
+\paragraph{Basic properties of Fourier descriptors\buchSeite{839}} ~\\
 
 \begin{tabularx}{\textwidth}{XXX}
 Transformation & Boundary & Fourier Descriptor \\\hline
@@ -307,10 +308,10 @@ Scaling &$s_s(k)=\alpha s(k)$& $a_s(u)=\alpha a(u)$ \\
 Starting point & $s_p(k)=s(k-k_0)$& $a_p(u)=a(u)e^{-j2\pi k_0u/K}$ \\ \hline
 \end{tabularx}
 
-\subsubsection{Statistical moments\buchSeite{821}}
+\subsubsection{Statistical moments\buchSeite{839}}
 The boundary segment is rotated, so that it can be interpreted as a function of a single variable. \\
 
-The amplitude of $g()$ can be treated as a discrete random variable v and a amplitude histogram $p(v_i)$ can be formed. 
+The amplitude of $g()$ can be treated as a discrete random variable v and a amplitude histogram $p(v_i)$ can be formed.
 From the histogram, the statistical moments can be calculated.
 
 \begin{align*}
@@ -326,11 +327,11 @@ The statistical moments are:
 \item $\mu_4$: Kurtosis (peakedness)
 \end{itemize}
 
-If $g()$ is normalized such that it represents a probability density function (pdf), i.e. it sums up to 1, 
+If $g()$ is normalized such that it represents a probability density function (pdf), i.e. it sums up to 1,
 the histogram building can be skipped and $g()$ can directly be analyzed by statistical moments.
 
-\subsection{Regional descriptors\buchSeite{822}}
-\subsubsection{Simple descriptors\buchSeite{822}}
+\subsection{Region feature descriptors\buchSeite{840}}
+\subsubsection{Basic descriptors\buchSeite{840}}
 \begin{itemize}
 \item Area: Number of pixels
 \item Perimeter: Lenght of boundary
@@ -339,7 +340,7 @@ the histogram building can be skipped and $g()$ can directly be analyzed by stat
 \item Mean, median, minimum, maximum of intensity
 \item Etc.
 \end{itemize}
-\subsubsection{Topological descriptors\buchSeite{823}}
+\subsubsection{Topological descriptors\buchSeite{843}}
 Topological descriptors are descriptors that do not change under rubber-sheet distortions. No tearing, no folding allowed.\\
 The number of holes $H$ and connected components $C$ in a figure can be used to define the Euler number $E=C-H$\\
 
@@ -347,7 +348,7 @@ The number of holes $H$ and connected components $C$ in a figure can be used to 
 	\centering
 	\adjustbox{scale=1.2}{\input{tikz/representation/PolygonalNetwork}}
 	\caption{A region containing a polygonal network}
-	
+
 	In this example: \\
 	\begin{align*}
 	V=7 \quad Q=11 \quad F=2 \qquad &\Rightarrow E=-2 \\
@@ -362,11 +363,11 @@ The number of holes $H$ and connected components $C$ in a figure can be used to 
 \item Number of faces F
 \end{itemize}
 Euler proved that $E=V-Q+F=C-H$
-\subsubsection{Texture\buchSeite{827}}
+\subsubsection{Texture\buchSeite{846}}
 Smoothness, coarseness, regularity etc.\\
 There are three basic approaches to describe texture:\\
 
-\paragraph{Statistical approaches\buchSeite{828}}
+\paragraph{Statistical approaches\buchSeite{846}}
 \begin{itemize}
 \item Intensity histogram $p(z_i)$
 \item Moment $\mu_n(z)=\sum\limits_{i=0}^{L-1}(z_i-m)^np(z_i)$ and mean $m=\sum\limits_{i=0}^{L-1}z_ip(z_i)$
@@ -375,8 +376,8 @@ There are three basic approaches to describe texture:\\
 \item Average entropy $e(z)=-\sum\limits_{i=0}^{L-1}p(z_i)\log_2p(z_i)$ \\ Note that $e$ is zero for constant regions.
 \end{itemize}
 
-\paragraph{Relative positions} Measures with only histograms have no information about the relative positions of pixels with respect to each other.
-Thus, a $Q$ operator, that defines the positions of two pixels relative to each other, is introduced. 
+\paragraph{Relative positions\buchSeite{849}} Measures with only histograms have no information about the relative positions of pixels with respect to each other.
+Thus, a $Q$ operator, that defines the positions of two pixels relative to each other, is introduced.
 A \emph{co-occurrence matrix} $\mathbf{G}$ is generated, whose elements $g_{i,j}$ are how many times a certain pixel pair $(z_i,z_j)$ appears. \\
 
 \begin{figure}[h]
@@ -398,7 +399,7 @@ A \emph{co-occurrence matrix} $\mathbf{G}$ is generated, whose elements $g_{i,j}
 	\end{tabular}
 \end{table}
 
-First, all probabilities $p_{ij}$ and the means $m_r, m_c$ and variances $\sigma_r^2,\sigma_c^2$ are calculated. 
+First, all probabilities $p_{ij}$ and the means $m_r, m_c$ and variances $\sigma_r^2,\sigma_c^2$ are calculated.
 Then, the following descriptors can be calculated, if needed. Note that the correlation and the entropy are the most common descriptors.
 
 \begin{table}[h]
@@ -415,15 +416,15 @@ Then, the following descriptors can be calculated, if needed. Note that the corr
 \end{table}
 
 
-\paragraph{Structural approaches\buchSeite{836}}
+\paragraph{Structural approaches\buchSeite{851}}
 Some texture can be described as a repetition of a simple primitive. For such textures, a description based on rewriting rules is useful.
 
-\paragraph{Spectral approaches\buchSeite{837}}
+\paragraph{Spectral approaches\buchSeite{855}}
 Good for periodic patterns\\
 The energy spectrum $S(r,\theta)$ is analyzed in polar coordinates. It is analyzed for a fixed angle, $S_\theta(r)$ and/or a fixed radius $S_r(\theta)$. The advantage of this is, that these are 1D functions and therefore easier to deal with.\\
 $S(r)=\sum\limits_{\theta = 0}^{\pi}S_\theta(r)$\\
 $S(\theta)=\sum\limits_{r=1}^{R_0}S_r(\theta)$\\
-\subsubsection{Moment Invariants\buchSeite{839}}
+\subsubsection{Moment Invariants\buchSeite{858}}
 A set of seven moments for a given image region can be generated as regional descriptors. They are intrinsically invariant to translation, scale change, rotation and even mirroring except for a sign change.\\
 \begin{tabular}{ll}
 2D moments of order (p+q) & $m_{pq}=\sum\limits_{x=0}^{M-1}\sum\limits_{y=0}^{N-1}x^py^qf(x,y)$ \\
@@ -442,7 +443,7 @@ The seven invariant moments:\\
 \phi_7 =& (3\eta_{21}-\eta_{03})(\eta_{30}+\eta_{12})[(\eta_{30}+\eta_{12})^2-3(\eta_{21}+\eta_{03})^2]+(3\eta_{12}-\eta_{30})(\eta_{21}+\eta_{03})[3(\eta_{30}+\eta_{12})^2-(\eta_{21}+\eta_{03})^2]
 \end{align*}
 
-\subsection{Use of Principal Components for Description\buchSeite{842}}
+\subsection{Principal Components as Feature Descriptors\buchSeite{859}}
 Principle component analysis (PCA) is a very general tool. It is applicable to boundaries and regions but also to color images and multispectral images. A given pixel in a multispectral image with n spectral components can be written as a vector containing these components. It is assumed that the components are random variables and hence these pixels are random vectors.
 \begin{align*}
 & \mathbf{x} = \left[\begin{array}{c} x_1 \\ x_2 \\ \vdots \\ x_n \end{array}\right]&&\\
@@ -472,16 +473,16 @@ The Hotelling transform can easily be inverted using the fact that because $\mat
 	\[
 		\mathbf{x} = \mathbf{A}^T \mathbf{y} + \mathbf{m_x}
 	\]
-If however a matrix $\mathbf{A}_k$ from the $k$ eigenvectors with the largest $k$ eigenvalues is formed, the reconstruction is no longer exact, but has a mean square error of $e_{ms} = \sum\limits_{j=k+1}^{n} \lambda_j$, which decreases monotonically. 
+If however a matrix $\mathbf{A}_k$ from the $k$ eigenvectors with the largest $k$ eigenvalues is formed, the reconstruction is no longer exact, but has a mean square error of $e_{ms} = \sum\limits_{j=k+1}^{n} \lambda_j$, which decreases monotonically.
 Thus an image compression is possible by using only $k$ eigenvectors. The reconstructed image is then
 	\[
 		\hat{\mathbf{x}} = \mathbf{A}_k^T \mathbf{y}_k + \mathbf{m_x}
 	\]
-
+%TODO: rest of this chapter not covered in lessons
 \subsection{Relational Descriptors\buchSeite{852}}
 
 \paragraph{Rewriting Rules}
-Example: 
+Example:
 Two primitive elements $a$ and $b$ are defined. They can be repetitively used to describe staircases.
 Rewriting rules are defined as follows: $S$ is the starting symbol, $A$ is a variable.
 Now a recursive definition can be made for describing the staircase.
@@ -499,7 +500,7 @@ Now a recursive definition can be made for describing the staircase.
 & 3) && \text{end} &&  A \rightarrow b \\
 \end{align*}
 \end{multicols}
-Now any staircase made up of $a$s and $b$ can be described by repeating these rules. 
+Now any staircase made up of $a$s and $b$ can be described by repeating these rules.
 E.g. $(1,3)$ is a staircase $a,b$. $(1,2,1,3)$ is $a,b,a,b$ , $\ldots$. \\
 
 \paragraph{Directed line segments} The idea is, that section of an image are described by directed line segments
@@ -529,7 +530,7 @@ contain all directions
 	\caption{Primitives}
 \end{figure}
 
-\paragraph{Tree descriptors} 
+\paragraph{Tree descriptors}
 Information describing the meaning of a node and relating it to its neighbors can be stored in trees.
 A texture may some times not be connected, then it can be described by trees. \\
 

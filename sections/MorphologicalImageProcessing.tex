@@ -1,20 +1,21 @@
-\section{Morphological Image Processing\buch{Ch. 9}\buchSeite{627-688}}
+%!TEX root = ../DigPro2.tex
+\section{Morphological Image Processing\buch{Ch. 9}\buchSeite{635-698}}
 
 \subsection{Set Theory}
 \begin{multicols}{2}
-\subsubsection{Reflection\buchSeite{628}}
+\subsubsection{Reflection\buchSeite{637}}
 \[
 	\hat{B} = \{w | w = -b,\quad \text{for} \quad b \in B \}
 \]
 
 
-\subsubsection{Translation\buchSeite{629}}
+\subsubsection{Translation\buchSeite{637}}
 \[
 	(B)_z = \{ c | c = b + z,\quad \text{for} \quad b \in B\}
 \]
 
 \subsection{Erosion and Dilation}
-\subsubsection{Erosion\buchSeite{631}}
+\subsubsection{Erosion\buchSeite{639}}
 With A and B as sets in $Z^2$, the erosion of A by B is defined as
 \[
 	A \ominus B = \{z|(B)_z \subseteq A  \}
@@ -28,7 +29,7 @@ Equivalently, if B must be contained in A, it is not allowed to intersect with t
 \]
 
 
-\subsubsection{Dilation\buchSeite{633}}
+\subsubsection{Dilation\buchSeite{641}}
 With A and B as sets in $Z^2$, the dilation of A by B is defined as
 \[
 	A \oplus B = \{z |(\hat{B})_z \cap A \neq \varnothing \}
@@ -41,7 +42,7 @@ Equivalently, since the intersection is not allowed to be empty and all elements
 \]
 
 
-\subsubsection{Duality erosion/dilation\buchSeite{635}}
+\subsubsection{Duality erosion/dilation\buchSeite{644}}
 Erosion and dilation are dual:
 \[
 	(A  \ominus B)^c = A^c \oplus \hat{B}
@@ -52,7 +53,7 @@ Erosion and dilation are dual:
 
 \end{multicols}
 \subsection{Opening and Closing}
-\subsubsection{Opening and closing\buchSeite{635}}
+\subsubsection{Opening and closing\buchSeite{644}}
 The \emph{opening} of A by B is defined: (first erosion then dilation)
 \[
 	A \circ B = (A \ominus B) \oplus B
@@ -101,7 +102,7 @@ The \textbf{closing} operation satisfies the following properties:
 \end{figure}
 
 
-\subsection{The hit-or-miss transform\buchSeite{640}}
+\subsection{The hit-or-miss transform\buchSeite{648}}
 The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 \begin{itemize}
 	\item Through erosion of the image by the object, possible locations for the object in the image are left, since elements smaller than the objects disappear
@@ -120,8 +121,8 @@ The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 \end{itemize}
 
 
-\subsection{Some basic morphological algorithms\buchSeite{642}}
-\subsubsection{Boundary Extraction\buchSeite{642}}
+\subsection{Some basic morphological algorithms\buchSeite{652}}
+\subsubsection{Boundary Extraction\buchSeite{653}}
 \begin{multicols}{2}
 	\begin{align*}
 		\beta(A)=A-(A\ominus B)
@@ -130,7 +131,7 @@ The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 	\quad leads to a 1 pixel thick boundary
 \end{multicols}
 
-\subsubsection{Hole Filling\buchSeite{643}}
+\subsubsection{Hole Filling\buchSeite{653}}
 \begin{multicols}{2}
 To fill a hole, a seed inside the connected border is needed, i.e., in an empty array $X_0$, the seed point is set to 1.
 \begin{align*}
@@ -142,7 +143,7 @@ Usual mask: \adjustbox{max width=1cm}{\input{tikz/morphological/mask_cross}} \\
 The dilation is forced to stay inside the connected border with $\cap A^c$.The iteration can stop, when $X_k = X_{k-1}$.
 \end{multicols}
 
-\subsubsection{Extraction of Connected Components\buchSeite{645}}
+\subsubsection{Extraction of Connected Components\buchSeite{655}}
 \begin{multicols}{2}
 Initial array ($X_0$) contains a 1 in the region of the connected component.
 \begin{align*}
@@ -153,7 +154,7 @@ The mask \quad \adjustbox{max width=1cm}{\input{tikz/morphological/mask_all}}
 \quad leads to 8-connected regions.
 \end{multicols}
 
-\subsubsection{Convex hull\buchSeite{647}}
+\subsubsection{Convex hull\buchSeite{657}}
 \begin{itemize}
 \item The convex hull H of a set S is the smalles convex set containing S.
 \item H-S is called the convex deficiency of S
@@ -201,7 +202,7 @@ The following additional constraints can be used:
 \item More complex constraints are possible, but at a higher computational cost
 \end{itemize}
 
-\subsubsection{Thinning\buchSeite{649}}
+\subsubsection{Thinning\buchSeite{660}}
 Thinning is the operation of making the foreground thinner.
 \begin{figure}[h]
 	\centering
@@ -272,11 +273,11 @@ Hit-or-miss transformation with rotating structuring elements. Note that the hit
 
 This is repeated until nothing changes anymore.
 
-\subsubsection{Thickening\buchSeite{650}}
+\subsubsection{Thickening\buchSeite{660}}
 This is the morphological dual of thinning. It is implemented as thinning the background and then taking the complement.
 Thickening can lead to disconnected points. These have to be removed by post-processing.
 
-\subsubsection{Skeleton S(A)\buchSeite{651}}
+\subsubsection{Skeleton S(A)\buchSeite{662}}
 \begin{figure}[h!]
 \centering
 \begin{subfigure}[b]{0.45\textwidth}
@@ -329,7 +330,7 @@ Reconstruction can be achieved by
 \end{itemize}
 \end{multicols}
 
-\subsubsection{Pruning\buchSeite{654}}
+\subsubsection{Pruning\buchSeite{664}}
 Pruning is a procedure that can remove parasitic components of a length below some threshold.\\
 \begin{enumerate}
 \item Find endpoints with a hit or miss transform with the following structuring elements. Remove the endpoints.
@@ -352,8 +353,8 @@ Pruning is a procedure that can remove parasitic components of a length below so
 \item Dilate the endpoints with a 3x3 structuring element and make a logical and with the original set
 \end{enumerate}
 
-\subsubsection{Morphological Reconstruction\buchSeite{656}}
-\paragraph{Geodesic dilation and erosion\buchSeite{656}}
+\subsubsection{Morphological Reconstruction\buchSeite{667}}
+\paragraph{Geodesic dilation and erosion\buchSeite{667}}
 This is a transformation which uses two images and a structuring element
 \begin{itemize}
 \item F is the marker image
@@ -384,14 +385,14 @@ is the erosion of $F$ by $B$, where the result contains at least $G$.
 	E_G^{(n)}(F) &= E_G^{(1)}[E_G^{(n-1)}(F)]
 \end{align*}
 
-\paragraph{Morphological reconstruction by dilation and by erosion\buchSeite{658}}
+\paragraph{Morphological reconstruction by dilation and by erosion\buchSeite{668}}
 This is geodesic dilation/erosion until nothing changes.
 \begin{align*}
     \text{Reconstruction by dilation:} \quad R_G^D(F)=D_G^{(k)} \quad \text{with} \quad D_G^{(k)}(F)=D_G^{(k+1)}(F)\\
     \text{Reconstruction by erosion:} \quad R_G^E(F)=E_G^{(k)} \quad \text{with} \quad E_G^{(k)}(F)=E_G^{(k+1)}(F)
 \end{align*}
 
-\paragraph{Sample applications\buchSeite{659}}
+\paragraph{Sample applications\buchSeite{669}}
 \textbf{Opening and closing by reconstruction}\\
 Opening by reconstruction removes all small object, all others stay unchanged.
 Closing by reconstruction closes gaps, the rest is unchanged. This is in contrast to morphological opening and closing, where the erosion removes the small objects and the dilation "sort of" reconstructs the other objects.\\
@@ -446,14 +447,14 @@ Without needing a seed!\\
 \caption{Hole Filling on a simple image}
 \end{figure}
 
-\paragraph{Border clearing\buchSeite{661}}
+\textbf{Border clearing}\\
 Remove object that touch the border.
 \[
 X = I-R_I^D(F)  \qquad  \text{with} \qquad \text{F}(x,y)=\begin{cases} I(x,y) & \text{if (x,y) is on the border of I}\\
 0 & \text{otherwise} \end{cases}
 \]
 
-\subsection{Gray-scale morphology\buchSeite{665}}
+\subsection{Grayscale morphology\buchSeite{674}}
 The fundamental operations dilation, erosion, opening and closing can be extended to gray scale. Hence the more advanced operations which are based on the above operations can be extended too. The structuring elements are also gray-scale. In practice, flat structuring elements are preferred.
 
 \begin{figure}[h!]
@@ -487,7 +488,7 @@ The fundamental operations dilation, erosion, opening and closing can be extende
 \caption{Nonflat and flat structuring elements and corresponding horizontal intensity profiles through their center}
 \end{figure}
 
-\subsubsection{Erosion and Dilation\buchSeite{666}}
+\subsubsection{Erosion and Dilation\buchSeite{674}}
 Erosion
 \begin{align*}
 	[f\ominus b](x,y)	&= \min_{(s,t)\in b} \{f(x+s,y+t)\}				& \text{Flat SE} \\
@@ -500,37 +501,37 @@ Dilation
 	[f\oplus b_N](x,y)	&= \max_{(s,t)\in b_N} \{f(x-s,y-t) +b_N(s,t)\}	& \text{Non-Flat SE}
 \end{align*}
 
-\subsubsection{Opening and Closing\buchSeite{668}}
+\subsubsection{Opening and Closing\buchSeite{680}}
 Opening and closing are defined exactly the same as in the binary case:
 \begin{align*}
 	f \circ b = (f \ominus b) \oplus b &&
 	f  \bullet b = (f \oplus b) \ominus b
 \end{align*}
 
-\subsubsection{Some Basic Gray-Scale Morphological Algorithms\buchSeite{670}}
-\paragraph{Morphological smoothing\buchSeite{670}}
+\subsubsection{Some Basic Gray-Scale Morphological Algorithms\buchSeite{682}}
+\paragraph{Morphological smoothing\buchSeite{682}}
 Opening suppresses bright details and closing suppresses dark details. They can be used in combination for image smoothing and/or noise suppression.
-\paragraph{Morphological gradient\buchSeite{671}}
-This operation resullts in an image where the edges are enhanced, not unlike a classical magnitude gradient image.
+\paragraph{Morphological gradient\buchSeite{682}}
+This operation results in an image where the edges are enhanced, not unlike a classical magnitude gradient image.
 \[
 	g=(f\oplus b)-(f\ominus b)
 \]
-\paragraph{Top-hat transformation\buchSeite{672}}
+\paragraph{Top-hat transformation\buchSeite{683}}
 \[
 	T_{hat}(f) = f -(f \circ b)
 \]
 The resulting image contains mostly bright details that are smaller than the structuring element.
-\paragraph{Bottom-hat transformation\buchSeite{672}}
+\paragraph{Bottom-hat transformation\buchSeite{683}}
 \[
 	B_{hat}(f) = (f \bullet b)-f
 \]
 The resulting image contains mostly dark details, that are smaller than the structuring element.
-\paragraph{Granulometry\buchSeite{674}}
+\paragraph{Granulometry\buchSeite{685}}
 The goal of granulometry is to find the particle size distribution in an image. Opening with a structuring element similar in shape as the particles but the size scaled from small to large. The biggest effect in the resulting opened image is, when the size of the structuring element changes from just too small to just too large. This effect can be measured by summing up the entire opened image, the surface area. Jumps in the change of surface area show the dominant particle sizes.
-\paragraph{Textural segmentation\buchSeite{675}}
+\paragraph{Textural segmentation\buchSeite{687}}
 Figure 9.43\\
 The goal of textural segmentation is, to segment the image into two textural regions. The basic idea is to remove the small circles with a structuring element larger than the small circle but smaller than the large circle. With a following opening fills the white patches between the large elements.
-\paragraph{Gray-scale morphological reconstructions\buchSeite{676}}
+\subsubsection{Grayscale morphological reconstruction\buchSeite{688}}
 Follows the definition for binary images.\\
 
 \begin{multicols}{2}

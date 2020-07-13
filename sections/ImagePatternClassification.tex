@@ -1,19 +1,20 @@
-\section{Object Recognition\buch{Ch. 12}\buchSeite{861-907}}
+%!TEX root = ../DigPro2.tex
+\section{Image Pattern Classification\buch{Ch. 12}\buchSeite{903-994}}
 \begin{itemize}
 \item Recognition of \emph{individual} image regions called \emph{object} or \emph{pattern}
 \item Concept of ``learning'' from sample patterns
 \end{itemize}
 
-\subsection{Patterns and Pattern Classes\buch{Ch. 12.1}}
+\subsection{Patterns and Pattern Classes\buchSeite{906}} %TODO: not present in 4th edition?
 \begin{itemize}
 	\item A \emph{pattern} is an arrangement of descriptors
-		(as in \ref{sec:representationDescription}) in pattern classification
+		(as in \ref{sec:featureExtraction}) in pattern classification
 		called \emph{features}.
 	\item A \emph{pattern class} is a set of patterns, denoted $\omega_1, \omega_2, ..., \omega_W$ W is the number of classes
 	\item The goal is to assign a given patter into a class
 \end{itemize}
 
-\subsubsection{Vectors}
+\subsubsection{Vectors\buchSeite{906}} %TODO: not covered in lessons
 \begin{itemize}
 	\item Used for quantitative descriptors
 	\item every dimension contains the numerical value of a descriptor
@@ -29,9 +30,9 @@
 Example: Classifying flowers based on petal length and width into one of three
 classes.
 
-\subsubsection{Strings}
+\subsubsection{Structural Patterns\buchSeite{908}} %TODO: merge this and next section into 'minimum-distant classifier'
 Structural information can be captured in strings. Example
-\nameref{sec:boundaryDescriptors}
+\nameref{sec:boundaryFeatureDescriptors}
 \begin{itemize}
 	\item Connectivity patterns (order is important)
 	\item Compact description, better than sampling into a feature vector
@@ -41,8 +42,8 @@ Structural information can be captured in strings. Example
 If there is hierarchy then a descriptor which is based on a tree structure
 should be used.
 
-\subsection{Recognition Based on Decision Theory\buch{Ch. 12.2}}
-\paragraph{Discriminant functions}
+\subsection{Pattern Classification by Prototype Matching\buchSeite{910}}
+\paragraph{Minimum-distant Classifier\buchSeite{910}}
 The core of decision theory $d_i(\mathbf{x})$ defined for each class $\omega_i$.
 These are not known and finding them is the main goal. \\
 
@@ -85,7 +86,7 @@ The decision boundary between class $\omega_i$ and $\omega_j$ will be
 Which is a line through the midpoint of $m_i$ and $m_j$ for $n=2$.
 For $n=3$ its a plane and for $n>3$ it's a hyperplane.
 
-\paragraph{Matching by correlation\buchSeite{869}}
+\paragraph{Using Correlation for 2-D Prototype Matching\buchSeite{915}}
 Calculate cross-correlation between a mask $w(x,y)$ of size $m\times n$ and an image
 $f(x,y)$ to find the mask in the image.
 \begin{align*}
@@ -107,7 +108,7 @@ $\gamma(x,y)$ is always in range $[-1, 1]$, where +1 is perfect match and -1 a p
 This is sensitive to scale and rotation.
 Often the square root is ignored and absolute values are used instead of squares to save computational effort.
 
-\subsubsection{Optimum Statistical Classifiers\buchSeite{872}}
+\subsection{Optimum (Bayes) Statistical Classifiers\buchSeite{923}}
 A classifier which results in the lowest average risk of incorrect classification. \\
 
 The probability that a pattern $\mathbf{x}$ comes from class $\omega_i$ is the conditional probability $p(\omega_i | \mathbf{x})$.
@@ -125,7 +126,7 @@ Or written in the same form as before
 	\[
 		d_j(\mathbf{x}) = p(\mathbf{x} | \omega_j) P(\omega_j)	\qquad j=1,2,\ldots,W
 	\]
-In order to estimate $p(\mathbf{x}|\omega_j)$ and $P(\omega_j)$, one uses a Gaussian assumption. 
+In order to estimate $p(\mathbf{x}|\omega_j)$ and $P(\omega_j)$, one uses a Gaussian assumption.
 If $N_j$ is the number of pattern vectors from class $\omega_j$, the mean vector $\mathbf{m}_j$ and the covariance matrix $\mathbf{C}_j$ are calculated as
 \begin{align*}
 	\mathbf{m}_j = \frac{1}{N_j} \sum\limits_{\mathbf{x}\in\omega_j} \mathbf{x}
@@ -137,11 +138,11 @@ The decision function can then be written as
 		d_j(\mathbf{x}) = \ln P(\omega_j) - \frac{1}{2}\ln|\mathbf{C}_j| - \frac{1}{2}\left[(\mathbf{x}-\mathbf{m}_j)^T\mathbf{C}_j^{-1}(\mathbf{x}-\mathbf{m}_j)\right]
 	\]
 
-\subsubsection{Neural Networks\buchSeite{882}}
+\subsection{Neural Networks\buchSeite{931}}
 
 Class of algorithms which find decision functions directly by training. Neural Netowrks (NN) make no Gaussian assumption.
 
-\paragraph{Perceptron for two pattern classes}
+\paragraph{Perceptron\buchSeite{934}}
 
 The perceptron learns a linear decision function that separates two linearly separable training sets.
 
@@ -169,7 +170,7 @@ y_{n+1} &= 1 \\
 d(y) &= \sum_{i=1}^{n+1}w_iy_i = w^Ty \\
 \end{align*}
 
-\paragraph{Training algorithms\buchSeite{886}}
+\paragraph{Training algorithms\buchSeite{935}}
 Train the weights of the perceptron so that it can distinguish between classed, using training sets.
 For linear separable classes, a simple, iterative algorithm is:
 \begin{itemize}
@@ -214,7 +215,7 @@ So $\alpha$ controls the speed of error reduction.
 For stability $\alpha$ must be smaller than 2.
 In practice $\alpha$ is picked below 1.
 
-\paragraph{Multilayer feedforward neural networks\buchSeite{889}}
+\paragraph{Multilayer feedforward Neural Networks\buchSeite{943}}
 These allow for multiclass pattern recognition, also for non linear separable classes.
 They are stacked banks of perceptrons with the sigmoid as activation function (\ref{fig:sigmoid}).
 
@@ -237,7 +238,7 @@ If $K$ is the layer preceding layer $J$ then the input to the activation functio
 I_j = \sum_{k=1}^{N_k}w_{jk}O_k
 \end{align*}
 
-\paragraph{Training by back propagation}
+\paragraph{Training by Back Propagation\buchSeite{953}}
 Target is to minimize the total squared error between the desired responses
 $r_q$ and the actual response $O_q$ in the output layer $Q$
 \begin{align*}
@@ -284,12 +285,12 @@ h'_j(I_j) = O_j(1-O_j)
 \item More than three layers are never needed
 \end{itemize}
 
-\subsection{Structural Methods\buch{Ch. 12.3}}
+\subsection{Structural Methods\buch{Ch. 12.3}} %TODO: from here on, not covered in 4th edition?
 
 \subsubsection{Shape numbers}
 Remember that the order $n$ of a shape number is the number of digits. This is clearly even for closed boundaries. \\
 
-To match shape numbers, the degree of similarity $k$ between two shapes $a$ and $b$ is introduced. 
+To match shape numbers, the degree of similarity $k$ between two shapes $a$ and $b$ is introduced.
 It is defined as the largest order $j$, for which the shape numbers $s_j$ still coincide.
 \begin{align*}
 	s_j(a) = s_j(b) \qquad & \text{for} \quad j=4,6,8,\ldots,k \\
@@ -305,15 +306,15 @@ From this definition follows that
 \end{align*}
 
 \subsubsection{String Matching}
-Assume that two shapes $a,b$ are coded into strings $a_1a_2\ldots a_n$ and $b_1b_2\ldots b_n$. 
-Let $\alpha$ be the number of matches where $a_k = b_k$. 
+Assume that two shapes $a,b$ are coded into strings $a_1a_2\ldots a_n$ and $b_1b_2\ldots b_n$.
+Let $\alpha$ be the number of matches where $a_k = b_k$.
 The number of symbols that do not match is $\beta = \max[|a|,|b|] - \alpha$ \\
 
 A simple measure of similarity between $a$ and $b$ is now
 	\[
 		R = \frac{\alpha}{\beta} = \frac{\alpha}{\max[|a|,|b|] - \alpha}
 	\]
-$R$ is $0$ for no match at all, and is $\infty$ for the perfect match. 
-Of course it is important that the strings are aligned. 
+$R$ is $0$ for no match at all, and is $\infty$ for the perfect match.
+Of course it is important that the strings are aligned.
 Otherwise, one string must be shifted circularly and $R$ is calculated at each position.
 The largest $R$ now represents the best match.
