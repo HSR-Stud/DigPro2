@@ -1,24 +1,25 @@
-\section{Image Segmentation\buch{Ch. 10}\buchSeite{689-794}}
+%!TEX root = ../DigPro2.tex
+\section{Image Segmentation\buch{Ch. 10}\buchSeite{699-810}}
 \paragraph{Preliminaries}
 \begin{itemize}
-\item Separate the image into different parts, i.e. regions or objects
+\item Separate the image into different parts, i.e., regions or objects
 \item Often a scene can be designed that the segmentation task is simplified
 \item Segmentation is based on some property of the scene
 \begin{itemize}
 \item Intensity discontinuity
 \item Intensity similarity
-\item More Complex properties: Motion, Texture, Shape, Color, etc.
+\item More complex properties: Motion, Texture, Shape, Color, etc.
 \end{itemize}
 \end{itemize}
 
-\subsection{Fundamentals\buchSeite{690}}
+\subsection{Fundamentals\buchSeite{700}}
 \begin{multicols}{2}
 \begin{enumerate}[label={\alph*)}]
 \item $\bigcup\limits_{i=1}^{n}R_i=R$
 \item $R_i$ is a connected set, $i=1,2,...,n$
 \item $R_i\bigcap R_j = 0$ for all $i$ and $j, i\neq j$
 \item $Q(R_i)=$TRUE for $i=1,2,...n$
-\item $Q(R_i\bigcup R_j)=$FALSE for any adjacent Regions $R_i$ and $R_j$
+\item $Q(R_i\bigcup R_j)=$FALSE for any adjacent regions $R_i$ and $R_j$
 \end{enumerate}
 \vfill
 \columnbreak
@@ -33,15 +34,15 @@
 
 Focus on the intensity values
 \begin{itemize}
-\item there are discontinuities, then a new region starts.
+\item If there are discontinuities, then a new region starts.
 \item If the intensity does not vary much, then this is one region.
 \end{itemize}
 
-\subsection{Point, line and edge detection\buchSeite{692}}
+\subsection{Point, line and edge detection\buchSeite{701}}
 
 When the intensity changes abruptly in a local neighborhood, this indicates an edge. It can be a simple point or a line.
 
-\subsubsection{Background\buchSeite{692}}
+\subsubsection{Background\buchSeite{702}}
 
 Abrupt local changes can be detected using derivatives.\\
 First order derivative
@@ -66,7 +67,7 @@ This can be calculated using a spatial filter.
 \item Second order in y direction $w_6=1, w_4=1, w_5=-2$
 \item Second order in x direction $w_8=1, w_2=1, w_5=-2$
 \end{itemize}
-\subsubsection{Detection of Isolated Points\buchSeite{696}}
+\subsubsection{Detection of Isolated Points\buchSeite{706}}
 The Laplacian combines the second derivatives in both spatial directions. This results in
 \[
 	\nabla^2f(x,y)=f(x+1,y)+f(x-1,y)+f(x,y+1)+f(x,y-1)-4f(x,y)
@@ -90,7 +91,7 @@ Point detection is now achieved by filtering the image with the mask and thresho
 	\end{cases}
 \]
 
-\subsubsection{Line Detection\buchSeite{697}}
+\subsubsection{Line Detection\buchSeite{707}}
 Often, a line of a known direction should be detected. We use special masks for that particular direction
 \begin{figure}[h]
 	\centering
@@ -141,7 +142,7 @@ Often, a line of a known direction should be detected. We use special masks for 
 \end{figure}
 
 
-\subsubsection{Edge Models}
+\subsubsection{Edge Models\buchSeite{710}}
 
 The typical intensity profile of an edge is shown in figure \ref{fig:imseg_edgemodels}.
 Note that the derivatives are very sensitive to noise. Usually the image is smoothed before
@@ -154,15 +155,15 @@ edge detection.
 	\label{fig:imseg_edgemodels}
 \end{figure}
 
-\subsubsection{Edge localization\buchSeite{706}}
+\subsubsection{Basic edge detection\buchSeite{716}}
 The previously shown method generates edge points. The goal is to keep the ones which truly belong to an edge.\\
 Since first order derivatives are helpful, a nice way of combining the two partial derivatives into one value is the magnitude of the gradient
 \begin{equation}
-	\nabla f = \nabla f = \left[\begin{array}{c} g_x \\ g_y \end{array}\right] =  \left[\displaystyle{\begin{array}{c} \frac{\partial f}{\partial x} \vspace{0.2cm}  \\ \frac{\partial f}{\partial y} \end{array}}\right] \notag
+	\nabla f = \text{grad}(f) = \left[\begin{array}{c} g_x \\ g_y \end{array}\right] =  \left[\displaystyle{\begin{array}{c} \frac{\partial f}{\partial x} \vspace{0.2cm}  \\ \frac{\partial f}{\partial y} \end{array}}\right] \notag
 \end{equation}
 
-The gradient (which is a vector) points into the direction of the greatest rate of change of f at the location (x,y)\\
-The magnitude of the gradient vector is the value of the rate of change in that direction \\
+The gradient (which is a vector) points into the direction of the greatest rate of change of $f$ at the location $(x,y)$\\
+The magnitude of the gradient vector is the value of the rate of change in that direction. \\
 
 \begin{figure}[!h]
 	\centering
@@ -215,13 +216,13 @@ The magnitude of the gradient vector is the value of the rate of change in that 
 
 After the gradient images have been calculated, often the magnitude of the gradient is required.
 \begin{align*}
-	M(x,y) = \text{mag}(\nabla f) \sqrt{g_x^2 + g_y^2} \approx |g_x|+|g_y| && \alpha(x,y) = \tan^{-1} \left[ \frac{g_y}{g_x} \right]
+	M(x,y) = \text{mag}(\nabla f) = \sqrt{g_x^2 + g_y^2} \approx |g_x|+|g_y| && \alpha(x,y) = \tan^{-1} \left[ \frac{g_y}{g_x} \right]
 \end{align*}
 
 If the goal is to find the dominant edges, then smoothing the image before calculating the magnitude gradient image works well. Alternatively, the magnitude gradient image can also be thresholded such that only values above this value are considered edges (set to one). Everything else is set to 0.
-\subsubsection{More Advanced Techniques for Edge Detection\buchSeite{714}}
-\paragraph{Marr-Hildreth edge detector\buchSeite{714}}
-New Idea: Edges exist on different scales. The edge detector needs to be tuned to the scale of the desired edge. Use a Gaussian filter (with space constant $\sigma$) and then take the Laplacian. The Gaussian filter is a low pass, wich blurs the image for large $\sigma$. This results in a Laplacian of Gaussian (LoG) filter.
+\subsubsection{More Advanced Techniques for Edge Detection\buchSeite{724}}
+\paragraph{Marr-Hildreth edge detector\buchSeite{724}}
+New Idea: Edges exist on different scales. The edge detector needs to be tuned to the scale of the desired edge. Use a Gaussian filter (with space constant $\sigma$) and then take the Laplacian. The Gaussian filter is a low pass, which blurs the image for a large $\sigma$. This results in a Laplacian of a Gaussian (LoG) filter.
 \[
 	\nabla^2 G(x,y) = \left[ \frac{x^2 + y^2 - 2 \sigma^2}{\sigma^4 } \right] e^{-\frac{x^2+y^2}{2 \sigma^2}}
 \]
@@ -236,16 +237,16 @@ New Idea: Edges exist on different scales. The edge detector needs to be tuned t
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
 		\adjustbox{scale=0.75}{\input{tikz/segmentation/MarrHildrethMatrix}}
-		\caption{5x5 mask approximation. The negative of this mask would be used in practice}
+		\caption{5x5 kernel approximation. The negative of this mask would be used in practice}
 	\end{subfigure}
 	\caption{Marr-Hildreth}
 \end{figure}
 
 \textbf{Summary of the Marr-Hildreth edge detection:}
 \begin{enumerate}
-\item Filter the input image with an $n \times n$ Gaussian lowpass filter $G(x,y)=e^{-\frac{x^2+y^2}{2\sigma^2}}$
-\item Compute the Laplacian of the image resulting from Step 1. $\nabla ^2[G(x,y) \star f(x,y)]$
-\item Find the zero crossing of the image from Step 2.
+\item Filter the input image with an $n \times n$ Gaussian lowpass kernel $G(x,y)=e^{-\frac{x^2+y^2}{2\sigma^2}}$
+\item Compute the Laplacian of the image resulting from Step 1 with, for example, $g(x,y) = \nabla ^2[G(x,y) \star f(x,y)]$
+\item Find the zero crossings of the image from Step 2.
 \end{enumerate}
 \textbf{Size of the discrete LoG filter}
 Rule of thumb: $n \times n$ LoG filter should have the smallest odd integer n greater than or equal to $6\sigma$.\\
@@ -263,26 +264,26 @@ A zero-crossing exists, if at least two opposing pixelpairs (a-a, b-b, c-c, d-d)
 	\caption{Zero-Crossing: opposing pixel pairs}
 \end{figure}
 
-\paragraph{LoG DoG}
-The Laplacian of Gaussian (LoG) can be approximated using a difference of Gaussian (DoG) filter
+\paragraph{LoG DoG\buchSeite{727}}
+The Laplacian of a Gaussian (LoG) can be approximated using a difference of Gaussians (DoG) filter
 \begin{align}
 DoG(x,y)=\frac{1}{2\pi\sigma_1^2}e^{-\frac{x^2+y^2}{2\sigma_1^2}}-\frac{1}{2\pi\sigma_2^2}e^{-\frac{x^2+y^2}{2\sigma_2^2}}\notag\\
-\sigma^2=\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2-\sigma_2^2}ln\left[\frac{\sigma_1^2}{\sigma_2^2}\right]\label{EQsigma}
+\sigma^2=\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2-\sigma_2^2}\text{ln}\left[\frac{\sigma_1^2}{\sigma_2^2}\right]\label{EQsigma}
 \end{align}
 \begin{itemize}
 \item To compare LoG and DoG filters, they must have the same zero crossing
-\item This can be achieved by setting $\sigma$ of the LoG in equation (\ref{EQsigma})
-\item amplitude will scale differently, both can be normalized, such that the amplitude at 0 is 1
+\item This can be achieved by setting $\sigma$ of the LoG as in equation (\ref{EQsigma})
+\item Amplitudes will scale differently, both can be normalized, such that the amplitude at 0 is 1
 \item The negative functions are usually shown
-\item The LoG and the DoG filters can be implemented by 1 D convolutions (they are separable)
+\item The LoG and the DoG filters can be implemented by 1-D convolutions (they are separable)
 \end{itemize}
 
-\paragraph{Canny edge detector\buchSeite{719}}
+\paragraph{Canny edge detector\buchSeite{729}}
 \begin{enumerate}
 	\item Smooth the image with a Gaussian filter.
 		\begin{align*}
 			G(x,y)	&= e^{-\frac{x^2+y^2}{2\sigma^2}} \\
-			f_s(x,y)&=G(x,y)\star f(x,y
+			f_s(x,y)&=G(x,y)\star f(x,y)
 		\end{align*}
 	\item Compute the gradient magnitude and angle images (Sobel operators).
 		\begin{align*}
@@ -290,7 +291,7 @@ DoG(x,y)=\frac{1}{2\pi\sigma_1^2}e^{-\frac{x^2+y^2}{2\sigma_1^2}}-\frac{1}{2\pi\
 			\alpha(x,y)	&= tan^{-1}\left[\frac{g_y}{g_x}\right]
 		\end{align*}
 	\item Apply nonmaxima suppression to the gradient image:
-		Let $d_1, d_2, d_3$ and $d_4$ denote the four basic edge directions for a 3x3 region: horizontal, $-45^\circ$, vertical and $-45^\circ$.
+		Let $d_1, d_2, d_3$ and $d_4$ denote the four basic edge directions for a 3x3 region: horizontal, $+45^\circ$, vertical and $-45^\circ$.
 		We can formulate the following nonmaxima suppression scheme for a 3x3 region centered at every point $(x,y)$ in $\alpha(x,y)$:
 		\begin{enumerate}
 			\item Find the direction $d_k$ that is closest to $\alpha(x,y)$
@@ -299,13 +300,13 @@ DoG(x,y)=\frac{1}{2\pi\sigma_1^2}e^{-\frac{x^2+y^2}{2\sigma_1^2}}-\frac{1}{2\pi\
 		Now $g_N$ is the nonmaxima-suppressed gradient magnitude image.
 	\item Use double thresholding and connectivity analysis to detect and link edges:
 		\begin{itemize}
-			\item $T_H$ a high treshold. If the values are above $T_H$, they are almost certainly a true edges
+			\item $T_H$ a high threshold. If the values are above $T_H$, they are almost certainly a true edges
 				\[
 					g_{NH}(x,y) = g_N(x,y) \geq T_H
 				\]
 			\item $T_L$ a low threshold. High enough that most of the noise if filtered out, but much lower (2-3 times lower) than $T_H$ resulting in edge points that are likely to be true edges, but might also contain erroneous edges
 				\[
-					g_{NL}(x,y) = g_N(x,y) \geq T_L \qquad g_{NL} = g_{NL}(x,y) - g_{NH}(x,y)
+					g_{NL}(x,y) = g_N(x,y) \geq T_L \qquad g_{NL}(x,y) = g_{NL}(x,y) - g_{NH}(x,y)
 				\]
 			\item Now in $g_{NH}(x,y)$ are the strong edge pixels, while in $g_{NL}(x,y)$ are the weak ones.
 			\item A large $T_H$ leads to gaps in the edges, which now can be filled using weak pixels in $g_{NL}(x,y)$ that are 8-connected to valid edge pixels in $g_{NH}(x,y)$:
@@ -319,10 +320,10 @@ DoG(x,y)=\frac{1}{2\pi\sigma_1^2}e^{-\frac{x^2+y^2}{2\sigma_1^2}}-\frac{1}{2\pi\
 \end{enumerate}
 
 
-\subsubsection{Edge linking and boundary detection\buchSeite{725}}
+\subsubsection{Linking edge points\buchSeite{735}}
 Three schemes to link edges:\\
-\paragraph{Local processing\buchSeite{726}}
-For every edge-point at a location the gradient vector magnitude and angle are compared with the magnitude and angle of edge-points in a neighborhood. If these are similar, they belong to the same boundary. This can be indicated by giving them the same color and/or gray value.
+\paragraph{Local processing\buchSeite{735}}
+For every edge point at a location $(x,y)$ the gradient vector magnitude and angle are compared with the magnitude and angle of all edge points $(s,t)$ in a neighborhood $S_{xy}$. If these are similar, they belong to the same edge. This can be indicated by giving them the same color and/or gray value.
 
 \begin{align*}
 	\left| M(s,t) - M(x,y) \right| \leq E && \left| \alpha(s,t) - \alpha(x,y) \right| \leq A
@@ -332,7 +333,7 @@ A much simpler scheme can be used if the linking follows certain directions and 
 
 \begin{enumerate}
 	\item Compute the gradient magnitude and angle arrays, $M(x,y)$ and $\alpha(x,y)$ of the input image, $f(x,y)$
-	\item Form a binary image, $g$, whose value at any pair of coordinates $(x,y)$ is given by:
+	\item Form a binary image, $g(x,y)$, whose value at any point $(x,y)$ is given by:
 		\[
 			g(x,y) =
 				\begin{cases}
@@ -340,35 +341,35 @@ A much simpler scheme can be used if the linking follows certain directions and 
 					0 & \text{otherwise}
 				\end{cases}
 		\]
-		Where $T_M$ is a threshold, $A$ is a specified angle direction, and $\pm T_A$ defines a "band" of acceptable directions about $A$.
-	\item Scan the rows of $g$ and fill (set to 1) all gaps (sets of 0s) in each row that do not exceed a specified length, $K$.
-		Note that, by definition, a gap is bounded at both ends by one or more 1s.
-		The rows are precessed individiually, with no memory between them.
+		where $T_M$ is a threshold, $A$ is a specified angle direction, and $\pm T_A$ defines a "band" of acceptable directions about $A$.
+	\item Scan the rows of $g$ and fill (set to 1) all gaps (sets of 0s) in each row that do not exceed a specified length, $L$.
+		Note that, by definition, a gap is bounded at both ends by one or more 1's.
+		The rows are precessed individually, with no ''memory'' kept between them.
 	\item To detect gaps in any other direction, $\theta$, rotate $g$ by this angle and apply the horizontal scanning process procedure in Step 3.
 		Rotate the result back by $-\theta$. Note that rotating is computationally expensive, so this method is best for horizontal or vertical edges.
 \end{enumerate}
 
 
-\paragraph{Regional processing\buchSeite{728}}
-
+\paragraph{Regional processing}
+(Not present in 4th edition)
 If the location of a boundary is roughly known, it is possible to use the detected edge points as indicators for the suspected boundary.
 \begin{enumerate}
-\item Let P be a sequence of ordered, destinct, 1-valued points of a binary image. Specify two starting points, A and B. these are two starting vertices of the polygon.
-\item Specify a threshold T, and two empty stacks, OPEN and CLOSED.
-\item If the points in P correspond to a closed curve, put A into OPEN and put B into OPEN and CLOSED.
+\item Let $P$ be a sequence of ordered, distinct, 1-valued points of a binary image. Specify two starting points, $A$ and $B$. These are two starting vertices of the polygon.
+\item Specify a threshold, $T$, and two empty stacks, OPEN and CLOSED.
+\item If the points in $P$ correspond to a closed curve, put $A$ into OPEN and put $B$ into OPEN and CLOSED. If the points correspond to an open curve, put $A$ into OPEN and $B$ into CLOSED.
 \item Compute the parameters of the line passing from the last vertex in CLOSED to the last vertex in OPEN.
-\item Compute the distances from the line in Step 4 to all the points in P whose sequence places them between the vertices from Step 4. Select the point, $V_{max}$, with the maximum distance $D_{max}$ (ties are resolved arbitrarily)
-\item If $D_{max}$, place $V_{max}$ at the end of the OPEN stack as a new vertex. Go to Step 4.
-\item Else, remove the last vertex from Open and insert it as the last vertex of CLOSED.
+\item Compute the distances from the line in Step 4 to all the points in $P$ whose sequence places them between the vertices from Step 4. Select the point, $V_{max}$, with the maximum distance $D_{max}$ (ties are resolved arbitrarily)
+\item If $D_{max} > T$, place $V_{max}$ at the end of the OPEN stack as a new vertex. Go to Step 4.
+\item Else, remove the last vertex from OPEN and insert it as the last vertex of CLOSED.
 \item If OPEN is not empty, go to Step 4.
-\item Else, exit. The vertices in CLOSED are the vertices of the polygonal fit to the points in P.
+\item Else, exit. The vertices in CLOSED are the vertices of the polygonal fit to the points in $P$.
 \end{enumerate}
 \begin{figure}[h]
 	\centering
 	\adjustbox{scale=0.5}{\input{tikz/segmentation/RegionalProcessing}}
 	\caption{Regional Processing}
 \end{figure}
-\paragraph{Global processing using the Hough transform\buchSeite{733}}
+\paragraph{Global processing using the Hough transform\buchSeite{737}}
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}{0.3\textwidth}
@@ -386,25 +387,39 @@ If the location of a boundary is roughly known, it is possible to use the detect
 	\caption{Hough-Transform: From $xy$-plane to $\rho\theta$-plane}
 \end{figure}
 \begin{itemize}
-\item Each point in the xy plane belongs to infinite many lines $y_i=ax_i+b$
-\item If we interpret this line equation differently, then $b=-x_ia+y_i$ represent for each point in the xy plane a line in the ab plane
-\item For each point in the xy plane, a line can be drawn in the ab plane and the principal lines in the xy plane can be found by the points with the most intersections in the ab plane
-\item Vertical lines require an infinite a, this does not work. Therefor the line representation $x \cos \theta + y \sin \theta = \rho$ is used. A point in the $xy$ plane does not result in a simple straight line in the parameter space ($\theta\rho$). The curve $\rho = f(\theta)$ is now a sinusoidal
+\item Each point in the $xy$-plane belongs to infinite many lines $y_i=ax_i+b$
+\item If we interpret this line equation differently, then $b=-x_ia+y_i$ represents for each point in the $xy$-plane a line in the ab-plane
+\item For each point in the $xy$-plane, a line can be drawn in the $ab$-plane and the principal lines in the $xy$-plane can be found by the points with the most intersections in the $ab$-plane
+\item Vertical lines require an infinite $a$, this does not work. Therefore the line representation $x \cos \theta + y \sin \theta = \rho$ is used. A point in the $xy$-plane does not result in a simple straight line in the parameter space ($\theta\rho$). The curve $\rho = f(\theta)$ is now a sinusoidal
 \item Practical scheme
 \begin{itemize}
+\item Quantize the parameter space
 \item For every $\theta_q$ in the $\rho\theta$ plane
 	\begin{itemize}
 		\item Calculate $\rho = f(\theta)$ and quantize it into $\rho_q$
-		\item Increase the cell in the $\rho\theta$ plane at location ($\rho_q, \theta_q$) by one
+		\item Increase the cell in the $\rho\theta$-plane at location ($\rho_q, \theta_q$) by one
 	\end{itemize}
-\item The dominant line is no found by selecting the point in the $\rho\theta$ plane with the highest value.
+\item The dominant line is now found by selecting the point in the $\rho\theta$-plane with the highest value.
 \end{itemize}
 \end{itemize}
 
 This theory can be generalized to find e.g. circles etc.
 
-\subsection{Thresholding\buchSeite{738}}
-\subsubsection{Foundation\buchSeite{738}}
+\paragraph{RANSAC}
+An iterative method for finding the model parameters which describe the data the best. If the iteration is stopped before every possible data point selection has been tried, there is no guarantee, that the best model parameters will be found. It is quite a robust algorithm which is not sensitive to outliers and can deal with models that have many parameters, such as circles etc. since not every combination needs to be tried.
+
+Algorithm (from Wikipedia):
+\begin{enumerate}
+  \item Select a random subset of the original data. Call this subset the hypothetical inliers.
+  \item A model is fitted to the set of hypothetical inliers.
+  \item All other data are then tested against the fitted model. Those points that fit the estimated model well, according to some model-specific loss function, are considered as part of the consensus set.
+  \item The estimated model is reasonably good if sufficiently many points have been classified as part of the consensus set.
+  \item Afterwards, the model may be improved by re-estimating it using all members of the concensus set.
+\end{enumerate}
+
+
+\subsection{Thresholding\buchSeite{742}}
+\subsubsection{Foundation\buchSeite{742}}
 To be able to partition an image into regions based on intensity values, the histograms have to be able to be separated.
 \begin{figure}[ht!]
 	\begin{subfigure}{0.5\textwidth}
@@ -425,20 +440,20 @@ To be able to partition an image into regions based on intensity values, the his
 & \text{multiple thresholding} && g(x,y)=\begin{cases}a \qquad \text{if } f(x,y) > T_2 \\b \qquad  \text{if } T_1 < f(x,y)  \leq T_2 \\c \qquad  \text{if } f(x,y) \leq T_1 \end{cases} &&\label{thresholdingMultiple}
 \end{flalign}
 
-\subsubsection{Basic global thresholding\buchSeite{741}}
+\subsubsection{Basic global thresholding\buchSeite{746}}
 
 \begin{enumerate}
 \item Select an initial estimate for the global threshold, T
-\item Segment the image using T in equation \eqref{thresholdingBasic}. This will produce two groups of pixels: $G_1$ consisting of all pixels with intensity values $> T$, and $G_2$ consisting of pixels with values $\leq T$
+\item Segment the image using T in equation \eqref{thresholdingBasic}. This will produce two groups of pixels: $G_1$, consisting of all pixels with intensity values $> T$; and $G_2$, consisting of pixels with values $\leq T$
 \item Compute the average (mean) intensity values $m_1$ and $m_2$ for the pixels in $G_1$ and $G_2$, respectively
 \item Compute a new threshold value: \begin{equation}
 T=\frac{1}{2}(m_1+m_2)\notag
 \end{equation}
-\item Repeat Steps 2 through 4 until the difference betwenn values of $T$ in successive iterations is smaller than a predefined paramter $\Delta T$
+\item Repeat Steps 2 through 4 until the difference between values of $T$ in successive iterations is smaller than a predefined value, $\Delta T$
 \end{enumerate}
 
 
-\subsubsection{Optimum global thresholding using Otsu’s Method\buchSeite{742}}
+\subsubsection{Optimum global thresholding using Otsu’s Method\buchSeite{747}}
 Two different variances are important
 \begin{itemize}
 \item Within-class variance $\sigma_W^2 = P_1\sigma_1^2+P_2\sigma_2^2$
@@ -454,7 +469,7 @@ This is the same as maximizing the between-class variance.
 m_G&=\sum_{i=0}^{L-1} i \ p_i
 & & m_G: \text{ global mean}   && \numberthis \label{eq:mG}\\
 \sigma_G^2 &= \sum_{i=0}^{L-1} (i-m_G)^2 p_i
-& & \sigma_G^2: \text{global variance}  && \\
+& & \sigma_G^2: \text{global variance}  && \numberthis \label{eq:sigmaG}\\
 P_1(k) &=\sum_{i=0}^{k} p_i
 & &  P_1: \text{ probability of the background}    && \numberthis \label{eq:P1}\\
 P_2(k)&=\sum_{i=k+1}^{L-1}p_i=1-P_1(k)
@@ -479,47 +494,52 @@ m(k)&= \sum_{i=0}^{k}ip_i
 \begin{enumerate}
 	\item Compute the normalized histogram of the input image.
 		Denote the components of the histogram by $p_i$, $i = 0, 1, 2, \ldots, L-1$
-	\item Compute the cumulative sums, $P_1(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. \eqref{eq:P1} (10.3-4)
-	\item Compute the cumulative means, $m(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. \eqref{eq:m} (10.3-8)
-	\item Compute the global intensity mean, $m_G$, using Eq. \eqref{eq:mG} (10.3-9)
-	\item Compute the between-class variance, $\sigma_B^2(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. \eqref{eq:sigmaB} (10.3-17)
+	\item Compute the cumulative sums, $P_1(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. \eqref{eq:P1} (10-49)
+	\item Compute the cumulative means, $m(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. \eqref{eq:m} (10-53)
+	\item Compute the global intensity mean, $m_G$, using Eq. \eqref{eq:mG} (10-54)
+	\item Compute the between-class variance, $\sigma_B^2(k)$, for $k = 0, 1, 2, \ldots, L-1$, using Eq. \eqref{eq:sigmaB} (10-62)
 	\item Obtain the Otsu threshold, $k^\ast$, as the value $k$ for which $\sigma_B^2(k)$ is maximum.
 		If the maximum is not unique, obtain $k^\ast$ by averaging the values of $k$ corresponding to the various maxima detected.
-	\item Obtain the separability measure, $\eta^\ast$, by evaluating Eq. \eqref{eq:eta} (10.3-16) at $k = k^\ast$.
+  \item Compute the global variance, $\sigma_G^2$, using \eqref{eq:sigmaG} (10-58), and then obtain the separability measure, $\eta^\ast$, by evaluating Eq. \eqref{eq:eta} (10-61) with $k = k^\ast$.
 \end{enumerate}
 
-\subsubsection{Using Image Smoothing to Improve Global Thresholding\buchSeite{747}}
+\subsubsection{Using Image Smoothing to Improve Global Thresholding\buchSeite{752}}
 The obvious approach to improve the situation is to low pass filter the image, i.e., to smooth the image before the global thresholding method is applied
-\subsubsection{Using Edges to Improve Global Thresholding\buchSeite{749}}
+\subsubsection{Using Edges to Improve Global Thresholding\buchSeite{753}}
 Useful when trying to find small objects.
 Only the strongest edges are usually kept, say the top 10\%, to calculate the threshold.
 \begin{enumerate}
 	\item Compute an edge image using any method (e.g. magnitude of gradient, absolute value of laplacian)
-	\item Threshold the edge image to produce a binary image $g_T(x,y)$ use
-		this as a \emph{mask image} to select pixels from the original image
+	\item Threshold the edge image to produce a binary image $g_T(x,y)$ and use this as a \emph{mask image} to select pixels from the original image
 	\item Compute the histogram of the selected pixels
 	\item Use this histogram to calculate the global segmentation threshold
 		using, for example, Otsu's method
 \end{enumerate}
-\subsubsection{Multiple Thresholds\buchSeite{752}}
 
+\subsubsection{Multiple Thresholds\buchSeite{757}}
+Goal: Find $k_1^*$ and $k_2^*$ such that the between-class variance is maximized.
+For three classes:
 \begin{flalign*}
 &\sigma_B^2 = P_1(m_1-m_G)^2+P_2(m_2-m_G)^2+P_3(m_3-m_G)^2 &&\\
-& P_1(k) =\sum_{i=0}^{k_1} p_i && m_1(k)=\frac{1}{P_1(k)}\sum_{i=0}^{k_1} i \ p_i &&\\
-& P_2(k)=\sum_{i=k_1+1}^{k_2} p_i && m_2(k)=\frac{1}{P_2(k)}\sum_{i=k_1+1}^{k_2} i \ p_i &&\\
-& P_3(k)=\sum_{i=k_2+1}^{L-1} p_1 && m_3(k)=\frac{1}{P_3(k)}\sum_{i=k_2+1}^{L-1} i \ p_i &&\\
+& P_1 =\sum_{i=0}^{k_1} p_i && m_1=\frac{1}{P_1}\sum_{i=0}^{k_1} i \ p_i &&\\
+& P_2=\sum_{i=k_1+1}^{k_2} p_i && m_2=\frac{1}{P_2}\sum_{i=k_1+1}^{k_2} i \ p_i &&\\
+& P_3=\sum_{i=k_2+1}^{L-1} p_1 && m_3=\frac{1}{P_3}\sum_{i=k_2+1}^{L-1} i \ p_i &&\\
 & m_G = P_1m_1 + P_2m_2 + P_3m_3 && P_1+P_2+P_3=1 &&\\
-&\sigma_B^2(k_1^*,k_2^*)=\max\limits_{0\leq k_1 \leq k_2 \leq L-1} \sigma_B^2(k_1,k_2)&&
+&\sigma_B^2(k_1^*,k_2^*)=\max\limits_{0 < k_1 < k_2 < L-1} \sigma_B^2(k_1,k_2)&&
 \eta(k_1^*,k_2^*)=\frac{\sigma_B^2(k_1^*,k_2^*)}{\sigma_G^2}&&\\
 \end{flalign*}
-\subsubsection{Variable Thresholding\buchSeite{756}}
-\paragraph{Image Partitioning\buchSeite{756}}
+\subsubsection{Variable Thresholding\buchSeite{761}}
+\paragraph{Image Partitioning} %TODO: not present in 4th edition?
 The simplest approach is to partition a given image into non overlapping regions and then use Otsu's method on smaller regions.
-This works well if the illumination is changing slowly. \\
-\paragraph{Based on local image properties\buchSeite{758}}
+This works well if the illumination is changing slowly.
+The regions need to be small enough so that the illumination can be assumed constant and large enough, so that the histogram is multimodal. \\
+\paragraph{Based on local image properties\buchSeite{761}}
 A threshold is computed for each point. The threshold depends on some property of a local neighborhood. Common properties are the mean and standard deviation for each pixel.
-An even more powerful scheme can be built, if the 1 or 0 decision is based on some logical condition.\\
-\paragraph{Using moving averages\buchSeite{759}}
+An even more powerful scheme can be built, if the 1 or 0 decision is based on some logical condition. Common forms:
+\[
+\text{local mean:} \quad T_{xy} = a \sigma_{xy} + b m_{xy} \qquad \qquad \text{global mean:} \quad T_{xy} = a \sigma_{xy} + b m_{G}
+\]
+\paragraph{Using moving averages\buchSeite{763}}
 Useful to reduce illumination effects.
 Very fast to calculate, since only subtracting the oldest sample $z_{k-n}$ and
 adding the new sample $z_{k+1}$ to the current average are needed.
@@ -538,25 +558,23 @@ This is achieved by moving along zig-zag scan lines:
 	\end{tikzpicture}
 \end{center}
 
-\subsubsection{Multivariable Thresholding\buchSeite{761}}
-% Nicht relevant für Prüfung
 
-\subsection{Region based segmentation\buchSeite{763}}
+\subsection{Region based segmentation\buchSeite{764}}
 The goal is to segment the image into regions directly, not using abrupt changes or thresholding.
-\subsubsection{Region growing\buchSeite{763}}
+\subsubsection{Region growing\buchSeite{764}}
 \begin{enumerate}
-\item Find all connected components in $S(x,y)$ and erode each connected component to one pixel; label all such pixels found as 1. All other pixels in S are labeled 0.
-\item Form an image $f_Q$ such that, at a pair of coordinates $(x,y)$, let $f_Q(x,y)=1$ if the input image satisfies the given predicate, Q, at those coordinates; otherwise, let $f_Q(x,y)=0$
-\item Let $g$ be an image formed by appending to each seed point in S all the 1-valued points in $f_Q$ that are 8-connected to that seed point
-\item Label each connected component in $g$ with a different region label (e.g. 1,2,3,...). This is the segmented image optained by Region growing.
+\item Find all connected components in $S(x,y)$ and erode each connected component to one pixel; label all such pixels found as 1. All other pixels in $S$ are labeled 0.
+\item Form an image $f_Q$ such that, at each point $(x,y)$, $f_Q(x,y)=1$ if the input image satisfies the given predicate, Q, at those coordinates and $f_Q(x,y)=0$ otherwise.
+\item Let $g$ be an image formed by appending to each seed point in $S$ all the 1-valued points in $f_Q$ that are 8-connected to that seed point.
+\item Label each connected component in $g$ with a different region label (e.g., integers or letters). This is the segmented image obtained by region growing.
 \end{enumerate}
-\subsubsection{Region splitting and merging\buchSeite{766}}
-The image is subdivided initially into a set of arbitrary disjoint regions and then the regions are merge and or split in an attempt to improve the segmentation.\\
+\subsubsection{Region splitting and merging\buchSeite{768}}
+The image is subdivided initially into a set of arbitrary disjoint regions and then the regions are merged and or split in an attempt to improve the segmentation.\\
 A common scheme to split images is a quadtree.\\
 \begin{enumerate}
-	\item Split into four disjoint quadrants any region $R_i$ for wich $Q(R)= FALSE$.
-	\item When no further splitting is possible, merge any adjacent regions $R_i$ and $R_k$ for which $Q(R_j\bigcup R_k) = TRUE$.
-	\item Stop when no further merging is possible
+	\item Split into four disjoint quadrants any region $R_i$ for which $Q(R_i)= FALSE$.
+	\item When no further splitting is possible, merge any adjacent regions $R_j$ and $R_k$ for which $Q(R_j\bigcup R_k) = TRUE$.
+	\item Stop when no further merging is possible.
 \end{enumerate}
 \begin{figure}[h]
 	\centering
@@ -574,44 +592,45 @@ A common scheme to split images is a quadtree.\\
 \end{figure}
 
 
-\subsection{Segmentation using morphological watersheds\buchSeite{769}}
-\subsubsection{Background\buchSeite{769}}
+\subsection{Segmentation using morphological watersheds\buchSeite{786}}
+\subsubsection{Background\buchSeite{786}}
 The basic idea is to think of images as 3D landscapes. There are three kinds of points:
 \begin{itemize}
 \item Points belonging to a regional minimum.
-\item Points, where water would flow to a single minimum. These are called catchment basin.
+\item Points, where water would flow to a single regional minimum. These are called catchment basin.
 \item Points, where water would be equally likely to fall to more than one such minimum. These are called watershed lines.
 \end{itemize}
 Basic idea:
 \begin{itemize}
 \item In each basin a hole is punched
-\item The topological image is pushed into a full bathtub. The water rises uniformly in the different basing
-\item As soon as the water in different basins want to merge, a dam is build
-\item At the end only the dams are left. These are the watershed lines wich are connected boundaries segmenting the image into different regions.
+\item The topological image is pushed into a full bathtub. The water rises uniformly in the different basins
+\item As soon as the water in different basins wants to merge, a dam is build
+\item At the end only the dams are left. These are the watershed lines which are connected boundaries segmenting the image into different regions.
 \end{itemize}
-\subsubsection{Dam Construction\buchSeite{772}}
+In practice, we often see watershed segmentation applied to the gradient of an image, rather than to the image itself.
+\subsubsection{Dam Construction\buchSeite{789}}
 \begin{itemize}
 \item The easiest way to construct such a dam is using dilation
 \item When basins merge, then a dam needs to be constructed
 \end{itemize}
-\subsubsection{Watershed segmentation algorithm\buchSeite{774}}
+\subsubsection{Watershed segmentation algorithm\buchSeite{791}}
 \begin{itemize}
-\item $T[n]$ is the set of coordinates flooded \qquad $T[n] = {(s,t)|g(s,t)<n}$
+\item $T[n]$ is the set of coordinates flooded \qquad $T[n] = \{(s,t)|g(s,t)<n\}$
 \item The flooding goes in integers from $n=\min+1$ to $n=\max+1$
 \item The algorithm starts with $C[\min+1]=T[\min+1]$. This leads to $C_{\min+1}(M_i)$ for every minimum. \\ $C[n]=\bigcup\limits_{i=1}^{R}C_n(M_i)$
-\item For every n until $n=\max+1$, $C[n]$ is created from $C[n-1]$. \\
+\item For every $n$ until $n=\max+1$, $C[n]$ is created from $C[n-1]$. \\
 		Let $Q[n]$ be the set of connected components in $T[n]$. For each connected component $q$, there are three possibilities:
 	\begin{enumerate}
 		\item $q \cap C[n-1]$ is empty. \\ i.e. a new basin was detected (was not there in $C[N-1]$) $\Rightarrow$ simply incorporate into $C[N]$.
 		\item $q \cap C[n-1]$ contains one connected component of $C[N-1]$. \\ i.e. a basin was extended $\Rightarrow$ simply incorporate into $C[N]$.
-		\item $q \cap C[n-1]$ contains more than one one connected component of $C[N-1]$. \\ i.e. basins want to merge $\Rightarrow$ build a dam (or dams) by dilating $q \cap C[n-1]$ with a $3 \times 3$ structuring element of $1$s and constraining the dilation to $q$..
+		\item $q \cap C[n-1]$ contains more than one one connected component of $C[N-1]$. \\ i.e. basins want to merge $\Rightarrow$ build a dam (or dams) by dilating $q \cap C[n-1]$ with a $3 \times 3$ structuring element of $1$s and constraining the dilation to $q$.
 	\end{enumerate}
 \end{itemize}
 
-\subsection{The use of motion in segmentation\buchSeite{778}}
+\subsection{The use of motion in segmentation\buchSeite{796}}
 If an object moves in a scene, it can easily be segmented from the background using its motion information.
 
-\subsubsection{Spatial Techniques\buchSeite{778}}
+\subsubsection{Spatial Techniques\buchSeite{796}}
 For a sequence of images $f(x,y,t_k)$, a reference image $R(x,y)$ is needed.
 Usually the first image is chosen: $R(x,y) = f(x,y,1)$.
 One can also use a IIR lowpass filtered image of all frames: $R_k(x,y) = (1-\alpha) R_{k-1}(x,y) + \alpha f(x,y,k)$. (using a small $\alpha$) \\
@@ -634,7 +653,4 @@ The \emph{accumulative difference image} (ADI) is generated by comparing this re
 			N_{k-1}(x,y) & \text{otherwise}
 		\end{cases}
 \end{align*}
-where $A_k(x,y), \: P_k(x,y), Y: N_k(x,y)$ are the absolute, positive and negative ADIs, after the $k$th image in the sequence is encountered and $T$ is threshold, e.g. $5\%$ of the brightness.
-
-\subsubsection{Frequency Domain Techniques\buchSeite{782}}
-% not relevant
+where $A_k(x,y), \: P_k(x,y), \: N_k(x,y)$ are the absolute, positive and negative ADIs, after the $k$th image in the sequence is encountered and $T$ is the threshold, e.g. $5\%$ of the brightness.
