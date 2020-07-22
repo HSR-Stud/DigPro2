@@ -5,16 +5,16 @@
 \item Concept of ``learning'' from sample patterns
 \end{itemize}
 
-\subsection{Patterns and Pattern Classes\buchSeite{906}} %TODO: not present in 4th edition?
+\subsection{Patterns and Pattern Classes\buchSeite{906}}
 \begin{itemize}
 	\item A \emph{pattern} is an arrangement of descriptors
-		(as in \ref{sec:featureExtraction}) in pattern classification
+		(as in Section \ref{sec:featureExtraction}) in pattern classification
 		called \emph{features}.
-	\item A \emph{pattern class} is a set of patterns, denoted $\omega_1, \omega_2, ..., \omega_W$ W is the number of classes
+	\item A \emph{pattern class} is a set of patterns, denoted $\omega_1, \omega_2, ..., \omega_W$, where W is the number of classes
 	\item The goal is to assign a given patter into a class
 \end{itemize}
 
-\subsubsection{Vectors\buchSeite{906}} %TODO: not covered in lessons
+\subsubsection{Vectors\buchSeite{906}}
 \begin{itemize}
 	\item Used for quantitative descriptors
 	\item every dimension contains the numerical value of a descriptor
@@ -27,18 +27,16 @@
 		\end{bmatrix}
 		 = (x_1, x_2, \ldots, x_n)^T $
 \end{itemize}
-Example: Classifying flowers based on petal length and width into one of three
-classes.
+Example: Classifying flowers based on petal length and width into one of three classes.
 
-\subsubsection{Structural Patterns\buchSeite{908}} %TODO: merge this and next section into 'minimum-distant classifier'
-Structural information can be captured in strings. Example
-\nameref{sec:boundaryFeatureDescriptors}
+\subsubsection{Structural Patterns\buchSeite{908}}
+Structural information can be captured in strings. Example in Section \ref{sec:boundaryFeatureDescriptors} \nameref{sec:boundaryFeatureDescriptors}
 \begin{itemize}
 	\item Connectivity patterns (order is important)
 	\item Compact description, better than sampling into a feature vector
 \end{itemize}
 
-\subsubsection{Tree}
+\paragraph{Tree\buchSeite{910}}
 If there is hierarchy then a descriptor which is based on a tree structure
 should be used.
 
@@ -60,34 +58,33 @@ For two classes, a single discriminant function can be introduced
 	d_{ij}(\mathbf{x}) = d_i(\mathbf{x}) - d_j(\mathbf{x}) = 0
 \end{align*}
 
-\subsubsection{Matching\buchSeite{866}}
+\subsubsection{Matching}
 Each class is represented by prototypes.
 A vector $x$ belongs to the class with the shortest distance.
 
-\paragraph{Minimum distance classifier}
+\paragraph{Minimum-distance classifier}
 The mean vector of a class is a powerful prototype vector.
 \begin{align*}
-	\mathbf{m}_j = \frac{1}{N_j} \sum_{\mathbf{x} \in \omega_j}\mathbf{x}_j && j = 1,2,\dots, W
+	\mathbf{m}_j = \frac{1}{n_j} \sum_{\mathbf{x} \in c_j}\mathbf{x} && j = 1,2,\dots, N_c
 \end{align*}
-A simple matching function is the Euclidean distance ($||a|| = (a^Ta)^{1/2}$)).
+A simple matching function is the Euclidean distance ($||a|| = (a^Ta)^{1/2}$).
 \begin{align*}
 	D_j(\mathbf{x}) = ||\mathbf{x}-\mathbf{m}_j|| = \left((\mathbf{x}-\mathbf{m}_j)^T(\mathbf{x}-\mathbf{m}_j)\right)^{1/2}
 \end{align*}
-The resulting discriminant function which is the largest, when the distance is
-the smallest.
+The resulting discriminant function which is the largest, when the distance is the smallest.
 \begin{align*}
-	d_j(\mathbf{x}) = \mathbf{x}^T \mathbf{m}_j - \frac{1}{2}\mathbf{m}_j^T \mathbf{m}_j
+	d_j(\mathbf{x}) = \mathbf{m}_j^T \mathbf{x} - \frac{1}{2}\mathbf{m}_j^T \mathbf{m}_j \numberthis \label{eq:minDistClass}
 \end{align*}
 The decision boundary between class $\omega_i$ and $\omega_j$ will be
 \begin{align*}
 	d_{ij}(\mathbf{x}) &= d_i(\mathbf{x}) - d_j(\mathbf{x})\\
-	&= \mathbf{x}^T(\mathbf{m}_i-\mathbf{m}_j) - \frac{1}{2}(\mathbf{m}_i-\mathbf{m}_j)^T(\mathbf{m}_i+\mathbf{m}_j) = 0
+	&= (\mathbf{m}_i-\mathbf{m}_j)^T\mathbf{x} - \frac{1}{2}(\mathbf{m}_i-\mathbf{m}_j)^T(\mathbf{m}_i+\mathbf{m}_j) = 0
 \end{align*}
 Which is a line through the midpoint of $m_i$ and $m_j$ for $n=2$.
 For $n=3$ its a plane and for $n>3$ it's a hyperplane.
 
 \paragraph{Using Correlation for 2-D Prototype Matching\buchSeite{915}}
-Calculate cross-correlation between a mask $w(x,y)$ of size $m\times n$ and an image
+Calculate cross-correlation between a kernel $w(x,y)$ of size $m\times n$ and an image
 $f(x,y)$ to find the mask in the image.
 \begin{align*}
 	c(x,y) = \sum_s\sum_tw(s,t)f(x+s,y+t)
@@ -104,52 +101,75 @@ Note $\bar{f}_{xy}$ is the average value of $f$ in the region $w$.
 	\right\rbrace^{\frac{1}{2}}
 	}
 \end{align*}
-$\gamma(x,y)$ is always in range $[-1, 1]$, where +1 is perfect match and -1 a perfect anti-match.
+$\gamma(x,y)$ is always in range $[-1, 1]$, where +1 is a perfect match and -1 a perfect anti-match.
 This is sensitive to scale and rotation.
 Often the square root is ignored and absolute values are used instead of squares to save computational effort.
 
 \subsection{Optimum (Bayes) Statistical Classifiers\buchSeite{923}}
 A classifier which results in the lowest average risk of incorrect classification. \\
 
-The probability that a pattern $\mathbf{x}$ comes from class $\omega_i$ is the conditional probability $p(\omega_i | \mathbf{x})$.
+The probability that a pattern $\mathbf{x}$ comes from class $c_i$ is the conditional probability $p(c_i | \mathbf{x})$.
 The loss that occurs if a pattern $\mathbf{x}$ is put to class $\omega_j$ instead of $\omega_i$ is denoted as $L_{ij}$. \\
 
-The conditional average risk or loss is the average loss if $\mathbf{x}$ is assigned to class $j$:
+The conditional average risk or loss is the average loss if $\mathbf{x}$ is assigned to class $c_j$:
 	\[
-		r_j(\mathbf{x}) = \sum\limits_{k=1}^{W} L_{kj} p(\omega | \mathbf{x}) = \frac{1}{p(\mathbf{x})} \sum\limits_{k=1}^{W} L_{kj} p(\mathbf{x} | \omega_k) P(\omega_k)
+		r_j(\mathbf{x}) = \sum\limits_{k=1}^{N_c} L_{kj} p(c_k | \mathbf{x}) = \frac{1}{p(\mathbf{x})} \sum\limits_{k=1}^{N_c} L_{kj} p(\mathbf{x} | c_k) P(c_k)
 	\]
 As $p(\mathbf{x})$ is equal to all $r_j$ and assuming that the loss for every misclassification is equal (e.g. 1) this is simplified to
 	\[
-		r_j(\mathbf{x}) = p(\mathbf{x}) - p(\mathbf{x} | \omega_j) P(\omega_j)
+		r_j(\mathbf{x}) = p(\mathbf{x}) - p(\mathbf{x} | c_j) P(c_j)
 	\]
 Or written in the same form as before
 	\[
-		d_j(\mathbf{x}) = p(\mathbf{x} | \omega_j) P(\omega_j)	\qquad j=1,2,\ldots,W
+		d_j(\mathbf{x}) = p(\mathbf{x} | c_j) P(c_j)	\qquad j=1,2,\ldots,N_c
 	\]
-In order to estimate $p(\mathbf{x}|\omega_j)$ and $P(\omega_j)$, one uses a Gaussian assumption.
-If $N_j$ is the number of pattern vectors from class $\omega_j$, the mean vector $\mathbf{m}_j$ and the covariance matrix $\mathbf{C}_j$ are calculated as
+
+\subsubsection{Bayes Classifier for Gaussian Pattern Classes\buchSeite{925}}
+In order to estimate $p(\mathbf{x}|c_j)$ and $P(c_j)$, one uses a Gaussian assumption.
+If $n_j$ is the number of pattern vectors from class $c_j$, the mean vector $\mathbf{m}_j$ and the covariance matrix $\mathbf{C}_j$ are calculated as
 \begin{align*}
-	\mathbf{m}_j = \frac{1}{N_j} \sum\limits_{\mathbf{x}\in\omega_j} \mathbf{x}
+	\mathbf{m}_j = \frac{1}{n_j} \sum\limits_{\mathbf{x}\in c_j} \mathbf{x}
 	&&
-	\mathbf{C}_j = \frac{1}{N_j} \sum\limits_{\mathbf{x}\in\omega_j} \mathbf{x}\mathbf{x}^T - \mathbf{m}_j\mathbf{m}_j^T
+	\mathbf{C}_j = \frac{1}{n_j} \sum\limits_{\mathbf{x}\in c_j} \mathbf{x}\mathbf{x}^T - \mathbf{m}_j\mathbf{m}_j^T
 \end{align*}
-The decision function can then be written as
-	\[
-		d_j(\mathbf{x}) = \ln P(\omega_j) - \frac{1}{2}\ln|\mathbf{C}_j| - \frac{1}{2}\left[(\mathbf{x}-\mathbf{m}_j)^T\mathbf{C}_j^{-1}(\mathbf{x}-\mathbf{m}_j)\right]
-	\]
+Since the Gaussian function
+\[
+  p(x|c_j) = \frac{1}{(2\pi)^{n/2} |\mathbf{C}_j|^{1/2}} e^{-\frac{1}{2}(\mathbf{x} - \mathbf{m}_j)^T \mathbf{C}_j^{-1} (\mathbf{x} - \mathbf{m}_j)}
+\]
+has an exponential form, it is convenient to compare the logarithms of the decision functions and not the decision functions
+\[
+  d_j(\mathbf{x}) = \text{ln}[p(\mathbf{x}|c_j) P(c_j)] = \text{ln}p(\mathbf{x}|c_j) + \text{ln}P(c_j)
+\]
+Hence these new decision functions can be explicitly written as
+\[
+  d_j(\mathbf{x}) = \text{ln}P(c_j) - \frac{n}{2}\text{ln}2\pi - \frac{1}{2}\text{ln}|\mathbf{C}_j| - \frac{1}{2}[(\mathbf{x} - \mathbf{m}_j)^T \mathbf{C}_j^{-1} (\mathbf{x} - \mathbf{m}_j)]
+\]
+and by dropping the term $(n/2)\text{ln}2\pi$ (same for all classes) becomes
+\[
+  d_j(\mathbf{x}) = \text{ln}P(c_j) - \frac{1}{2}\text{ln}|\mathbf{C}_j| - \frac{1}{2}[(\mathbf{x} - \mathbf{m}_j)^T \mathbf{C}_j^{-1} (\mathbf{x} - \mathbf{m}_j)] \qquad j = 1,2,\ldots,N_c
+\]
+which are the decision functions for $n$-dimensional Gaussian pattern classes under the 0/1 loss assumption.\\
+In the special case, when the covariance matrices are equal, this decision function becomes even simpler
+\[
+  d_j(\mathbf{x}) = \text{ln}P(c_j) + \mathbf{x}^T \mathbf{C}^{-1} \mathbf{m}_j - \frac{1}{2}\mathbf{m}_j^T\mathbf{C}^{-1}\mathbf{m}_j \qquad j = 1,2,\ldots,N_c
+\]
+In an even more special case, where the covariance matrix of all classes is the identity matrix and each class is a priory equally likely, the decision function simplifies further to
+\[
+  d_j(\mathbf{x}) = \mathbf{m}_j^T \mathbf{x} - \frac{1}{2}\mathbf{m}_j^{T}\mathbf{m}_j \qquad j = 1,2,\ldots,N_c
+\]
+which are the decision functions for a minimum-distance classifier (see Eq. \ref{eq:minDistClass}).
 
-\subsection{Neural Networks\buchSeite{931}}
 
+\subsection{Neural Networks and Deep Learning\buchSeite{931}}
 Class of algorithms which find decision functions directly by training. Neural Netowrks (NN) make no Gaussian assumption.
 
-\paragraph{Perceptron\buchSeite{934}}
-
+\subsubsection{Perceptron\buchSeite{934}}
 The perceptron learns a linear decision function that separates two linearly separable training sets.
 
 \begin{figure}[htb]
 \centering
 \adjustbox{scale=1.2}{\input{tikz/objectrecognition/perzeptron}}
-\caption{Perceptron model for two pattern classes}
+\caption{Perceptron model}
 \label{fig:perceptron}
 \end{figure}
 \begin{align*}
@@ -158,8 +178,8 @@ d(\mathbf{x}) = \sum_{i=1}^nw_ix_i + w_{n+1}
 If $d(\mathbf{x}) > 0$, then the pattern belongs to $\omega_1$, if  $d(\mathbf{x}) < 0)$ it belongs to $\omega_2$. \\
 
 The function which maps the weighted sum of the input to the output is called \emph{activation function}.
-In \ref{fig:perceptron} a sign function is used.
-For multilayer NN a sigmoid (\ref{fig:sigmoid}) is common. \\
+In Fig. \ref{fig:perceptron}, a sign function is used.
+For multilayer NN a sigmoid (Fig. \ref{fig:sigmoid}) is common. \\
 
 The constant input of 1 allows an offset.
 A convenient notation is the augmented pattern vector, which allows to handle the offset as if it was another input
@@ -167,57 +187,77 @@ A convenient notation is the augmented pattern vector, which allows to handle th
 \begin{align*}
 y_i &= x_i & i=1,2,\dots,n \\
 y_{n+1} &= 1 \\
-d(y) &= \sum_{i=1}^{n+1}w_iy_i = w^Ty \\
+d(y) &= \sum_{i=1}^{n+1}w_iy_i = \mathbf{w}^T\mathbf{y} \\
 \end{align*}
 
 \paragraph{Training algorithms\buchSeite{935}}
-Train the weights of the perceptron so that it can distinguish between classed, using training sets.
+Train the weights of the perceptron so that it can distinguish between classes, using training sets.
 For linear separable classes, a simple, iterative algorithm is:
 \begin{itemize}
 \item
-Pattern vectors of the training set are presented repetitively, the weight vector is changed if a misclassification happens.
+Pattern vectors of the training set are presented repetitively, the weight vector is changed, if a misclassification happens.
 \item The training stops, when there are no more misclassifications.
 \end{itemize}
 
 for $d(y)>0 \rightarrow \omega_1$ and $d(y)<0 \rightarrow \omega_2$
 
 \begin{align*}
-\text{if } y(k) \in \omega_1 \text{ and } w^T(k)y(k) \leq 0 && \rightarrow && w(k+1) = w(k) +cy(k) \\
-\text{if } y(k) \in \omega_2 \text{ and } w^T(k)y(k) \geq 0 && \rightarrow && w(k+1) = w(k)-cy(k)
+\text{if } \mathbf{y}(k) \in \omega_1 \text{ and } \mathbf{w}^T(k)\mathbf{y}(k) \leq 0 && \rightarrow && \text{replace } \mathbf{w}(k) \text{ by } \mathbf{w}(k+1) = \mathbf{w}(k) + c\mathbf{y}(k) \\
+\text{if } \mathbf{y}(k) \in \omega_2 \text{ and } \mathbf{w}^T(k)\mathbf{y}(k) \geq 0 && \rightarrow && \text{replace } \mathbf{w}(k) \text{ by } \mathbf{w}(k+1) = \mathbf{w}(k)- c\mathbf{y}(k)
 \end{align*}
 
 
-$c$ is a positive correction increment.
-This algorithm converges in a finite number of steps for linearly separable training data.
+$c$ is a positive correction increment (usually 1).
+This is called the fixed increment correction rule and this scheme converges in a finite number of steps for linearly separable training data.\\
 
-This is not possible for nonseparable classes.
+This is not possible for non-separable classes.
 Hence minimizing the squared error is the target.
 
 \begin{align*}
-J(w) = \frac{1}{2}(r-w^Ty)^2
+J(\mathbf{w}) = \frac{1}{2}(r-\mathbf{w}^T\mathbf{y})^2
 && r \text{ is the desired response and $y$ the pattern vector}
 \end{align*}
 
 To minimize this we use the delta correction algorithm
 \begin{align*}
-\Delta w &= \alpha e(k)y(k) \\
+\Delta w &= \alpha e(k)\mathbf{y}(k) \\
 \Delta w &= w(k+1)-w(k) && \text{weighting change} \\
-e(k) &= r(k) - w^T(k)y(k) && \text{error}
+e(k) &= r(k) - \mathbf{w}^T(k)\mathbf{y}(k) && \text{error}
 \end{align*}
 
 The change of the error becomes
 \begin{align*}
-\Delta e &= -\alpha e(k) y^T(k) y(k) \\
- &= - \alpha e(k) ||y(k)||^2
+\Delta e &= -\alpha e(k) \mathbf{y}^T(k) \mathbf{y}(k) \\
+ &= - \alpha e(k) ||\mathbf{y}(k)||^2
 \end{align*}
 
 So $\alpha$ controls the speed of error reduction.
-For stability $\alpha$ must be smaller than 2.
-In practice $\alpha$ is picked below 1.
+For stability, $\alpha$ must be smaller than 2.
+In practice $\alpha$ is picked well below 1, for example $0.01$.
 
-\paragraph{Multilayer feedforward Neural Networks\buchSeite{943}}
-These allow for multiclass pattern recognition, also for non linear separable classes.
-They are stacked banks of perceptrons with the sigmoid as activation function (\ref{fig:sigmoid}).
+\subsubsection{Multilayer feedforward Neural Networks\buchSeite{943}}
+These allow for multiclass pattern recognition, also for non-linear separable classes.
+They are stacked banks of perceptrons:
+\begin{itemize}
+  \item The hard limiting activation function is replaced with a soft limiting function for the output layer
+  \begin{itemize}
+    \item Sigmoid (\ref{fig:sigmoid}) as activation function is most meaningful, if there is one output, which is interpreted as a probability.
+    \item If there are several output classes then the so called softmax function is used (vector in, vector out).
+    \begin{itemize}
+      \item The correct output would then be a so called one-hot-encoding
+    \end{itemize}
+  \end{itemize}
+  \item For the hidden layers usually a Rectified Linear Unit (ReLU) function is used as the activation function.
+\end{itemize}
+The softmax function
+\[
+  a_i(L) = \frac{\text{exp}(z_i(L)}{\sum_k \text{exp}(z_i(L)}
+\]
+is not an element-wise function since the outputs must add up to one.
+Hence this results in the need of using the Jacobian to calculate the partial derivatives in the chain rule later on.\\
+The following surprisingly simple result can be derived:\\
+If the cross-entropy $L(\mathbf{\hat{y}},\mathbf{y})=\sum_i y_i \text{log}(\frac{1}{\mathbf{\hat{y_i}}})$ is used as a loss function and $\mathbf{\hat{y}} = \text{softmax}(\mathbf{z})$ is used to calculate $\mathbf{\hat{y}}$, then the gradient of the scalar loss function $L(\mathbf{\hat{y}},\mathbf{y})$ with respect to the unnormalized log probabilities in the $\mathbf{z}$ vector is simply the negative error vector $-\mathbf{e} = -(\mathbf{y}-\mathbf{\hat{y}})$.
+
 
 \begin{figure}[htp]
 \centering
@@ -232,48 +272,126 @@ They are stacked banks of perceptrons with the sigmoid as activation function (\
 \label{fig:sigmoid}
 \end{figure}
 
+%TODO: source?
 If $K$ is the layer preceding layer $J$ then the input to the activation function of node $j$ in layer $J$ is the weighted sum of the outputs of Layer $K$.
 
 \begin{align*}
 I_j = \sum_{k=1}^{N_k}w_{jk}O_k
 \end{align*}
 
-\paragraph{Training by Back Propagation\buchSeite{953}}
+\subsubsection{Forward Pass through a feedforward Neural Network\buchSeite{948}}
+If an input vector $\mathbf{x}$ needs to be classified, a forward pass is calculated, hence the weights and biases must be known.
+The outputs of layer 1 are the components of input vector $\mathbf{x}$
+\[
+  a_j(1)=x_j \qquad j = 1,2,\ldots,n_1
+\]
+where $n_1 = n$ is the dimensionality of $\mathbf{x}$.
+The pre-activation of neuron $i$ in layer $l$ is then calculated
+\[
+  z_i(l) = \sum_{j=1}^{n_{l-1}} w_{ij}(l)a_j(l-1) + b_i(l) \qquad i=1,2,\ldots,n_l \qquad l=2,\ldots,L
+\]
+Then the output of neuron $i$ in layer $l$ is calculated by running the pre-activation through the activation function (usually ReLU)
+\[
+  a_i(l) = h(z_i(l)) \qquad i=1,2,\ldots,n_l
+\]
+The final output is then calculated with
+\[
+ a_i(L) = h(z_i(L)) \qquad i=1,2,\ldots,n_L
+\]
+where the activation function is usually a softmax (SM) function.\\
+Note: softmax is not an element-wise function, hence the entire vector $\mathbf{z}$ needs to be fed into the SM function.
+
+\paragraph{Matrix formulation\buchSeite{950}}
+As it turns out a more efficient implementation can be achieved by using matrix notation.
+Again, the outputs of layer 1 are the components of input vector $\mathbf{x}$
+\[
+  \mathbf{a}(1) = \mathbf{x}
+\]
+Given the proper definition of the weight matrix,
+\[
+  \mathbf{W}(l) =
+  \begin{bmatrix}
+    w_{11}(l) & w_{12}(l) & \ldots & w_{1n_{l-1}}(l) \\
+    w_{21}(l) & w_{22}(l) & \ldots & w_{2n_{l-1}}(l) \\
+    \vdots & \vdots & \ldots & \\
+    w_{n_l1}(l) & w_{n_l2}(l) & \ldots & w_{n_ln_{l-1}}(l) \\
+  \end{bmatrix}
+\]
+the pre-activations can be written as a matrix vector multiplication and a vector addition
+\[
+  \mathbf{z}(l) = \mathbf{W}(l)\mathbf{a}(l-1) + \mathbf{b}(l) \qquad l=2,3,\ldots,L
+\]
+Finally, the activation of the element-wise activation functions, such as ReLU and sigmoid can be written as (not true for sotmax)
+\[
+  \mathbf{a}(l) = h[\mathbf{z}(l)] =
+  \begin{bmatrix}
+    h(z_1(l)) \\
+    h(z_2(l)) \\
+    \vdots \\
+    h(z_{n_l}(l)) \\
+  \end{bmatrix}
+\]
+
+
+Usually the forward pass needs to be calculated for a mini-batch of input vectors.
+For a mini-batch, the input vectors are concatenated column wise to create an $nxn_p$ matrix $\mathbf{X}$, where $n$ is the dimension of an input vector and $n_p$ is the number of input vectors in the mini-batch.
+This concatenation then results in concatenated pre-activations and activations but else stays the same
+
+\begin{table}[h]
+	\begin{tabularx}{\textwidth}{lXl}
+		\textbf{Step} & \textbf{Description} & \textbf{Equations} \\ \hline
+		Step 1 & Input patterns & $\displaystyle\mathbf{A}(1) = \mathbf{X}$ \\
+		Step 2 & Feedforward & $\displaystyle\text{For } l=2,\ldots,L, \text{ compute } \mathbf{Z}(l) = \mathbf{W}(l)\mathbf{A}(l-1) + \mathbf{B}(l) \text{ and } \mathbf{A}(l) = h(\mathbf{Z}(l))$ \\
+		Step 3 & Output & $\displaystyle\mathbf{A}(L) = h(\mathbf{Z}(L))$ \\
+		\hline
+	\end{tabularx}
+  \caption{Forward pass}
+  \label{tab:forwardPass}
+\end{table}
+
+Note that $\mathbf{B}(l)$ contains $n_p$ columns of the bias vector $b(l)$, since it is the same bias vector at every input vector, $h()$ is applied element-wise and Step 3 is special for softmax since a normalization per column is needed, hence it is a column-wise function.
+
+
+\subsubsection{Training by Backpropagation\buchSeite{953}}
 Target is to minimize the total squared error between the desired responses
 $r_q$ and the actual response $O_q$ in the output layer $Q$
 \begin{align*}
-	E_Q = \frac{1}{2} \sum_{q=1}^{N_Q}(r_q-O_q)^2
+	E = \frac{1}{2} \sum_{j=1}^{n_L}(r_j-a_j(L))^2
 \end{align*}
 
-Back-Propagation is deriving the Error with respect to the weights
+Backpropagation is deriving the rate of change of $E$ with respect to the weights and biases in terms of quantities we can compute.
+We can now update the network parameters using gradient descent
 \begin{align*}
-	\Delta w_{qp} &= -\alpha \frac{\partial E_Q}{\partial w_{qp}}
+  w_{ij}(l) = w_{ij}(l) - \alpha \frac{\partial E(l)}{\partial w_{ij}(l)} = w_{ij}(l) - \alpha \delta_i(l)a_j(l-1)
 \end{align*}
-$\Delta w$ is the change in weight vector, $\alpha$ the correction increment,
-$E_Q$ the error and $w_{qp}$ the current weight vector
+$\mathbf{w}$ is the weight vector, $\mathbf{b}$ the bias vector, $\alpha$ the correction increment, $E$ the error.
 
+\paragraph{Matrix formulation\buchSeite{956}}
+\begin{table}[h]
+	\begin{tabularx}{\textwidth}{llX}
+		\textbf{Step} & \textbf{Description} & \textbf{Equations} \\ \hline
+		Step 1 & Input patterns & $\displaystyle\mathbf{A}(1) = \mathbf{X}$ \\
+		Step 2 & Forward pass & $\displaystyle\text{For } l=2,\ldots,L, \text{ compute } \mathbf{Z}(l) = \mathbf{W}(l)\mathbf{A}(l-1) + \mathbf{B}(l) \text{; } \mathbf{A}(l) = h(\mathbf{Z}(l)) \text{;}\newline
+    h'(\mathbf{Z}(l)) \text{; } \text{and } \mathbf{D}(l) = (\mathbf{A}(l) - \mathbf{R}) \odot h'(\mathbf{Z}(l))$ \\
+		Step 3 & Backpropagation & $\displaystyle\text{For } l=L-1,L-2,\ldots,2, \text{ compute } \mathbf{D}(l) = (\mathbf{W}^T(l+1)\mathbf{D}(l+1)) \odot h'(\mathbf{Z}(l))$ \\
+    Step 4 & Update weights and biases & $\displaystyle\text{For } l=2,\ldots,L, \text{ let } \mathbf{W}(l)=\mathbf{W}(l) - \alpha\mathbf{D}(l)\mathbf{A}^T(l-1),\newline
+    \mathbf{b}(l) = \mathbf{b}(l) - \alpha\sum_{k=1}^{n_p}\pmb{\delta}_k(l), \text{ and } \mathbf{B}(l)= \underset{n_p \text{ times}}{\text{concatenate}}\{\mathbf{b}(l)\},\newline
+    \text{where the } \pmb{\delta}_k(l) \text{ are the columns of } \mathbf{D}(l)$ \\
+		\hline
+	\end{tabularx}
+\end{table}
+Note that this table assumes identical element-wise activation functions everywhere and an MSE error function.
+If the output activation function is a softmax and the error function is the cross entropy, then step 2 needs to change:
 \begin{itemize}
-\item A training vector is presented at
-the input and the desired response
-at the output
-\item For all nodes, the input and output values are calculated
-\item Starting at the output layer, the
-deltas are calculated and back
-propagated
-\item Now the weights are updated
+  \item $\mathbf{A}(L) = \text{softmax}(\mathbf{Z}(l))$
+  \begin{itemize}
+    \item softmax is applied column-wise, since it is a function that takes a vector and returns a vector
+  \end{itemize}
+  \item $\mathbf{D}(L) = (\mathbf{A}(L) - \mathbf{R})$
+  \begin{itemize}
+    \item If the cross-entropy $L(\mathbf{a}(\mathbf{L}),\mathbf{r}) = \sum_i r_i \text{log}(\frac{1}{a(L)_i})$ is used as a loss function and $\mathbf{a}(\mathbf{L}) = \text{softmax}(\mathbf{z}(\mathbf{L}))$ is used to calculate $\mathbf{a}(\mathbf{L})$, then the gradient of the scalar loss function $L(\mathbf{a}(\mathbf{L}),\mathbf{r})$ with respect to the unnormalized log probabilites in the $\mathbf{z}(\mathbf{L})$ vector is the negative error vector $-\mathbf{e} = (\mathbf{a}(\mathbf{L}) - \mathbf{r})$
+  \end{itemize}
 \end{itemize}
-
-
-\begin{align*}
-\Delta w_{jk} &= \alpha \delta_j O_k& \\
-\delta_j &= (r_j-O_j) h'_j(I_j) & \text{if layer $J$ is the output Layer} \\
-\delta_j &= h'_j(I_j) \sum_{p=1}^{N_p}\delta_p w_{jp} & \text{if layer $J$ is an internal layer and layer $P$ is the next layer}
-\end{align*}
-
-Since $sig'(t) = sig(t)(1-sig(t))$ for $\theta_0=1$ the derivative of the activation function becomes
-\begin{align*}
-h'_j(I_j) = O_j(1-O_j)
-\end{align*}
 
 \paragraph{Some facts about NN}
 \begin{itemize}
@@ -285,36 +403,111 @@ h'_j(I_j) = O_j(1-O_j)
 \item More than three layers are never needed
 \end{itemize}
 
-\subsection{Structural Methods\buch{Ch. 12.3}} %TODO: from here on, not covered in 4th edition?
 
-\subsubsection{Shape numbers}
-Remember that the order $n$ of a shape number is the number of digits. This is clearly even for closed boundaries. \\
+\subsection{Deep Convolutional Neural Networks\buchSeite{964}}
+The basic idea is that the NN finds its own set of of features at different abstraction levels and different resolution using convolution
+\begin{itemize}
+  \item Feature maps at different abstraction levels are created by learned filters and NOT by human based feature engineering
+  \item The filters are the learned weights, hence, the weights are shared across the image and therefore much less weights need to be trained than in a fully connected NN
+  \item The pooling (downsampling) reduces spatial resolution and also results in some invariance to feature translation while reducing the capacity and complexity of the NN
+\end{itemize}
+\begin{figure}[htp]
+  \centering
+  \includegraphics[width=\linewidth]{images/cnn.png}
+  \caption{CNN, LeNet architecture}
+  \label{fig:cnn}
+\end{figure}
 
-To match shape numbers, the degree of similarity $k$ between two shapes $a$ and $b$ is introduced.
-It is defined as the largest order $j$, for which the shape numbers $s_j$ still coincide.
+\subsubsection{Neural Computations in a CNN\buchSeite{971}}
+The convolution value at any point $(x,y)$ is
+\[
+  w \star a_{x,y} = \sum_l \sum_k w_{l,k} a_{x-l,y-k}
+\]
+where $l$ and $k$ span the dimension of the kernel $w$.
+Assume $w$ is a 3x3, then this expands to
+\[
+  w \star a_{x,y} = w_{1,1}a_{x-1,y-1} + w_{1,2}a_{x-1,y-2} + \ldots + w_{3,3}a_{x-3,y-3}
+\]
+Going from 2-D to indexing to 1-D indexing $i=3(l-1)+k$
+\[
+  w \star a_{x,y} = w_1a_1 + w_2a_2 + \ldots + w_9a_9 = \sum_{i=1}^{9} w_ia_i
+\]
+To get the usual NN summation for the pre-activation $z$, a bias is added
+\[
+  z = \sum_{j=1}^{9} w_ja_j + b = w \star a_{x,y} + b
+\]
+The activation is calculated by running the pre-activation through the activation function
+\[
+  a = h(z)
+\]
+\\
+
+Consider a single pixel in a feature map, point $A$ in Fig. \ref{fig:cnn}.
+Convolving the receptive field of the input image with the learned 2D filter weights and then adding a learned bias before running the result through an activation function, is identical to the steps performed in a fully connected NN.
+What is different though is the fact, that the same learned weights/bias are used for all the pixels in a given feature map.\\
+
+Consider a single pixel in a higher level feature map, point $B$ in Fig. \ref{fig:cnn}.
+Since it is the result of convolving three pooled feature maps the calculations contain now the sum of three convolutions
+\[
+  w_{l,k}^{(1)} \star a_{x,y}^{(1)} + w_{l,k}^{(2)} \star a_{x,y}^{(2)} + w_{l,k}^{(3)} \star a_{x,y}^{(3)} = \sum_l \sum_k w_{l,k}^{(1)}a_{x-l,y-k}^{(1)} + \sum_l \sum_k w_{l,k}^{(2)}a_{x-l,y-k}^{(2)} + \sum_l \sum_k w_{l,k}^{(3)}a_{x-l,y-k}^{(3)}
+\]
+Nevertheless, each convolution can be written again as a simple sum over a new 1D index.
+At the end the sum of these sums is augmented with a bias term and then run through an activation function.
+
+\subsubsection{CNN Forward pass\buchSeite{973}}
+Using a layer notation again, the pre-activation at a given pixel is
+\[
+  z_{x,y}(l) = \sum_l \sum_k w_{l,k}(l) a_{x-l,y-k}(l-1) + b(l) = w(l) \star a_{x,y}(l-1) + b(l)
+\]
+Hence the activation in a given layer $l$ at a given pixel is
+\[
+  a_{x,y}(l) = h(z_{x,y}(l))
+\]
+Note that the book now counts convolutional layers from 1 to $L_c$ which is a slight change in notation (so far, the layer count started at 2).
+The convolutional layers start with the input image (possibly multi-dimensional) and stops with the multi-dimensional pooled features
 \begin{align*}
-	s_j(a) = s_j(b) \qquad & \text{for} \quad j=4,6,8,\ldots,k \\
-	s_j(a) \neq s_j(b) \qquad & \text{for} \quad j=k+2,k+4,\ldots
+  a_{x,y}(0) = \{\text{values of pixels in the input image}(s)\} \\
+  a_{x,y}(L_c) = \{\text{values of pooled features in last layer of the CNN}\}
 \end{align*}
-The distance between shape $a$ and $b$ is now
-	\[
-		D(a,b) = \frac{1}{k}
-	\]
-From this definition follows that
+
+Pooling layers have no parameters but are needed to reduce the spatial resolution.
+For the derivation, we assume that no pooling layers are used, which results in
+\begin{table}[h]
+	\begin{tabularx}{\textwidth}{llX}
+		\textbf{Step} & \textbf{Description} & \textbf{Equations} \\ \hline
+		Step 1 & Input images & $\displaystyle a(0) = \text{ the set of image pixels in the input to layer 1}$ \\
+		Step 2 & Forward pass & $\displaystyle\text{For each neuron corresponding to location } (x,y) \text{ in each feature map in layer } l \text{ compute:}\newline
+    z_{x,y}(l) = w(l) \star a_{x,y}(l-1) + b(l) \text{ and } a_{x,y}(l) = h(z_{x,y}(l)) \text{; } l=1,2,\ldots,L_c$ \\
+		\hline
+	\end{tabularx}
+\end{table}
+
+The fully connected NN at the end of the last convolutional layer is identical to the ones already covered, see Table \ref{tab:forwardPass}.
+
+\subsubsection{CNN Backpropagation\buchSeite{974}}
+Since the forward pass is very similar to a fully connected NN, the same is expected for backpropagation:
 \begin{align*}
-	D(a,b) \geq 0 && D(a,b) = 0 \quad \text{if} \quad a=b && D(a,c) \leq \max[D(a,b),D(b,c)]
+  \frac{\partial E}{\partial b(l)} &= \sum_x \sum_y \delta_{x,y}(l) \\
+  w_{l,k}(l) &= w_{l,k}(l) - \alpha \frac{\partial E}{\partial w_{l,k}} = w_{l,k}(l) - \alpha \delta_{l,k}(l) \star \text{rot180}(a(l-1)) \\
+  b(l) &= b(l) - \alpha \frac{\partial E}{\partial b(l)} = b(l) - \alpha \sum_x \sum_y \delta_{x,y}(l)
 \end{align*}
-
-\subsubsection{String Matching}
-Assume that two shapes $a,b$ are coded into strings $a_1a_2\ldots a_n$ and $b_1b_2\ldots b_n$.
-Let $\alpha$ be the number of matches where $a_k = b_k$.
-The number of symbols that do not match is $\beta = \max[|a|,|b|] - \alpha$ \\
-
-A simple measure of similarity between $a$ and $b$ is now
-	\[
-		R = \frac{\alpha}{\beta} = \frac{\alpha}{\max[|a|,|b|] - \alpha}
-	\]
-$R$ is $0$ for no match at all, and is $\infty$ for the perfect match.
-Of course it is important that the strings are aligned.
-Otherwise, one string must be shifted circularly and $R$ is calculated at each position.
-The largest $R$ now represents the best match.
+In the forward pass, the pooling reduced the spatial resolution.
+Hence in backpropagation, the resolution needs to be increased.
+\begin{itemize}
+  \item For average pooling this is achieved by pixel replication, since each high res pixel contributed equally for the low res pixel (e.g., kron(temp,ones(2,2)/4);)
+  \item For max pooling this is achieved by remembering which high res pixels won and copy the low res values to those pixels while setting the loser pixels to zero
+\end{itemize}
+\begin{table}[h]
+	\begin{tabularx}{\textwidth}{llX}
+		\textbf{Step} & \textbf{Description} & \textbf{Equations} \\ \hline
+		Step 1 & Input images & $\displaystyle a(0) = \text{ the set of image pixels in the input to layer 1}$ \\
+		Step 2 & Forward pass & $\displaystyle\text{For each neuron corresponding to location } (x,y) \text{ in each feature map in layer } l\newline
+    \text{compute: } z_{x,y}(l) = w(l) \star a_{x,y}(l-1) + b(l) \text{ and } a_{x,y}(l) = h(z_{x,y}(l)) \text{; } l=1,2,\ldots,L_c$ \\
+    Step 3 & Backpropagation & $\displaystyle\text{For each neuron in each feature map in layer } l \text{ compute:}\newline
+    \delta_{x,y}(l) = h'(z_{x,y}(l))[\delta_{x,y}(l+1) \star \text{rot180}(w(l+1))] \text{; } l=L_c-1,L_c-2,\ldots,1$ \\
+    Step 4 & Update parameters & $\displaystyle\text{Update the weights and bias for each feature map using }\newline
+    w_{l,k}(l) = w_{l,k}(l) - \alpha\delta_{l,k}(l) \star \text{rot180}(\alpha(l-1)) \text{ and } b(l)=b(l) - \alpha\sum_x\sum_y\delta_{x,y}(l) \text{; }\newline
+    l=1,2,\ldots,L_c $ \\
+		\hline
+	\end{tabularx}
+\end{table}

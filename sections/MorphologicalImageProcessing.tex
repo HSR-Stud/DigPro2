@@ -72,20 +72,6 @@ Opening and closing are dual operations:
 	(A \circ B)^c = (A^c \bullet \hat{B})
 \]
 
-The \textbf{opening} operation satisfies the following properties:
-\begin{enumerate}[label=\textbf{(\alph*)}]
-	\item $A \circ B$ is a subset (subimage) of $A$.
-	\item If $C$ is a subset of $D$, then $C \circ B$ is a subset of $D \circ B$.
-	\item $(A \circ B) \circ B = A \circ B$
-\end{enumerate}
-
-The \textbf{closing} operation satisfies the following properties:
-\begin{enumerate}[label=\textbf{(\alph*)}]
-	\item $A$ is a subset (subimage) of $A \bullet B$.
-	\item If $C$ is a subset of $D$, then $C \bullet B$ is a subset of $D \bullet B$.
-	\item $(A \bullet B) \bullet B = A \bullet B$
-\end{enumerate}
-
 \begin{figure}[h!]
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
@@ -101,13 +87,27 @@ The \textbf{closing} operation satisfies the following properties:
 	\caption{Geometrical interpretation of the opening and closing transformations}
 \end{figure}
 
+The \textbf{opening} operation satisfies the following properties:
+\begin{enumerate}[label=\textbf{(\alph*)}]
+	\item $A \circ B$ is a subset (subimage) of $A$.
+	\item If $C$ is a subset of $D$, then $C \circ B$ is a subset of $D \circ B$.
+	\item $(A \circ B) \circ B = A \circ B$
+\end{enumerate}
+
+The \textbf{closing} operation satisfies the following properties:
+\begin{enumerate}[label=\textbf{(\alph*)}]
+	\item $A$ is a subset (subimage) of $A \bullet B$.
+	\item If $C$ is a subset of $D$, then $C \bullet B$ is a subset of $D \bullet B$.
+	\item $(A \bullet B) \bullet B = A \bullet B$
+\end{enumerate}
+
 
 \subsection{The hit-or-miss transform\buchSeite{648}}
 The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 \begin{itemize}
-	\item Through erosion of the image by the object, possible locations for the object in the image are left, since elements smaller than the objects disappear
+	\item Through erosion of the foreground by the object, possible locations for the object in the foreground are left, since elements smaller than the object disappear
 
-	\item Through erosion of the background of the image with the local background of the object, possible locations for the object in the image are left
+	\item Through erosion of the background of the image with the local background of the object, possible locations for the object in the background are left
 
 	\item The intersection of these possible locations result in a reliable  detection of the object location
 	\[
@@ -127,27 +127,27 @@ The hit-or-miss transform is a basic tool for shape detection. Basic idea:
 	\begin{align*}
 		\beta(A)=A-(A\ominus B)
 	\end{align*}
-	The mask \quad \adjustbox{max width=1cm}{\input{tikz/morphological/mask_all}}
-	\quad leads to a 1 pixel thick boundary
+	The mask \quad \adjustbox{max width=1cm}{\input{tikz/morphological/mask_all}} \quad leads to a 1 pixel thick boundary
 \end{multicols}
 
 \subsubsection{Hole Filling\buchSeite{653}}
 \begin{multicols}{2}
 To fill a hole, a seed inside the connected border is needed, i.e., in an empty array $X_0$, the seed point is set to 1.
 \begin{align*}
-X_k=(X_{k-1}\oplus B)\cap A^c && k=1,2,3,\ldots
+X_k=(X_{k-1}\oplus B)\cap I^c && k=1,2,3,\ldots
 \end{align*}
 
 Usual mask: \adjustbox{max width=1cm}{\input{tikz/morphological/mask_cross}} \\
 
-The dilation is forced to stay inside the connected border with $\cap A^c$.The iteration can stop, when $X_k = X_{k-1}$.
+The dilation is forced to stay inside the connected border with $\cap I^c$.
+The iteration can stop, when $X_k = X_{k-1}$.
 \end{multicols}
 
 \subsubsection{Extraction of Connected Components\buchSeite{655}}
 \begin{multicols}{2}
 Initial array ($X_0$) contains a 1 in the region of the connected component.
 \begin{align*}
-X_k=(X_{k-1}\oplus B)\cap A && k=1,2,3,\ldots
+X_k=(X_{k-1}\oplus B)\cap I && k=1,2,3,\ldots
 \end{align*}
 The iteration can stop, when $X_k = X_{k-1}$. \\
 The mask \quad \adjustbox{max width=1cm}{\input{tikz/morphological/mask_all}}
@@ -155,11 +155,14 @@ The mask \quad \adjustbox{max width=1cm}{\input{tikz/morphological/mask_all}}
 \end{multicols}
 
 \subsubsection{Convex hull\buchSeite{657}}
+A set, $S$, of points in the Euclidean plane is said to be convex, if a straight line segment joining any two points in $S$ lies entirely within $S$.
 \begin{itemize}
-\item The convex hull H of a set S is the smalles convex set containing S.
-\item H-S is called the convex deficiency of S
+\item The convex hull, $H$, of a set $S$ is the smallest convex set containing $S$.
+\item $H-S$ is called the convex deficiency of $S$.
 \end{itemize}
-The convex hull is constructed with a convex hull with four structuring elements. (x = don't care)
+The definitions above extend directly to digital sets.
+Following, an algorithm to obtain the convex hull of a set $A$ of foreground pixels, embedded in a binary image, $I$.
+%The convex hull is constructed with a convex hull with four structuring elements. (x = don't care)
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}[b]{0.2\textwidth}
@@ -186,8 +189,8 @@ The convex hull is constructed with a convex hull with four structuring elements
 \end{figure}
 
 \begin{align*}
-	X_0^i &= A \\
-	X_k^i &= (X_{k-1}^i \circledast B^i) \cup A & i &=1,2,3,4 \text{ and } k=1,2,3,\ldots \\
+	X_0^i &= I \\
+	X_k^i &= (X_{k-1}^i \circledast B^i) \cup X_{k-1}^i & i &=1,2,3,4 \text{ and } k=1,2,3,\ldots \\
 	\text{when } X_k^i &= X_{k-1}^i \longrightarrow D^i = X_k^i \\
 	C(A) &= \bigcup\limits_{i=1}^4 D_i
 \end{align*}
@@ -219,7 +222,7 @@ Thinning is the operation of making the foreground thinner.
 	\caption{Thinning}
 \end{figure}
 	\[
-		A \otimes  B = A - (A \circledast B)
+		A \otimes  B = A - (A \circledast B) \quad(= A \cap (A \circledast B)^C)
 	\]
 Hit-or-miss transformation with rotating structuring elements. Note that the hit-or-miss is applied without background. \\
 
@@ -268,7 +271,7 @@ Hit-or-miss transformation with rotating structuring elements. Note that the hit
 	\caption{Thinning masks}
 \end{figure}
 	\[
-		A \otimes  {B} = ((\ldots((A \otimes B^{1}) \otimes B^{2})\ldots) \otimes B^{n})
+		A \otimes  \{B\} = ((\ldots((A \otimes B^{1}) \otimes B^{2})\ldots) \otimes B^{n})
 	\]
 
 This is repeated until nothing changes anymore.
@@ -317,7 +320,7 @@ and
 		K = \max\left\{ k | (A \ominus kB \neq \emptyset) \right\}
 	\]
 
-$K$ is the last iterative step before $A$ is eroded to an empty step. \\
+$K$ is the last iterative step before $A$ is eroded to an empty set. \\
 
 Reconstruction can be achieved by
 	\[
@@ -331,9 +334,9 @@ Reconstruction can be achieved by
 \end{multicols}
 
 \subsubsection{Pruning\buchSeite{664}}
-Pruning is a procedure that can remove parasitic components of a length below some threshold.\\
+Pruning is a procedure that can remove parasitic components (''spurs'') of a length below some threshold.\\
 \begin{enumerate}
-\item Find endpoints with a hit or miss transform with the following structuring elements. Remove the endpoints.
+\item Find endpoints with a hit-or-miss transform with the following structuring elements. Remove the endpoints.
 \begin{figure}[h!]
 \centering
 \begin{subfigure}[b]{0.45\textwidth}
@@ -348,21 +351,31 @@ Pruning is a procedure that can remove parasitic components of a length below so
 \end{subfigure}
 \caption{Pruning structuring elements}
 \end{figure}
+  \[
+    X_1 = A \otimes \{B\}
+  \]
 \item Repeat this. If you want to remove all spurs of length 3 or less, repeat for 3 times
 \item Find the endpoints using the same structuring elements
-\item Dilate the endpoints with a 3x3 structuring element and make a logical and with the original set
+  \[
+    X_2 = \bigcup_{k=1}^{8}(X_1 \circledast B^{k})
+  \]
+\item Dilate the endpoints three times with a 3x3 structuring element (all ones) and make a logical and with the original set
+\begin{align*}
+  X_3 &= (X_2 \oplus H) \cap A \\
+  X_4 &= X_1 \cup X_3
+\end{align*}
 \end{enumerate}
 
 \subsubsection{Morphological Reconstruction\buchSeite{667}}
-\paragraph{Geodesic dilation and erosion\buchSeite{667}}
-This is a transformation which uses two images and a structuring element
+This is a transformation which uses two images and a structuring element (usually a 3x3 matrix filled with all ones)
 \begin{itemize}
 \item F is the marker image
 \item G is the mask image
 \item Both are binary and F is a subset of G
 \end{itemize}
-Note that morphological reconstruction will always converge after a finite number of steps. \\
+Note that morphological reconstruction will always converge after a finite number of steps.
 
+\paragraph{Geodesic dilation and erosion\buchSeite{667}}
 \textbf{Geodesic dilation}
 \[
 	D_G^{(1)}(F) = (F\oplus B)\cap G
@@ -370,17 +383,18 @@ Note that morphological reconstruction will always converge after a finite numbe
 is the dilation of $F$ by $B$, where the result must stay inside $G$.
 This can be repeated:
 \begin{align*}
-	D_G^{(0)}(F) = F \\
-	D_G^{(1)}(F) = (F\oplus B)\cap G\\
-	D_G^{(n)}(F) = D_G^{(1)}[D_G^{(n-1)}(F)]	&& \text{\tiny notice the recursive definition}
+	D_G^{(0)}(F) &= F \\
+	D_G^{(1)}(F) &= (F\oplus B)\cap G\\
+	D_G^{(n)}(F) &= D_G^{(1)}[D_G^{(n-1)}(F)]	&& \text{\tiny notice the recursive definition}
 \end{align*}
 
 \textbf{Geodesic erosion}
 	\[
-		E_G^{(0)}(F) = F
+		E_G^{(1)}(F) = (F \ominus B) \cap G
 	\]
 is the erosion of $F$ by $B$, where the result contains at least $G$.
 \begin{align*}
+  E_G^{(0)}(F) &= F \\
 	E_G^{(1)}(F) &= (F\ominus B)\cup G \\
 	E_G^{(n)}(F) &= E_G^{(1)}[E_G^{(n-1)}(F)]
 \end{align*}
@@ -388,13 +402,13 @@ is the erosion of $F$ by $B$, where the result contains at least $G$.
 \paragraph{Morphological reconstruction by dilation and by erosion\buchSeite{668}}
 This is geodesic dilation/erosion until nothing changes.
 \begin{align*}
-    \text{Reconstruction by dilation:} \quad R_G^D(F)=D_G^{(k)} \quad \text{with} \quad D_G^{(k)}(F)=D_G^{(k+1)}(F)\\
-    \text{Reconstruction by erosion:} \quad R_G^E(F)=E_G^{(k)} \quad \text{with} \quad E_G^{(k)}(F)=E_G^{(k+1)}(F)
+    \text{Reconstruction by dilation:} \quad R_G^D(F)=D_G^{(k)}(F) \quad \text{with} \quad D_G^{(k)}(F)=D_G^{(k+1)}(F)\\
+    \text{Reconstruction by erosion:} \quad R_G^E(F)=E_G^{(k)}(F) \quad \text{with} \quad E_G^{(k)}(F)=E_G^{(k+1)}(F)
 \end{align*}
 
 \paragraph{Sample applications\buchSeite{669}}
 \textbf{Opening and closing by reconstruction}\\
-Opening by reconstruction removes all small object, all others stay unchanged.
+Opening by reconstruction removes all small objects, all others stay unchanged.
 Closing by reconstruction closes gaps, the rest is unchanged. This is in contrast to morphological opening and closing, where the erosion removes the small objects and the dilation "sort of" reconstructs the other objects.\\
 \begin{align*}
 O_R^{(n)}(F)=R_F^D[(F\ominus nB)]\\
@@ -404,8 +418,8 @@ C_R^{(n)}(F)=R_F^E[(F\oplus nB)]
 \textbf{Filling holes in a binary image I}\\
 Without needing a seed!\\
 \[
-	H = [R_F^D(F)]^C  \qquad  \text{with} \qquad \text{F}(x,y)=\begin{cases} 1-I(x,y) & \text{if (x,y) is on the border of I}\\
-                                                             0 & \text{otherwise} \end{cases}
+	H = [R_F^D(F)]^C  \qquad  \text{with} \qquad F(x,y)=\begin{cases} 1-I(x,y) & \text{if $(x,y)$ is on the border of $I$}\\
+  0 & \text{otherwise} \end{cases}
 \]
 \begin{figure}[h!]
 \centering
@@ -448,14 +462,14 @@ Without needing a seed!\\
 \end{figure}
 
 \textbf{Border clearing}\\
-Remove object that touch the border.
+Remove objects that touch the border.
 \[
-X = I-R_I^D(F)  \qquad  \text{with} \qquad \text{F}(x,y)=\begin{cases} I(x,y) & \text{if (x,y) is on the border of I}\\
+X = I-R_I^D(F)  \qquad  \text{with} \qquad F(x,y)=\begin{cases} I(x,y) & \text{if $(x,y)$ is on the border of $I$}\\
 0 & \text{otherwise} \end{cases}
 \]
 
 \subsection{Grayscale morphology\buchSeite{674}}
-The fundamental operations dilation, erosion, opening and closing can be extended to gray scale. Hence the more advanced operations which are based on the above operations can be extended too. The structuring elements are also gray-scale. In practice, flat structuring elements are preferred.
+The fundamental operations dilation, erosion, opening and closing can be extended to grayscale. Hence the more advanced operations which are based on the above operations can be extended too. The structuring elements are also grayscale. In practice, flat structuring elements are preferred.
 
 \begin{figure}[h!]
 \centering
@@ -485,7 +499,7 @@ The fundamental operations dilation, erosion, opening and closing can be extende
 \draw (0,0) -- (0,4) -- (4,4) -- (4,0);\end{tikzpicture}}
 \caption{Intensity profile}
 \end{subfigure}\\
-\caption{Nonflat and flat structuring elements and corresponding horizontal intensity profiles through their center}
+\caption{Nonflat and flat structuring elements and corresponding horizontal intensity profiles through their centers}
 \end{figure}
 
 \subsubsection{Erosion and Dilation\buchSeite{674}}
@@ -498,7 +512,7 @@ Erosion
 Dilation
 \begin{align*}
 	[f\oplus b](x,y)	&= \max_{(s,t)\in b} \{f(x-s,y-t)\}				& \text{Flat SE} \\
-	[f\oplus b_N](x,y)	&= \max_{(s,t)\in b_N} \{f(x-s,y-t) +b_N(s,t)\}	& \text{Non-Flat SE}
+	[f\oplus b_N](x,y)	&= \max_{(s,t)\in b_N} \{f(x-s,y-t) + \hat{b}_N(s,t)\}	& \text{Non-Flat SE}
 \end{align*}
 
 \subsubsection{Opening and Closing\buchSeite{680}}
@@ -510,7 +524,7 @@ Opening and closing are defined exactly the same as in the binary case:
 
 \subsubsection{Some Basic Gray-Scale Morphological Algorithms\buchSeite{682}}
 \paragraph{Morphological smoothing\buchSeite{682}}
-Opening suppresses bright details and closing suppresses dark details. They can be used in combination for image smoothing and/or noise suppression.
+Opening suppresses bright details (more background) and closing suppresses dark details (more foreground). They can be used in combination for image smoothing and/or noise suppression.
 \paragraph{Morphological gradient\buchSeite{682}}
 This operation results in an image where the edges are enhanced, not unlike a classical magnitude gradient image.
 \[
@@ -527,10 +541,10 @@ The resulting image contains mostly bright details that are smaller than the str
 \]
 The resulting image contains mostly dark details, that are smaller than the structuring element.
 \paragraph{Granulometry\buchSeite{685}}
-The goal of granulometry is to find the particle size distribution in an image. Opening with a structuring element similar in shape as the particles but the size scaled from small to large. The biggest effect in the resulting opened image is, when the size of the structuring element changes from just too small to just too large. This effect can be measured by summing up the entire opened image, the surface area. Jumps in the change of surface area show the dominant particle sizes.
+The goal of granulometry is to find the particle size distribution in an image. Opening with a structuring element similar in shape as the particles but the size can be scaled from small to large. The biggest effect in the resulting opened image is, when the size of the structuring element changes from just too small to just too large. This effect can be measured by summing up the entire opened image, the surface area. Jumps in the change of surface area show the dominant particle sizes.
 \paragraph{Textural segmentation\buchSeite{687}}
-Figure 9.43\\
-The goal of textural segmentation is, to segment the image into two textural regions. The basic idea is to remove the small circles with a structuring element larger than the small circle but smaller than the large circle. With a following opening fills the white patches between the large elements.
+Figure 9.45\\
+The goal of textural segmentation is, to segment the image into two textural regions. The basic idea is to remove the small circles with a circular structuring element larger than the small circle but smaller than the large circle. The following opening fills the white patches between the large elements.
 \subsubsection{Grayscale morphological reconstruction\buchSeite{688}}
 Follows the definition for binary images.\\
 
@@ -538,7 +552,7 @@ Follows the definition for binary images.\\
 \textbf{Geodesic dilation}
 \begin{align*}
 	D_g^{(1)}(f) = (f\oplus b)\wedge g\\
-	D_g^{(n)}(f) = D_g^{(1)}[D_g^{n-1}(f)] g
+	D_g^{(n)}(f) = D_g^{(1)}[D_g^{n-1}(f)]
 \end{align*}
 $\wedge$ denotes the point-wise minimum operator. \\
 

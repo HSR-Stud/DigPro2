@@ -4,13 +4,13 @@
 \subsection{Boundary preprocessing\buchSeite{814}}
 After the image segmentation, the boundaries need to be represented in a form, that is suitable for further processing.
 \subsubsection{Boundary following (tracing)\buchSeite{814}}
-The following algorithm is the moore boundary tracking algorithm.
+The following algorithm traces the boundary of a 1-valued region, $R$, in a binary image and is called Moore boundary tracking algorithm.
 \begin{enumerate}
-\item Let the starting point, $b_0$ be the uppermost, leftmost point in the image that is labeled 1. Denote by $c_0$ the west neighbor of $b_0$ clearly, $c_0$ is a background point. Examine the 8-neighbors of $b_0$, starting at $c_0$ and procedding in a clockwise direction. Let $b_1$ denote the first neighor encountered whose value is 1, and let $c_1$ be the (background) point immediately preceding $b_1$ in the sequence. Store the localtions of $b_0$ and $b_1$ for use in Step 5.
-\item Let $b=b_1$ and $c=c_1$
-\item Let the 8-neighbors of $b$, starting at $c$ and proceeding in a clockwise direction, be denoted by $n_1,n_2,\ldots,n_8$. Find the first $n_k$ labeled 1.
-\item Let $b=n_k$ and $c=n_{k-1}$
-\item Repeat Steps 3 and 4 until $b=b_0$ and the next boundary point found is $b_1$. The sequence of $b$ points found when the algorithm stops constitutes the set of ordered boundary points
+\item Let the starting point, $b_0$ be the uppermost-leftmost point in the image that is labeled 1. Denote by $c_0$ the west neighbor of $b_0$. Clearly, $c_0$ is a background point. Examine the 8-neighbors of $b_0$, starting at $c_0$ and proceeding in a clockwise direction. Let $b_1$ denote the first neighbor encountered whose value is 1, and let $c_1$ be the (background) point immediately preceding $b_1$ in the sequence. Store the locations of $b_0$ for use in Step 5.
+\item Let $b=b_0$ and $c=c_0$.
+\item Let the 8-neighbors of $b$, starting at $c$ and proceeding in a clockwise direction, be denoted by $n_1,n_2,\ldots,n_8$. Find the first neighbor labeled 1 and denote it by $n_k$.
+\item Let $b=n_k$ and $c=n_{k-1}$.
+\item Repeat Steps 3 and 4 until $b=b_0$. The sequence of $b$ points found when the algorithm stops constitutes the set of ordered boundary points.
 \end{enumerate}
 \begin{figure}[h]
 	\centering
@@ -66,8 +66,8 @@ Chain codes are used to represent a boundary by a connected sequence of straight
 	\caption{Direction numbers for chain codes}
 \end{figure}
 
-Cain codes are quite sensitive to small disturbances. If they are on the pixel grid, they tend to result in rather long codes. Subsampling the boundary, i.e. going to a coarser grid results in a more robust and more efficient code at the expense of representation accuracy.\\
-The resulting code depends on the starting point, which is not desirable. An easy trick is to circumvent this, is the convention to start at that point wich will result in a chain code that represents the smalles integer.\\
+Cain codes are quite sensitive to small disturbances. If they are on the pixel grid, they tend to result in rather long codes. Subsampling the boundary, i.e., going to a coarser grid results in a more robust and more efficient code at the expense of representation accuracy.\\
+The resulting code depends on the starting point, which is not desirable. An easy trick to circumvent this, is the convention to start at that point wich will result in a chain code that represents the smallest integer.\\
 
 The representation can be made independent of rotation by using the \emph{first difference}.
 For each segment, assume the current direction is 0 and encode the direction of the next segment as before. \\
@@ -119,7 +119,7 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
 \begin{enumerate}
 \item Find all convex points (white dots) and concave points (black dots).
 \item Mirror the concave points to their diagonal location in the outer wall.
-\item The orientation (cw or ccw) of a sequence of three points will be necessary. This replaces the convec concave classification
+\item The orientation (cw or ccw) of a sequence of three points will be necessary. This replaces the convex, concave classification
 \begin{enumerate}
 \item $a=(x_1, y_1), b=(x_2, y_2), c=(x_3, y_3)$
 \item $A=\begin{bmatrix}
@@ -142,25 +142,25 @@ A boundary is represented by a polygon. The goal is to use as few segments as po
 \item $B_C$ is a black vertex
 \item $W_C$ is a white vertex
 \end{itemize}
-\item $V_K$ lies to the positive side of the line through pair ($V_L$, $W_C$), that is $sgn(V_L, W_C, V_K)>0$. If this condition holds, the next MPP vertex is $W_C$
-\item $V_K$ lies to the negative side of the line through pair ($V_L$, $B_C$), that is $sgn(V_L, B_C, V_K)<0$. If this condition holds, the next MPP vertex is $B_C$.
-\item $V_K$ lies on the negative side of the line through pair ($V_L$, $W_C$) or is collinear with it, that is $sgn(V_L, W_C, V_K) \le 0$. At the same time, $V_K$ lies on the positive side of the line through ($V_L$, $B_C$) or is collinear with it, that is $sgn(V_L, V_C, V_K) \ge 0$. If this condition holds, the next candidate MPP vertex is $V_K$; otherwise $B_C = V_K$
+\item $V_K$ lies to the positive side of the line through pair ($V_L$, $W_C$), that is $sgn(V_L, W_C, V_K)>0$. If this condition holds, the next MPP vertex is $W_C$, and we let $V_L = W_C$
+\item $V_K$ lies to the negative side of the line through pair ($V_L$, $B_C$), that is $sgn(V_L, B_C, V_K)<0$. If this condition holds, the next MPP vertex is $B_C$, and we let $V_L = B_C$.
+\item $V_K$ lies on the negative side of the line through pair ($V_L$, $W_C$) or is collinear with it, that is $sgn(V_L, W_C, V_K) \le 0$. At the same time, $V_K$ lies on the positive side of the line through ($V_L$, $B_C$) or is collinear with it, that is $sgn(V_L, B_C, V_K) \ge 0$. If this condition holds, the next candidate MPP vertex is $V_K$; otherwise $B_C = V_K$
 \item Continue with the next vertex in the list.
 \end{enumerate}
 
-\subsubsection{Other Polygonal Approximation Approaches\buchSeite{826}}
-\paragraph{Merging} %TODO: not present in 4th edition?
+\subsubsection{Other Polygonal Approximation Approaches}
+\paragraph{Merging}
 Points on the boundary are merged and a line is fitted to these points.
-If the fitting error becomes to large, a vertex is set and the procedure starts from the beginning.
+If the fitting error (RSS or MSE) becomes too large, a vertex is set and the procedure starts from the beginning.
 This approach is very simple, but there is no guarantee for a good approximation.
 E.g. it does not set vertices at corners, but always a bit later.
 
-\paragraph{Splitting} %TODO: not present in 4th edition?
-Here the idea is, to divide (split) a boundary segment until a threshold of an criterion is satisfied.
+\paragraph{Splitting}
+Here the idea is, to divide (split) a boundary segment until a threshold of a criterion is satisfied.
 E.g. until the distances from the boundary to the approximated lines are below a certain number.
 
 \subsubsection{Signatures\buchSeite{826}}
-A signature is a 1D function that represents a boundary. This results in a significant complexity reduction. There are several schemes:\\
+A signature is a 1-D function that represents a 2-D boundary. This results in a significant complexity reduction. There are several schemes:\\
 \begin{itemize}
 \item Find the centroid. The boundary is described as a function of the angle around this point.
 \begin{itemize}
@@ -182,15 +182,16 @@ A signature is a 1D function that represents a boundary. This results in a signi
 	\caption{Examples for signatures}
 \end{figure}
 
-\subsubsection{Boundary segments} %TODO: not present in 4th edition?
-The convex hull H of an arbitrary set S is the smallest convex set containing S. The difference $D=H-S$ is the convex deficiency. Follow the contour of S and mark the spots where the contour makes a transition into or out of D. These marking $\alpha$ (0...1) are relative to the total length of the contour D.\\
-This is in theory invariant to:\\
+\subsubsection{Boundary segments}
+The convex hull H of an arbitrary set $S$ is the smallest convex set containing $S$. The difference $D=H-S$ is the convex deficiency. Follow the contour of $S$ and mark the spots where the contour makes a transition into or out of $D$. These markings $\alpha$ (0...1) are relative to the total length of the contour D.\\
+This is in theory invariant to:
 \begin{itemize}
 \item Rotation
 \item Translation
 \item Scaling
 \end{itemize}
-In practice, boundaries have some noise. Often smooting along the boundaries is used.\\
+In practice, boundaries have some noise. Often smoothing along the boundaries is used.
+
 \subsubsection{Skeletons, medial axes, and distance transforms\buchSeite{828}}
 Medial axis transform (MAT)
 \begin{itemize}
@@ -202,16 +203,16 @@ Algorithms for efficient MAT iteratively delete boundary points subject to
 \begin{enumerate}
 \item keep end points
 \item keep connectivity (\small note that morphological thinning does \emph{not} account for this)
-\item do not erode that region excessively
+\item do not erode the region excessively
 \end{enumerate}
-Thinning algorithm is 2 steps applied successively to border points\\
+Thinning algorithm: 2 steps applied successively to border points\\
 \begin{tikzpicture}
 \matrix[3x3mask]{
 p9 & p2 & p3 \\
 p8 & p1 & p4 \\
 p7 & p6 & p5 \\
 };\\
-\end{tikzpicture}\\
+\end{tikzpicture}
 \paragraph{Step 1:} south or east boundary points\\
 Flag for deletion if all of these conditions are satisfied:
 \begin{enumerate}[label={\alph*)}]
@@ -221,7 +222,7 @@ Flag for deletion if all of these conditions are satisfied:
 \item $p_4 \cdot p_6 \cdot p_8 = 0$
 \end{enumerate}
 The last conditions are satisfied simultaneously by the minimum set of values: $(p_4=0\ or\ p_6=0)\ or \ (p_2=0\ \text{and} \ p_8=0)$\\
-After processing all boundary points, the marked ones are deleted\\
+After processing all boundary points, the marked ones are deleted
 \paragraph{Step 2:} north or west boundary points\\
 Simultaneous to Step 1 except the new conditions $c'$ and $d'$\\
 \begin{enumerate}[label={\alph*)}]
@@ -232,37 +233,38 @@ Simultaneous to Step 1 except the new conditions $c'$ and $d'$\\
 \item $p_2 \cdot p_4 \cdot p_8 = 0$
 \item $p_2 \cdot p_6 \cdot p_8 = 0$
 \end{enumerate}
+Again, after processing all boundary points, the marked ones are deleted.
 
 \subsection{Boundary Feature Descriptors\buchSeite{831}}
 \label{sec:boundaryFeatureDescriptors}
 Having seen different representations of boundaries, the goal is now to develop descriptors for these boundaries.
 \subsubsection{Basic Boundary Descriptors\buchSeite{832}}
 
-\paragraph{Length}
+\paragraph{Length\buchSeite{832}}
 \begin{itemize}
 \item Number of pixels along a Boundary gives a rough approximation of its length
 \item 8-directional Chain Code numbers of vertical and horizontal components plus $\sqrt{2}$ times the number of diagonal components, gives the exact length.
 \end{itemize}
-\paragraph{Diameter of boundary B}
 
+\paragraph{Diameter of boundary B\buchSeite{832}}
 \begin{flalign*}
-& \text{Diam}(B)=\max\limits_{i,j}\left[D(p_i,p_j)\right] && \text{Points on boundary:} && p_i,p_j && \text{Distance measure:} && D
+& \text{diameter}(B)=\max\limits_{i,j}\left[D(p_i,p_j)\right] && \text{Points on boundary:} && p_i,p_j && \text{Distance measure:} && D
 \end{flalign*}
 
-\paragraph{Major axis}
-The line connecting the two extreme points of the boundary is called the major axis of the boundary.\\
-\paragraph{Minor axis}
-The line perpendicular to the major axis and of such length that a box passing through the outer four points of intersection ofthe boundary with the two axes completely encloses the boundary.
-\paragraph{Eccentricity}
+\paragraph{Major axis\buchSeite{832}}
+The line connecting the two extreme points of the boundary is called the major axis of the boundary.
+\paragraph{Minor axis\buchSeite{832}}
+The line perpendicular to the major axis and of such length that a box passing through the outer four points of intersection of the boundary with the two axes completely encloses the boundary.
+\paragraph{Eccentricity\buchSeite{832}}
 The ratio of the major to the minor axis is called the eccentricity of the boundary. This is a useful descriptor.
-\paragraph{Curvature}
+\paragraph{Curvature\buchSeite{832}}
 This is the rate of change of the slope in the boundary. i.e. this is a second derivative.
 Note that the curvature is often very noisy. It is therefore often applied to a polygon approximation.
 
 \subsubsection{Shape numbers\buchSeite{834}}
-The shape number of a boundary (based on 4-directional code) is defined as the first difference of smalles magnitude.\\
+The shape number of a boundary (based on 4-directional code) is defined as the first difference of smallest magnitude.\\
 The order n of a shape number is defined as the number of digits in its representation.\\
-One way of aligning the chain code grid with the boundary is to use the basic rectangle box based on the major and minor axes\\
+One way of aligning the chain code grid with the boundary is to use the basic rectangle box based on the major and minor axes.
 
 \subsubsection{Fourier descriptors\buchSeite{835}}
 The coordinates of the boundary represents a complex sampled signal wich can be represented as a complex vector
@@ -271,7 +273,7 @@ s(k)=x(k)+jy(k) && k=0,1,2,\ldots,K-1
 \end{align*}
 which can be analyzed in the frequency domain.\\
 
-Note that the axis are changed:
+Note that the axes are changed (Fig. \ref{fig:axes}).
 \begin{figure}[h]
 	\begin{subfigure}{0.5\textwidth}
 		 \centering
@@ -284,6 +286,7 @@ Note that the axis are changed:
 		\caption{for Fourier descriptors}
 	\end{subfigure}
 	\caption{Axes of image}
+  \label{fig:axes}
 \end{figure}
 
 The DFT of $s(k)$ is \begin{align*}
@@ -294,32 +297,30 @@ The DFT of $s(k)$ is \begin{align*}
 Since the high frequency components are responsible for the fine detail, using only the first few Fourier descriptors results in a smoothing of the boundary and image compression.\\
 The reconstruction of the image is, when using the first $P$ coefficients
 	\[
-	\hat{s}(k) = \frac{1}{K} \sum\limits_{u=0}^{P-1} a(u) e^{j 2 \pi u k / K}
+	\hat{s}(k) = \frac{1}{K} \sum\limits_{u=-M}^{M} a(u) e^{j 2 \pi u k / K}
 	\]
 
-\paragraph{Basic properties of Fourier descriptors\buchSeite{839}} ~\\
-
+\paragraph{Basic properties of Fourier descriptors\buchSeite{839}}
 \begin{tabularx}{\textwidth}{XXX}
 Transformation & Boundary & Fourier Descriptor \\\hline
 Identity & $s(k)$ & $a(u)$ \\
 Rotation & $s_r(k)=s(k)e^{j\theta}$& $a_r(u)=a(u)e^{j\theta}$ \\
-Translation &$s_t(k)=s(k)+\Delta_{xy}$& $a_t(u)=a(u)+\Delta_{xy}\delta(u)$ \\
+Translation &$s_t(k)=s(k)+\Delta_{xy}$& $a_t(u)=a(u)+K\Delta_{xy}\delta(u)$ \\
 Scaling &$s_s(k)=\alpha s(k)$& $a_s(u)=\alpha a(u)$ \\
 Starting point & $s_p(k)=s(k-k_0)$& $a_p(u)=a(u)e^{-j2\pi k_0u/K}$ \\ \hline
 \end{tabularx}
 
 \subsubsection{Statistical moments\buchSeite{839}}
-The boundary segment is rotated, so that it can be interpreted as a function of a single variable. \\
-
-The amplitude of $g()$ can be treated as a discrete random variable v and a amplitude histogram $p(v_i)$ can be formed.
+The boundary segment is rotated, so that it can be interpreted as a function of a single variable.
+The amplitude of $g()$ can be treated as a discrete random variable $z$ and an amplitude histogram $p(z_i)$ can be formed.
 From the histogram, the statistical moments can be calculated.
 
 \begin{align*}
-	m &= \sum\limits_{i=0}^{A-1} v_i p(v_i) \\
-	\mu_n(v) &= \sum\limits_{i=0}^{A-1} (v_i-m)^n p(v_i)
+	m &= \sum\limits_{i=0}^{A-1} z_i p(z_i) \\
+	\mu_n(z) &= \sum\limits_{i=0}^{A-1} (z_i-m)^n p(z_i)
 \end{align*}
 
-The statistical moments are:
+The first few statistical moments are:
 \begin{itemize}
 \item $m$ or $\mu_1$: Mean
 \item $\mu_2$: Variance
@@ -371,7 +372,7 @@ There are three basic approaches to describe texture:\\
 \begin{itemize}
 \item Intensity histogram $p(z_i)$
 \item Moment $\mu_n(z)=\sum\limits_{i=0}^{L-1}(z_i-m)^np(z_i)$ and mean $m=\sum\limits_{i=0}^{L-1}z_ip(z_i)$
-\item The variance $\sigma ^2(z) =\mu_2 (z)$ is a measure of contrast, which can be used to establish descriptors of smoothness. It should be normalized to $0 \ldots 1$ by dividing by $\left(\frac{L-1}{2}\right)^2$. $R(z)=1-\frac{1}{1+\sigma ^2(z)}$
+\item The variance $\sigma ^2(z) =\mu_2 (z)$ is a measure of contrast, which can be used to establish descriptors of smoothness. It should be normalized to $0 \ldots 1$ by dividing by $\left(L-1\right)^2$. $R(z)=1-\frac{1}{1+\sigma ^2(z)}$
 \item A measure for uniformity $U(z)=\sum\limits_{i=0}^{L-1}p^2(z_i)$
 \item Average entropy $e(z)=-\sum\limits_{i=0}^{L-1}p(z_i)\log_2p(z_i)$ \\ Note that $e$ is zero for constant regions.
 \end{itemize}
@@ -395,7 +396,7 @@ A \emph{co-occurrence matrix} $\mathbf{G}$ is generated, whose elements $g_{i,j}
 		$m_r$ &= $\sum\limits_{i=1}^{K} i \sum\limits_{j=1}^{K} p_{ij}$ & mean, computed along rows of $\mathbf{G}$ \\
 		$m_c$ &= $\sum\limits_{j=1}^{K} j \sum\limits_{i=1}^{K} p_{ij}$ & mean, computed along columns of $\mathbf{G}$ \\
 		$\sigma_r^2$ &= $\sum\limits_{i=1}^{K} (i-m_r)^2 \sum\limits_{j=1}^{K} p_{ij}$ & variance, computed along rows of $\mathbf{G}$ \\
-		$\sigma_c^2$ &= $\sum\limits_{j=1}^{K} (j-m_r)^2 \sum\limits_{i=1}^{K} p_{ij}$ & variance, computed along columns of $\mathbf{G}$ \\
+		$\sigma_c^2$ &= $\sum\limits_{j=1}^{K} (j-m_c)^2 \sum\limits_{i=1}^{K} p_{ij}$ & variance, computed along columns of $\mathbf{G}$ \\
 	\end{tabular}
 \end{table}
 
@@ -406,33 +407,33 @@ Then, the following descriptors can be calculated, if needed. Note that the corr
 	\begin{tabularx}{\textwidth}{lXl}
 		\textbf{Descriptor} & \textbf{Explanation} & \textbf{Formula} \\ \hline
 		Maximum probability & Measures the strongest response of $\mathbf{G}$. The range of values is $[0,1]$. & $\displaystyle\max_{i,j}(p_{ij})$ \\
-		Correlation & A measure of how correlated a pixel is to its neighbor over the entire image. Range of values is $1$ to $-1$, corresponding to perfect positive or negative correlations. & $\displaystyle\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K}\frac{(i-m_r)(j-m_c)p_{ij}}{\sigma_r \sigma_c}$ \\
+		Correlation & A measure of how correlated a pixel is to its neighbor over the entire image. Range of values is $1$ to $-1$, corresponding to perfect positive and negative correlations. & $\displaystyle\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K}\frac{(i-m_r)(j-m_c)p_{ij}}{\sigma_r \sigma_c}$ \\
 		Contrast & A measure of intensity contrast between a pixel and its neighbor over the entire image. The range of values is $0$ (when $\mathbf{G}$ is constant) to $(K-1)^2$. & $\displaystyle\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K}(i-j)^2 p_{ij}$ \\
 		Uniformity (Energy) & A measure of uniformity in the range $[0,1]$. Uniformity is $1$ for a constant image. & $\displaystyle\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K} p_{ij}^2$ \\
 		Homogeneity & Measures the spatial closeness of the distribution of elements in $\mathbf{G}$ to the diagonal. The range of values is $[0,1]$, with the maximum being achieved when $\mathbf{G}$ is a diagonal matrix. & $\displaystyle\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K}\frac{p_{ij}}{1+|i-j|}$ \\
-		Entropy & Measures the randomness of the elements of $\mathbf{G}$. The entropy is $0$ when all $p_{ij}$'s are $0$ and is maximum when all $p_{ij}$'s are equal. The maximum value is $2 \log_2 K$. & $\displaystyle -\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K} p_{ij} \log_2 p_{ij}$ \\
+		Entropy & Measures the randomness of the elements of $\mathbf{G}$. The entropy is $0$ when all $p_{ij}$'s are $0$, and is maximum when all $p_{ij}$'s are equal. The maximum value is $2 \log_2 K$. & $\displaystyle -\sum\limits_{i=1}^{K}\sum\limits_{j=1}^{K} p_{ij} \log_2 p_{ij}$ \\
 		\hline
 	\end{tabularx}
 \end{table}
 
 
-\paragraph{Structural approaches\buchSeite{851}}
-Some texture can be described as a repetition of a simple primitive. For such textures, a description based on rewriting rules is useful.
+\paragraph{Structural approaches}
+Some textures can be described as a repetition of a simple primitive. For such textures, a description based on rewriting rules is useful.
 
 \paragraph{Spectral approaches\buchSeite{855}}
 Good for periodic patterns\\
-The energy spectrum $S(r,\theta)$ is analyzed in polar coordinates. It is analyzed for a fixed angle, $S_\theta(r)$ and/or a fixed radius $S_r(\theta)$. The advantage of this is, that these are 1D functions and therefore easier to deal with.\\
+The energy spectrum $S(r,\theta)$ is analyzed in polar coordinates. It is analyzed for a fixed angle, $S_\theta(r)$ and/or a fixed radius $S_r(\theta)$. The advantage of this is, that these are 1-D functions and therefore easier to deal with.\\
 $S(r)=\sum\limits_{\theta = 0}^{\pi}S_\theta(r)$\\
 $S(\theta)=\sum\limits_{r=1}^{R_0}S_r(\theta)$\\
 \subsubsection{Moment Invariants\buchSeite{858}}
-A set of seven moments for a given image region can be generated as regional descriptors. They are intrinsically invariant to translation, scale change, rotation and even mirroring except for a sign change.\\
+A set of seven moments for a given image region can be generated as regional descriptors. They are intrinsically invariant to translation, scale change, rotation and even mirroring(except for a sign change).\\
 \begin{tabular}{ll}
-2D moments of order (p+q) & $m_{pq}=\sum\limits_{x=0}^{M-1}\sum\limits_{y=0}^{N-1}x^py^qf(x,y)$ \\
-The central moments & $\mu_{pq}=\sum\limits_{x=0}^{M-1}\sum\limits_{y=0}^{N-1}(x-\overline{x})^p(y-\overline{y})^qf(x,y)$ \\
+2D moment of order (p+q) & $m_{pq}=\sum\limits_{x=0}^{M-1}\sum\limits_{y=0}^{N-1}x^py^qf(x,y)$ \\
+central moment & $\mu_{pq}=\sum\limits_{x=0}^{M-1}\sum\limits_{y=0}^{N-1}(x-\overline{x})^p(y-\overline{y})^qf(x,y)$ \\
 & $\overline{x}=\frac{m_{10}}{m_{00}}$ and $\overline{y}=\frac{m_{01}}{m_{00}}$ \\
-Normalized central moments & $ \eta_{pq}=\frac{\mu_{pq}}{\mu_{00}^\gamma} $ with $\gamma=\frac{p+q}{2}+1 $ \\
-\end{tabular}
-The seven invariant moments:\\
+Normalized central moment & $ \eta_{pq}=\frac{\mu_{pq}}{\mu_{00}^\gamma} $ with $\gamma=\frac{p+q}{2}+1 $ \\
+\end{tabular}\\
+The seven 2-D invariant moments:\\
 \begin{align*}
 \phi_1 =& \eta_{20}+\eta_{02} \\
 \phi_2 =& (\eta_{20}-\eta_{02})^2+4\eta_{11}^2 \\
@@ -444,7 +445,7 @@ The seven invariant moments:\\
 \end{align*}
 
 \subsection{Principal Components as Feature Descriptors\buchSeite{859}}
-Principle component analysis (PCA) is a very general tool. It is applicable to boundaries and regions but also to color images and multispectral images. A given pixel in a multispectral image with n spectral components can be written as a vector containing these components. It is assumed that the components are random variables and hence these pixels are random vectors.
+Principle component analysis (PCA) is a very general tool. It is applicable to boundaries and regions but also to color images and multispectral images. A given pixel in a multispectral image with $n$ spectral components can be written as a vector containing these components. It is assumed that the components are random variables and hence these pixels are random vectors.
 \begin{align*}
 & \mathbf{x} = \left[\begin{array}{c} x_1 \\ x_2 \\ \vdots \\ x_n \end{array}\right]&&\\
 & \mathbf{m_x} = E\{\mathbf{x}\} = \frac{1}{K}\sum\limits_{k=1}^{K}\mathbf{x}_k&&\\
@@ -478,75 +479,76 @@ Thus an image compression is possible by using only $k$ eigenvectors. The recons
 	\[
 		\hat{\mathbf{x}} = \mathbf{A}_k^T \mathbf{y}_k + \mathbf{m_x}
 	\]
-%TODO: rest of this chapter not covered in lessons
-\subsection{Relational Descriptors\buchSeite{852}}
 
-\paragraph{Rewriting Rules}
-Example:
-Two primitive elements $a$ and $b$ are defined. They can be repetitively used to describe staircases.
-Rewriting rules are defined as follows: $S$ is the starting symbol, $A$ is a variable.
-Now a recursive definition can be made for describing the staircase.
-
-\begin{multicols}{2}
-\begin{center}
-	\input{tikz/representation/rewriting_rules} \\
-	Example: staircase and the used elements $a$ and $b$
-\end{center}
-\vfill
-\columnbreak
-\begin{align*}
-& 1) && \text{start} && S \rightarrow aA\\
-& 2) && \text{repeat 1)} &&  A \rightarrow bS \\
-& 3) && \text{end} &&  A \rightarrow b \\
-\end{align*}
-\end{multicols}
-Now any staircase made up of $a$s and $b$ can be described by repeating these rules.
-E.g. $(1,3)$ is a staircase $a,b$. $(1,2,1,3)$ is $a,b,a,b$ , $\ldots$. \\
-
-\paragraph{Directed line segments} The idea is, that section of an image are described by directed line segments
-
-\begin{itemize}
-\item There needs to be a set of
-operations acting on the
-primitives, such that a region or a
-boundary can be described
-\item The abstracted primitives need
-some specific primitives, which
-contain all directions
-\item A shape can now be described as a string of operations.
-\end{itemize}
-\begin{figure}[h]
-	\centering
-	\begin{subfigure}[b]{0.45\textwidth}
-		\centering
-		\adjustbox{scale=0.6}{\input{tikz/representation/AbstractedPrimitives}}
-		\caption{Abstracted Primitives}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
-		\centering
-		\adjustbox{scale=0.8}{\input{tikz/representation/PrimitivesOperations}}
-		\caption{Operations among primitives}
-	\end{subfigure}
-	\caption{Primitives}
-\end{figure}
-
-\paragraph{Tree descriptors}
-Information describing the meaning of a node and relating it to its neighbors can be stored in trees.
-A texture may some times not be connected, then it can be described by trees. \\
-
-Each tree has a unique node called the root $\$$ and is made up of subtrees. All leaves of a tree are called the frontier of the tree.
-
-\begin{figure}[h]
-	\centering
-	\begin{subfigure}[b]{0.45\textwidth}
-		\centering
-		\adjustbox{scale=0.6}{\input{tikz/representation/CompositeRegion}}
-		\caption{Simple composite region}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
-		\centering
-		\adjustbox{scale=0.8}{\input{tikz/representation/TreeRepresentation}}
-		\caption{Tree representation}
-	\end{subfigure}
-	\caption{Tree descriptors}
-\end{figure}
+%Note: rest of this chapter not covered in lessons
+% \subsection{Relational Descriptors\buchSeite{852}}
+%
+% \paragraph{Rewriting Rules}
+% Example:
+% Two primitive elements $a$ and $b$ are defined. They can be repetitively used to describe staircases.
+% Rewriting rules are defined as follows: $S$ is the starting symbol, $A$ is a variable.
+% Now a recursive definition can be made for describing the staircase.
+%
+% \begin{multicols}{2}
+% \begin{center}
+% 	\input{tikz/representation/rewriting_rules} \\
+% 	Example: staircase and the used elements $a$ and $b$
+% \end{center}
+% \vfill
+% \columnbreak
+% \begin{align*}
+% & 1) && \text{start} && S \rightarrow aA\\
+% & 2) && \text{repeat 1)} &&  A \rightarrow bS \\
+% & 3) && \text{end} &&  A \rightarrow b \\
+% \end{align*}
+% \end{multicols}
+% Now any staircase made up of $a$s and $b$ can be described by repeating these rules.
+% E.g. $(1,3)$ is a staircase $a,b$. $(1,2,1,3)$ is $a,b,a,b$ , $\ldots$. \\
+%
+% \paragraph{Directed line segments} The idea is, that section of an image are described by directed line segments
+%
+% \begin{itemize}
+% \item There needs to be a set of
+% operations acting on the
+% primitives, such that a region or a
+% boundary can be described
+% \item The abstracted primitives need
+% some specific primitives, which
+% contain all directions
+% \item A shape can now be described as a string of operations.
+% \end{itemize}
+% \begin{figure}[h]
+% 	\centering
+% 	\begin{subfigure}[b]{0.45\textwidth}
+% 		\centering
+% 		\adjustbox{scale=0.6}{\input{tikz/representation/AbstractedPrimitives}}
+% 		\caption{Abstracted Primitives}
+% 	\end{subfigure}
+% 	\begin{subfigure}[b]{0.45\textwidth}
+% 		\centering
+% 		\adjustbox{scale=0.8}{\input{tikz/representation/PrimitivesOperations}}
+% 		\caption{Operations among primitives}
+% 	\end{subfigure}
+% 	\caption{Primitives}
+% \end{figure}
+%
+% \paragraph{Tree descriptors}
+% Information describing the meaning of a node and relating it to its neighbors can be stored in trees.
+% A texture may some times not be connected, then it can be described by trees. \\
+%
+% Each tree has a unique node called the root $\$$ and is made up of subtrees. All leaves of a tree are called the frontier of the tree.
+%
+% \begin{figure}[h]
+% 	\centering
+% 	\begin{subfigure}[b]{0.45\textwidth}
+% 		\centering
+% 		\adjustbox{scale=0.6}{\input{tikz/representation/CompositeRegion}}
+% 		\caption{Simple composite region}
+% 	\end{subfigure}
+% 	\begin{subfigure}[b]{0.45\textwidth}
+% 		\centering
+% 		\adjustbox{scale=0.8}{\input{tikz/representation/TreeRepresentation}}
+% 		\caption{Tree representation}
+% 	\end{subfigure}
+% 	\caption{Tree descriptors}
+% \end{figure}
