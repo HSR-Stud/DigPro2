@@ -10,7 +10,7 @@
 		7 & 8 & 6 & 2 & 6 & 2 \\
 	};
 	\draw[help lines,step=0.5] (-1.5,-1.5) grid (1.5,1.5);
-	
+
 	% Co-occurrence matrix
 	\matrix(dict)[matrix of nodes, nodes={inner sep=0pt,text width=0.5cm, minimum height=0.5cm, align=center}] at (6.75,0.25) {
 	  & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8  \\
@@ -25,9 +25,15 @@
 	};
 	\draw[help lines,step=0.5] (5.0,-2) grid (9,2);
 	\draw[help lines] (5.0,-2) -- (5.0,2);
-	
+
 	% generation
 	\draw (-1.0,1.25) ellipse (0.48cm and 0.24cm);
 	\draw[->] (-1,1.49) .. controls (-0.5,2) and (1.5,2.5) .. (5.1,1.8);
+  \draw (1.0,-0.75) ellipse (0.48cm and 0.24cm);
+  \draw[->] (1,-0.51) .. controls (1.5,0) and (3.5,0.5) .. (5.6,-0.7);
+  \draw (1.0,-1.25) ellipse (0.48cm and 0.24cm);
+  \draw[->] (1,-1.49) .. controls (1.5,-2) and (3.5,-1.5) .. (5.6,-0.7);
+  \draw (0,-1.25) ellipse (0.48cm and 0.24cm);
+  \draw[->] (0,-1.49) .. controls (1.5,-2.5) and (3.5,-2) .. (5.6,-0.7);
 
 \end{tikzpicture}
