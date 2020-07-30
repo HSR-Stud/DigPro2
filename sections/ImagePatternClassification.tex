@@ -153,7 +153,7 @@ In the special case, when the covariance matrices are equal, this decision funct
 \[
   d_j(\mathbf{x}) = \text{ln}P(c_j) + \mathbf{x}^T \mathbf{C}^{-1} \mathbf{m}_j - \frac{1}{2}\mathbf{m}_j^T\mathbf{C}^{-1}\mathbf{m}_j \qquad j = 1,2,\ldots,N_c
 \]
-In an even more special case, where the covariance matrix of all classes is the identity matrix and each class is a priory equally likely, the decision function simplifies further to
+In an even more special case, where the covariance matrix of all classes is the identity matrix and each class is a priori equally likely, the decision function simplifies further to
 \[
   d_j(\mathbf{x}) = \mathbf{m}_j^T \mathbf{x} - \frac{1}{2}\mathbf{m}_j^{T}\mathbf{m}_j \qquad j = 1,2,\ldots,N_c
 \]
@@ -161,7 +161,7 @@ which are the decision functions for a minimum-distance classifier (see Eq. \ref
 
 
 \subsection{Neural Networks and Deep Learning\buchSeite{931}}
-Class of algorithms which find decision functions directly by training. Neural Netowrks (NN) make no Gaussian assumption.
+Class of algorithms which find decision functions directly by training. Neural Networks (NN) make no Gaussian assumption.
 
 \subsubsection{Perceptron\buchSeite{934}}
 The perceptron learns a linear decision function that separates two linearly separable training sets.
