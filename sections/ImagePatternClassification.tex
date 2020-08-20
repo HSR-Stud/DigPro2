@@ -251,7 +251,7 @@ They are stacked banks of perceptrons:
 \end{itemize}
 The softmax function
 \[
-  a_i(L) = \frac{\text{exp}(z_i(L)}{\sum_k \text{exp}(z_i(L)}
+  a_i(L) = \frac{\text{exp}(z_i(L))}{\sum_k \text{exp}(z_i(L))}
 \]
 is not an element-wise function since the outputs must add up to one.
 Hence this results in the need of using the Jacobian to calculate the partial derivatives in the chain rule later on.\\
